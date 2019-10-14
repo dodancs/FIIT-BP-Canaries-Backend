@@ -1,4 +1,14 @@
 {
     "python.pythonPath": "c:\\Users\\dodan\\Nextcloud\\5. Semester\\BP\\FIIT-BP-Canaries-Backend\\env\\Scripts\\python.exe",
-    "python.pipPath": "c:\\Users\\dodan\\Nextcloud\\5. Semester\\BP\\FIIT-BP-Canaries-Backend\\env\\Scripts\\pip3.exe"
+    "python.pipPath": "c:\\Users\\dodan\\Nextcloud\\5. Semester\\BP\\FIIT-BP-Canaries-Backend\\env\\Scripts\\pip3.exe",
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.autoIndent": true,
+    "editor.tabSize": 4,
+    "[json]": {
+        "editor.detectIndentation": false,
+        "editor.insertSpaces": true,
+        "editor.autoIndent": true,
+        "editor.tabSize": 4,
+    }
 }

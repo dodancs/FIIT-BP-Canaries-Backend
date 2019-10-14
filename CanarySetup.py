@@ -1,17 +1,25 @@
 import sys
 import os
 import getpass
-import mysql.connector
-from mysql.connector import Error
 from CanaryHelpers import CanaryHelpers
+from CanaryDBHandler import CanaryDBHandler
 
 class ConfigData(object):
-    host = ""
+    # Database
+    host = ''
     port = 0
-    user = ""
-    password = ""
-    database = ""
-    secret = ""
+    user = ''
+    password = ''
+    database = ''
+    # Security
+    secret = ''
+    # API
+    bindIP = ''
+    bindPort = 0
+    debug = False
+    swagger = False
+    swaggerURL = ''
+
 
 class CanarySetup:
     def __init__(self, configPath = ''):
@@ -46,9 +54,9 @@ class CanarySetup:
         i = input('Database name (canaries): ')
         data.database = 'canaries' if not i else i
 
-        print('\nChecking connection...')
+        print()
 
-        if self.testDB(data):
+        if CanaryDBHandler().test(data.host, data.port, data.user, data.password, data.database):
             exit(1)
 
         print('**************************\n\
@@ -57,11 +65,33 @@ class CanarySetup:
 
         print('Generating new secret key...')
         data.secret = CanaryHelpers().randomString(32).replace('\'','"')
-        print('Done.')
+        print('Done.\n')
+
+        print('**************************\n\
+~        API SETUP       ~\n\
+**************************')
+
+        i = input('REST API bind address (0.0.0.0): ')
+        data.bindIP = '0.0.0.0' if not i else i
+
+        try:
+            i = input('REST API listen on port (5000): ')
+            data.bindPort = 5000 if not i else int(i)
+        except:
+            print('Port must be a number!', file=sys.stderr)
+            exit(1)
+
+        data.debug = True if input('Enable debugging? (y/N): ') in CanaryHelpers().yes else False
+        data.swagger = True if input('Enable swagger UI? (y/N): ') in CanaryHelpers().yes else False
+
+        if data.swagger:
+            i = input('Swagger URL (/swagger): ')
+            data.swaggerURL = '/swagger' if not i else i
+        else:
+            data.swaggerURL = '/swagger'
 
         if os.path.exists(configPath):
-            if input('Configuration file already exists ({}), overwrite? (y/N): '.format(configPath)) not in ('Y', 'y', 'yes', 'Yes', 'YES'):
-                exit(0)
+            if input('Configuration file already exists ({}), overwrite? (y/N): '.format(configPath)) not in CanaryHelpers().yes : i
             
             try:
                 config = open(configPath, "w")
@@ -82,6 +112,15 @@ class CanarySetup:
                 config.write('[SECURITY]\n')
                 config.write('secret=\'{}\'\n'.format(data.secret))
 
+                config.write('\n')
+
+                config.write('[API]\n')
+                config.write('bind_ip=\'{}\'\n'.format(data.bindIP))
+                config.write('port={}\n'.format(data.bindPort))
+                config.write('debug={}\n'.format(data.debug))
+                config.write('swagger={}\n'.format(data.swagger))
+                config.write('swagger_url=\'{}\'\n'.format(data.swaggerURL))
+
                 config.close()
             except IOError:
                 print('Error writing configuration file!', file=sys.stderr)
@@ -91,24 +130,3 @@ class CanarySetup:
         print('You may now run canaries in daemon mode.')
 
         exit(0)
-
-    def testDB(self, data):
-        connection = None
-        try:
-            connection = mysql.connector.connect(host=data.host, port=data.port, database=data.database, user=data.user, password=data.password)
-
-            if connection.is_connected():
-                db_Info = connection.get_server_info()
-                print('Connected to MySQL Server version {}\n'.format(db_Info))
-                cursor = connection.cursor()
-                cursor.execute("select database();")
-                cursor.fetchone()
-                return 0
-
-        except Error as e:
-            print('Error while connecting to MySQL {}'.format(e), file=sys.stderr)
-            return 1
-        finally:
-            if connection and connection.is_connected():
-                cursor.close()
-                connection.close()

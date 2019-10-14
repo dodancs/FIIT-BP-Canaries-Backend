@@ -37,11 +37,11 @@ Verify python and pip installation:
 
 ```powershell
 $> python
-Python 3.7.0 (v3.7.0:1bf9cc5093, Jun 27 2018, 04:59:51) [MSC v.1914 64 bit (AMD64)] on win32
+Python 3.7.4 (tags/v3.7.4:e09359112e, Jul  8 2019, 19:29:22) [MSC v.1916 32 bit (Intel)] on win32
 Type "help", "copyright", "credits" or "license" for more information.
-exit();
+>>> exit()
 $> python -m pip -V
-pip 18.0 from c:\users\user\appdata\local\programs\python\python37\lib\site-packages\pip (python 3.7)
+pip 19.2.3 from ./FIIT-BP-Canaries-Backend/env/lib/site-packages/pip (python 3.7)
 ```
 
 
@@ -94,6 +94,13 @@ database='canaries'
 
 [SECURITY]
 secret='somesecretkey'
+
+[API]
+bind_ip=127.0.0.1
+port=5000
+debug=False
+swagger=True
+swagger_url='/swagger'
 ```
 
 Change all necessary attributes. Make sure that the <u>secret</u> is fairly long (preferably at least 32 characters) string made up of different letters, numbers and other characters.
@@ -114,4 +121,3 @@ $> python canaries.py &
 ## Authors
 
 - Dominik Dancs - dodancs11@gmail.com, https://dodancs.moow.info/
-
