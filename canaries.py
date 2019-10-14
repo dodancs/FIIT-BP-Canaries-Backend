@@ -1,11 +1,17 @@
 from flask import Flask, jsonify
-from flask_sqlalchemy import SQLAlchemy
 import os.path
 import argparse
 import sys
 from CanarySetup import CanarySetup
 from CanaryHelpers import CanaryHelpers
+from CanaryDBHandler import CanaryDBHandler
 from flask_swagger_ui import get_swaggerui_blueprint
+
+from modules.API_Auth import *
+from modules.API_Workers import *
+from modules.API_Domains import *
+from modules.API_Sites import *
+from modules.API_Canaries import *
 
 parser = argparse.ArgumentParser(prog='canaries', description='Canary REST API backend.', epilog='Please visit https://github.com/dodancs/FIIT-BP-Canaries-Backend for more information!')
 parser.add_argument('--setup', action='store_true', help='first time setup')
@@ -32,6 +38,9 @@ config = CanaryHelpers().testConfig(configPath)
 # Flask REST API daemon
 app = Flask(__name__)
 
+# Connect to database
+CanaryDBHandler().connect(app, config)
+
 # Swagger UI
 if config['API']['swagger'] == 'True':
     print('Enabling Swagger UI.')
@@ -45,5 +54,25 @@ if config['API']['swagger'] == 'True':
     )
     app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=config['API']['swagger_url'].replace('\'',''))
 
+@app.route('/', methods=['GET'])
+def main():
+    return jsonify({})
+
+# Auth module
+API_Auth(app)
+
+# Workers module
+API_Workers(app)
+
+# Domains module
+API_Domains(app)
+
+# Monitored sites module
+API_Sites(app)
+
+# Canaries module
+API_Canaries(app)
+
 if __name__ == '__main__':
     app.run(debug=True if config['API']['debug'] == 'True' else False, host=config['API']['bind_ip'], port=config['API']['port'])
+

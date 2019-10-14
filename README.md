@@ -44,20 +44,33 @@ $> python -m pip -V
 pip 19.2.3 from ./FIIT-BP-Canaries-Backend/env/lib/site-packages/pip (python 3.7)
 ```
 
+Install Python virtual environment and activate:
+
+```powershell
+$> python -m pip install venv
+$> ./env/scripts/activate
+```
 
 
-### Installing Python modules
 
-To install all needed Python modules, download or clone this repository by doing the following command:
+### Installing Canary Backend
+
+Firstly download or clone this repository by doing the following command:
 
 ```powershell
 $> git clone git@github.com:dodancs/FIIT-BP-Canaries-Backend.git
 ```
 
-After the repository is cloned, you should see a file called `requirements.txt`. Using the following command you can install all required modules:
+After the repository is cloned, we can create a virtual environment fort his project:
 
 ```powershell
 $> cd ./FIIT-BP-Canaries-Backend
+$> python -m venv env
+```
+
+Next, you should see a file called `requirements.txt` in the cloned repository files. Using the following command you can install all required modules:
+
+```powershell
 $> python -m pip install -r requirements.txt
 ```
 
@@ -115,6 +128,18 @@ Change all necessary attributes. Make sure that the <u>secret</u> is fairly long
 $> cd ./FIIT-BP-Canaries-Backend
 $> python canaries.py &
 ```
+
+
+
+## API Modules
+
+- [API modules](API_modules.md)
+
+
+
+##  Data models
+
+- [Data models](models/)
 
 
 

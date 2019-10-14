@@ -1,46 +1,83 @@
 {
     "openapi": "3.0.0",
+
+
     "info": {
         "description": "Canary based Leak-detection system backend",
         "version": "1.0.0",
-        "title": "Canaries Backend REST API",
-        "contact": {
-            "email": "dodancs11@gmail.com"
-        }
+        "title": "Canaries Backend REST API"
     },
+
+
     "servers": [
         {
             "url": "/"
         }
     ],
+
+
+    "tags": [
+        {
+          "name": "Auth module",
+          "description": "API module for providing user authentication"
+        },
+        {
+          "name": "Workers module",
+          "description": "API module for managing worker user accounts"
+        },
+        {
+          "name": "Domains module",
+          "description": "API module for managing canary domains"
+        },
+        {
+          "name": "Monitored Sites module",
+          "description": "API module for managing monitored sites"
+        },
+        {
+          "name": "Canaries module",
+          "description": "API module for managing canary nodes"
+        }
+      ],
+
+
     "paths": {
-        "/request": {
+
+
+        "/auth": {
             "get": {
                 "tags": [
-                    "Book Request"
+                    "Auth module"
                 ],
-                "summary": "Returns bookRequests",
+                "summary": "Returns Auth module version",
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/components/schemas/bookRequests"
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/moduleVersion"
+                                }
+                            }
                         }
                     }
                 }
-            },
+            }
+        },
+
+
+        "/auth/login": {
             "post": {
                 "tags": [
-                    "Book Request"
+                    "Auth module"
                 ],
-                "summary": "Create a new book request system",
+                "summary": "Request access token based on provided credentials",
                 "requestBody": {
-                    "description": "Book Request Post Object",
+                    "description": "Auth Credentials Object",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                            "$ref": "#/components/schemas/bookRequestPostBody"
+                            "$ref": "#/components/schemas/authCredentialsObject"
                             }
                         }
                     }
@@ -51,182 +88,61 @@
                 "responses": {
                     "201": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/components/schemas/id"
-                        }
-                    },
-                    "400": {
-                        "description": "Failed. Bad post data."
-                    }
-                }
-            }
-        },
-        "/request/{id}": {
-            "parameters": [
-            {
-                "name": "id",
-                "in": "path",
-                "required": true,
-                "description": "ID of the cat that we want to match",
-                "type": "string"
-            }
-            ],
-            "get": {
-                "tags": [
-                    "Book Request"
-                ],
-                "summary": "Get book request with given ID",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "description": "Book Request id",
-                        "schema": {
-                            "$ref": "#/components/schemas/id"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/components/schemas/bookRequest"
-                        }
-                    },
-                    "400": {
-                        "description": "Failed. Misunderstood Request."
-                    },
-                    "404": {
-                        "description": "Failed. Book request not found."
-                    }
-                }
-            },
-            "put": {
-                "summary": "edit a book request by ID",
-                "tags": [
-                    "Book Request"
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "description": "Book Request id",
-                        "schema": {
-                            "$ref": "#/components/schemas/id"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "description": "Book Request Object",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                            "$ref": "#/components/schemas/bookRequest"
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/accessToken"
+                                }
                             }
                         }
-                    }
-                },
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/components/schemas/bookRequest"
-                        }
                     },
                     "400": {
-                        "description": "Failed. Bad post data."
-                    }
-                }
-            },
-            "delete": {
-                "summary": "Delete Book Request by ID",
-                "tags": [
-                    "Book Request"
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "description": "Book Request Id",
-                        "schema": {
-                            "$ref": "#/components/schemas/id"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/components/schemas/id"
-                        }
-                    },
-                    "400": {
-                        "description": "Failed. Misunderstood Request."
-                    },
-                    "404": {
-                        "description": "Failed. Book Request not found."
+                        "description": "Bad Request"
                     }
                 }
             }
         }
+
     },
+
+
     "components": {
         "schemas": {
-            "id": {
+
+            "moduleVersion": {
+                "properties": {
+                    "version": {
+                        "type": "string",
+                        "example": "1.0.0"
+                    }
+                }
+            },
+
+            "authCredentialsObject": {
+                "type": "object",
                 "properties": {
                     "uuid": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "string",
+                        "example": "r287yry4o297rtfksyi7sayk"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "secret"
                     }
                 }
             },
-            "bookRequestPostBody": {
-                "type": "object",
+
+            "accessToken": {
                 "properties": {
-                    "title": {
+                    "token": {
                         "type": "string",
-                        "format": "string"
-                    },
-                    "email": {
-                        "type": "string",
-                        "format": "email"
-                    }
-                }
-            },
-            "bookRequest": {
-                "type": "object",
-                "properties": {
-                    "title": {
-                        "type": "string",
-                        "format": "string"
-                    },
-                    "email": {
-                        "type": "string",
-                        "format": "email"
-                    },
-                    "timestamp": {
-                        "type": "string",
-                        "format": "number"
-                    }
-                }
-            },
-            "bookRequests": {
-                "type": "object",
-                "properties": {
-                    "bookRequest": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "$ref": "#/components/schemas/bookRequest"
-                        }
+                        "example": "r892yir762goeulohydo78e2gofr726tf7ofg54o63gor8724hgo86tgep7o32eg2p7r8o3629f1oye763fri247t6f74oh2i7gdeguyi2gfdi2eoy4gi76gfr5yog637fowfldysguftg2lhd2ybi7b6dgr=="
                     }
                 }
             }
+
         }
     }
   }
