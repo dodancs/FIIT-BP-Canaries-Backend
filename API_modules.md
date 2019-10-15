@@ -6,13 +6,8 @@
 Authentication to use the API
 - login
 - users
+- tokens
 - logout
-
-### Workers
-Manual workers for signing up to monitored sites
-- add
-- remove
-- edit
 
 ### Domains
 
@@ -20,7 +15,6 @@ Canary domain names
 
 - add
 - remove
-- edit
 
 ### Monitored sites
 
@@ -28,7 +22,6 @@ Monitored sites
 
 - add
 - remove
-- edit
 
 ### Canaries
 
