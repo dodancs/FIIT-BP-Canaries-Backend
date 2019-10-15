@@ -1,8 +1,9 @@
-# APIPS API
+# APILDS API
 A - Active
 P - Personal
 I - Information
-P - Protection
+L - Leak
+D - Detection
 S - System
 či?
 
