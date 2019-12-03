@@ -26,36 +26,35 @@ S - System
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{```
-      ```'token': 'JWT_ACCESSTOKEN', ```
-      ```'token_type': 'bearer', ```
-      ```'expires': 3600,```
-      ```'uuid': 'uuidstring', ```
-      ```'permissions': { admin:true, worker: false }```
-      ``` }```
+    - body: ```{
+		'token': 'JWT_ACCESSTOKEN', 
+		'token_type': 'bearer', 
+		'expires': 3600,
+		'uuid': 'uuidstring', 
+		'permissions': { admin:true, worker: false }
+      }```
 - response:
   - http_code: 404
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'User does not exist'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'User does not exist'
+      }```
 - response:
   - http_code: 403
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Bad password'```
-      ```}```
-
+    - body: ```{
+		'code': 1, 
+		'message': 'Bad password'
+      }```
 - response:
   - http_code: 429
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Login rate limit exceeded', ```
-      ```'retry': 3600```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Login rate limit exceeded', 
+		'retry': 3600
+      }```
 
 -----------
 
@@ -81,46 +80,46 @@ S - System
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{```
-      ```'count': 10, ```
-      ```'total': 2314, ```
-      ```'users': [```
-      ```{ ```
-       ```'uuid': 'uuidstring1', ```
-       ```'username': 'jozkomrkvicka', ```
-       ```'permissions': { 'admin': true, 'worker': false } ```
-       ```}, ```
-      ```{ ```
-      ```'uuid': 'uuidstring2', ```
-      ```'username': 'peter',```
-      ```'permissions': { 'admin': false, 'worker': true } ```
-      ```},```
-      ```...```
-      ```]```
-      ``` }```
+    - body: ```{
+		'count': 10, 
+		'total': 2314, 
+		'users': [
+				{ 
+					'uuid': 'uuidstring1', 
+					'username': 'jozkomrkvicka', 
+					'permissions': { 'admin': true, 'worker': false } 
+				}, 
+				{ 
+					'uuid': 'uuidstring2', 
+					'username': 'peter',
+					'permissions': { 'admin': false, 'worker': true } 
+				},
+				...
+		]
+      }```
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 
 -----------
 
@@ -134,36 +133,36 @@ S - System
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{ ```
-      ```'uuid': 'uuidstring', ```
-      ```'username': 'jozkomrkvicka',```
-      ```'permissions': { 'admin': false, 'worker': true }, ```
-      ```'canaries': [ 'uuidstring1', 'uuidstring2', ... ]```
-      ```}```
+    - body: ```{
+		'uuid': 'uuidstring',
+		'username': 'jozkomrkvicka',
+		'permissions': { 'admin': false, 'worker': true, ... }, 
+		'canaries': [ 'uuidstring1', 'uuidstring2', ... ]
+      }```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 
 -----------
 
@@ -179,43 +178,43 @@ S - System
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{ ```
-      ```'uuid': 'uuidstring', ```
-      ```'username': 'peter',```
-      ```'permissions': { 'admin': true, 'worker': false } ```
-      ```}```
+    - body: ```{
+		'uuid': 'uuidstring',
+		'username': 'peter',
+		'permissions': { 'admin': true, 'worker': false, ... }
+      }```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 
 - response:
   - http_code: 409
   - parameters:
-    - body: ```{```
-      ```'code': 3, ```
-      ```'message': 'User already exists'```
-      ```}```
+    - body: ```{
+		'code': 3,
+		'message': 'User already exists'
+      }```
 
 -----------
 
@@ -235,41 +234,41 @@ S - System
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 
 - response:
   - http_code: 404
   - parameters:
-    - body: ```{```
-      ```'code': 3, ```
-      ```'message': 'User does not exist'```
-      ```}```
+    - body: ```{
+		'code': 3,
+		'message': 'User does not exist'
+      }```
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 4, ```
-      ```'message': 'Bad request'```
-      ```}```
+    - body: ```{
+		'code': 4,
+		'message': 'Bad request'
+      }```
 
 -----------
 
@@ -286,34 +285,34 @@ S - System
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
-
-- response:
-  - http_code: 400
-  - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{
+		'code': 2,
+		'message': 'Token expired'
+      }```
 
 -----------
 
@@ -326,35 +325,35 @@ S - System
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{```
-      ```'token': 'JWT_ACCESSTOKEN', ```
-      ```'token_type': 'bearer', ```
-      ```'expires': 3600,```
-      ``` }```
+    - body: ```{
+		'token': 'JWT_ACCESSTOKEN',
+		'token_type': 'bearer',
+		'expires': 3600,
+      }```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 
 -----------
 -----------
@@ -372,39 +371,39 @@ S - System
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{```
-      ```'count': 10, ```
-      ```'total': 455,```
-      ```'domains': [```
-      ```{ 'uuid': 'uuidstring1', 'domain': 'domainname.tld' }, ```
-      ```{ 'uuid': 'uuidstring2', 'domain': 'another.tld' },```
-       ```... ```
-      ```]```
-      ```}```
+    - body: ```{
+		'count': 10,
+		'total': 455,
+		'domains': [
+				{ 'uuid': 'uuidstring1', 'domain': 'domainname.tld' },
+				{ 'uuid': 'uuidstring2', 'domain': 'another.tld' },
+			...
+		]
+      }```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 
 -----------
 
@@ -418,49 +417,49 @@ S - System
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{ ```
-      ```'uuid': 'uuidstring', ```
-      ```'domain': 'domena.sk' ```
-      ```}```
+    - body: ```{
+		'uuid': 'uuidstring',
+		'domain': 'domena.sk'
+      }```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 3, ```
-      ```'message': 'Invalid domain'```
-      ```}```
+    - body: ```{
+		'code': 3,
+		'message': 'Invalid domain'
+      }```
 
 - response:
   - http_code: 409
   - parameters:
-    - body: ```{```
-      ```'code': 4, ```
-      ```'message': 'Domain already exists'```
-      ```}```
+    - body: ```{
+		'code': 4,
+		'message': 'Domain already exists'
+      }```
 
 -----------
 
@@ -477,26 +476,26 @@ S - System
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 
 -----------
 -----------
@@ -514,39 +513,39 @@ S - System
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{```
-      ```'count': 10, ```
-      ```'total': 234, ```
-      ```'sites': [```
-      ```{ 'uuid': 'uuidstring1', 'site': 'facebook.com' },```
-      ```{ 'uuid': 'uuidstring2', 'site': 'azet.sk' },```
-      ```...```
-      ``` ]``` 
-      ```}```
+    - body: ```{
+		'count': 10,
+		'total': 234,
+		'sites': [
+				{ 'uuid': 'uuidstring1', 'site': 'facebook.com' },
+				{ 'uuid': 'uuidstring2', 'site': 'azet.sk' },
+				...
+		]
+      }```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 
 -----------
 
@@ -560,34 +559,34 @@ S - System
 - response:
   - http_code: 200
   - parameters:
-    - body: `{ `
-      `'uuid': 'uuidstring', `
-      `'site': 'bazos.sk' `
-      `}`
+    - body: ```{
+		'uuid': 'uuidstring',
+		'site': 'bazos.sk'
+      }```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 
 -----------
 
@@ -604,26 +603,26 @@ S - System
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 
 -----------
 -----------
@@ -641,51 +640,51 @@ S - System
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{ ```
-      ```'count': 10, ```
-      ```'total': 11456, ```
-      ```'canaries': [```
-      ```{```
-      ```'uuid': 'uuidstring', ```
-      ```'domain': 'uuidstring', ```
-      ```'site': 'uuidstring', ```
-      ```'assignee': 'uuidstring', ```
-      ```'testing': false, ```
-      ```'data': { ```
-      ```'username': 'milan.paradajka', ```
-      ```'password': 'hesielko123', ```
-      ```'name': 'Milan', ```
-      ```'surname': 'Paradajka', ```
-      ```'phone': '+412 123 456 789'```
-      ```} ```
-      ```},```
-       ```... ```
-      ```] ```
-      ```}```
+    - body: ```{
+		'count': 10,
+		'total': 11456,
+		'canaries': [
+				{
+					'uuid': 'uuidstring',
+					'domain': 'uuidstring',
+					'site': 'uuidstring',
+					'assignee': 'uuidstring',
+					'testing': false,
+					'data': {
+						'username': 'milan.paradajka',
+						'password': 'hesielko123',
+						'name': 'Milan',
+						'surname': 'Paradajka',
+						'phone': '+412 123 456 789'
+					}
+				},
+				...
+			]
+      }```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 
 -----------
 
@@ -699,51 +698,53 @@ S - System
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{```
-      ```'uuid': 'uuidstring', ```
-      ```'domain': 'uuidstring', ```
-      ```'site': 'uuidstring', ```
-      ```'assignee': 'uuidstring', ```
-      ```'testing': false, ```
-      ```'data': { ```
-      ```'username': 'milan.paradajka', ```
-      ```'password': 'hesielko123', ```
-      ```'name': 'Milan', ```
-      ```'surname': 'Paradajka', ```
-      ```'phone': '+412 123 456 789'```
-      ```} ```
+    - body: ```{
+		'uuid': 'uuidstring',
+		'domain': 'uuidstring',
+		'site': 'uuidstring',
+		'assignee': 'uuidstring',
+		'testing': false,
+		'data': {
+				'username': 'milan.paradajka',
+				'password': 'hesielko123',
+				'name': 'Milan',
+				'surname': 'Paradajka',
+				'phone': '+412 123 456 789',
+				...
+		}
+      } ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 
 - response:
   - http_code: 404
   - parameters:
-    - body: ```{```
-      ```'code': 3, ```
-      ```'message': 'Canary does not exist'```
-      ```}```
+    - body: ```{
+		'code': 3,
+		'message': 'Canary does not exist'
+      }```
 
 -----------
 
@@ -769,60 +770,61 @@ S - System
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{```
-      ```'uuid': 'uuidstring', ```
-      ```'domain': 'uuidstring', ```
-      ```'site': 'uuidstring', ```
-      ```'assignee': 'uuidstring', ```
-      ```'testing': false, ```
-      ```'data': { ```
-      ```'username': 'milan.paradajka', ```
-      ```'password': 'hesielko123', ```
-      ```'name': 'Milan', ```
-      ```'surname': 'Paradajka', ```
-      ```'phone': '+412 123 456 789', ```
-      ```'parameter': 'value', ```
-      ```...```
-      ```} ```
+    - body: ```{
+		'uuid': 'uuidstring',
+		'domain': 'uuidstring',
+		'site': 'uuidstring',
+		'assignee': 'uuidstring',
+		'testing': false,
+		'data': {
+				'username': 'milan.paradajka',
+				'password': 'hesielko123',
+				'name': 'Milan',
+				'surname': 'Paradajka',
+				'phone': '+412 123 456 789',
+				'parameter': 'value',
+				...
+		}
+      }```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 
 - response:
   - http_code: 404
   - parameters:
-    - body: ```{```
-      ```'code': 3, ```
-      ```'message': 'Canary node does not exist'```
-      ```}```
+    - body: ```{
+		'code': 3,
+		'message': 'Canary node does not exist'
+      }```
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 4, ```
-      ```'message': 'Unknown parameter'```
-      ```}```
+    - body: ```{
+		'code': 4,
+		'message': 'Unknown parameter'
+      }```
 
 -----------
 
@@ -839,51 +841,51 @@ S - System
 - response:
   - http_code: 200
   - parameters:
-    - body: ```[```
-      ```{```
-      ```'uuid': 'uuidstring', ```
-      ```'domain': 'uuidstring', ```
-      ```'site': 'uuidstring', ```
-      ```'assignee': 'uuidstring', ```
-      ```'testing': false, ```
-      ```'data': { ```
-      ```'username': 'milan.paradajka', ```
-      ```'password': 'hesielko123', ```
-      ```} ```
-      ```},```
-       ```... ```
-      ```] ```
+    - body: ```[
+			{
+				'uuid': 'uuidstring', 
+				'domain': 'uuidstring', 
+				'site': 'uuidstring', 
+				'assignee': 'uuidstring', 
+				'testing': false, 
+				'data': { 
+					'username': 'milan.paradajka', 
+					'password': 'hesielko123', 
+				} 
+			},
+			... 
+      ] ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 3, ```
-      ```'message': 'Bad request'```
-      ```}```
+    - body: ```{
+		'code': 3, 
+		'message': 'Bad request'
+      }```
 
 -----------
 
@@ -900,24 +902,24 @@ S - System
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{```
-      ```'code': 0, ```
-      ```'message': 'Token not provided'```
-      ```}```
+    - body: ```{
+		'code': 0, 
+		'message': 'Token not provided'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 1, ```
-      ```'message': 'Unauthorized'```
-      ```}```
+    - body: ```{
+		'code': 1, 
+		'message': 'Unauthorized'
+      }```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{```
-      ```'code': 2, ```
-      ```'message': 'Token expired'```
-      ```}```
+    - body: ```{
+		'code': 2, 
+		'message': 'Token expired'
+      }```
 
