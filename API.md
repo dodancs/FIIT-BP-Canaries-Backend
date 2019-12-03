@@ -1,42 +1,61 @@
 # APILDS API
 A - Active
+
 P - Personal
+
 I - Information
+
 L - Leak
+
 D - Detection
+
 S - System
+
 či?
 
 ## Endpoints
 
 ### Auth
 
-#### /auth : GET
-- description: Prints auth module version
-- response:
-  - http_code: 200
-  - parameters:
-    - body: ```{'version': [1,0,0]}```
-
------------
-
 #### /auth/login : POST
-- description: Get access token
+- description: Log in and get access token
 - request:
   - parameters:
-    - body: ```{'username': 'janko', 'password': 'secret'}```
+    - username: `username`
+    - password: `secret123`
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{'token': 'accesstoken', 'uuid': 'uuidstring', 'expire': '14-10-2019-23-59-59' }```
+    - body: ```{```
+      ```'token': 'JWT_ACCESSTOKEN', ```
+      ```'token_type': 'bearer', ```
+      ```'expires': 3600,```
+      ```'uuid': 'uuidstring', ```
+      ```'permissions': { admin:true, worker: false }```
+      ``` }```
 - response:
-  - http_code: 400
+  - http_code: 404
   - parameters:
-    - body: ```{'code': 0, 'message': 'User does not exist'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'User does not exist'```
+      ```}```
 - response:
-  - http_code: 400
+  - http_code: 403
   - parameters:
-    - body: ```{'code': 1, 'message': 'Bad password'}```
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Bad password'```
+      ```}```
+
+- response:
+  - http_code: 429
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Login rate limit exceeded', ```
+      ```'retry': 3600```
+      ```}```
 
 -----------
 
@@ -45,7 +64,7 @@ S - System
 - request
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
 - response:
   - http_code: 200
 
@@ -56,15 +75,52 @@ S - System
 - request
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - limit (optional): `10`
+    - offset (optional): `100`
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{ 'users': [ { 'uuid': 'uuidstring', 'admin': true, 'worker': false } ] }```
+    - body: ```{```
+      ```'count': 10, ```
+      ```'total': 2314, ```
+      ```'users': [```
+      ```{ ```
+       ```'uuid': 'uuidstring1', ```
+       ```'username': 'jozkomrkvicka', ```
+       ```'permissions': { 'admin': true, 'worker': false } ```
+       ```}, ```
+      ```{ ```
+      ```'uuid': 'uuidstring2', ```
+      ```'username': 'peter',```
+      ```'permissions': { 'admin': false, 'worker': true } ```
+      ```},```
+      ```...```
+      ```]```
+      ``` }```
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
 
 -----------
 
@@ -73,16 +129,41 @@ S - System
 - request
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
-    - __uuid__: Public user identification string
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - __{uuid}__: Public user identification string
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{ 'user': { 'uuid': 'uuidstring', 'admin': true, 'worker': false } }```
+    - body: ```{ ```
+      ```'uuid': 'uuidstring', ```
+      ```'username': 'jozkomrkvicka',```
+      ```'permissions': { 'admin': false, 'worker': true }, ```
+      ```'canaries': [ 'uuidstring1', 'uuidstring2', ... ]```
+      ```}```
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
 
 -----------
 
@@ -91,20 +172,50 @@ S - System
 - request
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
-    - body: ```{'username': 'peter', 'password': 'heslo'}```
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - username: `peter`
+    - password: `heslo`
+    - permissions: `{ 'admin': true, 'worker': false }`
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{ 'users': [ { 'uuid': 'uuidstring', 'admin': true, 'worker': false } ] }```
+    - body: ```{ ```
+      ```'uuid': 'uuidstring', ```
+      ```'username': 'peter',```
+      ```'permissions': { 'admin': true, 'worker': false } ```
+      ```}```
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
 - response:
-  - http_code: 400
+  - http_code: 401
   - parameters:
-    - body: ```{'code': 1, 'message': 'User already exists'}```
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
+
+- response:
+  - http_code: 409
+  - parameters:
+    - body: ```{```
+      ```'code': 3, ```
+      ```'message': 'User already exists'```
+      ```}```
 
 -----------
 
@@ -113,23 +224,52 @@ S - System
 - request
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
-    - __uuid__: Public user identification string
-    - body: ```{'username': 'peter', 'password': 'heslo', 'worker': true}```
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - __{uuid}__: Public user identification string
+    - username (optional): `peter`
+    - password (optional): `heslo`
+    - permissions (optional): `{ 'worker': true }`
 - response:
   - http_code: 200
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
+
+- response:
+  - http_code: 404
+  - parameters:
+    - body: ```{```
+      ```'code': 3, ```
+      ```'message': 'User does not exist'```
+      ```}```
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 1, 'message': 'User does not exist'}```
-- response:
-  - http_code: 400
-  - parameters:
-    - body: ```{'code': 2, 'message': 'Bad parameters'}```
+    - body: ```{```
+      ```'code': 4, ```
+      ```'message': 'Bad request'```
+      ```}```
 
 -----------
 
@@ -138,72 +278,83 @@ S - System
 - request
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
-    - __uuid__: Public user identification string
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - __{uuid}__: Public user identification string
 - response:
   - http_code: 200
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 1, 'message': 'Cannot delete self'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
 
 -----------
 
-#### /auth/tokens : GET
-- decription: Get all access tokens
+#### /auth/refresh_token : GET
+- decription: Get new access token
 - request
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{ 'tokens': [ { 'uuid': 'uuidstring', 'token': 'accesstoken', 'permanent': false, 'expire': '14-10-2019-23-59-59' } ] }```
+    - body: ```{```
+      ```'token': 'JWT_ACCESSTOKEN', ```
+      ```'token_type': 'bearer', ```
+      ```'expires': 3600,```
+      ``` }```
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
 
------------
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
 
-#### /auth/tokens : PUT
-- decription: Update access token expiration - returns a new token
-- request
-  - parameters:
-    - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
 - response:
-  - http_code: 200
+  - http_code: 401
   - parameters:
-    - body: ```{ 'token': { 'uuid': 'uuidstring', 'token': 'accesstoken', 'permanent': false, 'expire': '15-10-2019-23-59-59' } }```
-- response:
-  - http_code: 400
-  - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
-- response:
-  - http_code: 400
-  - parameters:
-    - body: ```{'code': 0, 'message': 'Token expired'}```
-
------------
-
-#### /auth/tokens/{token} : DELETE
-- decription: Delete access token
-- request
-  - parameters:
-    - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
-    - __token__: Access token
-- response:
-  - http_code: 200
-- response:
-  - http_code: 400
-  - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
 
 -----------
 -----------
@@ -215,15 +366,45 @@ S - System
 - request
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - limit (optional): `10`
+    - offset (optional): `100`
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{ 'domains': [ 'domainname.tld', 'another.tld' ] }```
+    - body: ```{```
+      ```'count': 10, ```
+      ```'total': 455,```
+      ```'domains': [```
+      ```{ 'uuid': 'uuidstring1', 'domain': 'domainname.tld' }, ```
+      ```{ 'uuid': 'uuidstring2', 'domain': 'another.tld' },```
+       ```... ```
+      ```]```
+      ```}```
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
 
 -----------
 
@@ -232,30 +413,90 @@ S - System
 - request:
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
-    - body: ```{ 'domains': [ 'domena.sk' ] }```
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - domain: `domena.sk`
 - response:
   - http_code: 200
+  - parameters:
+    - body: ```{ ```
+      ```'uuid': 'uuidstring', ```
+      ```'domain': 'domena.sk' ```
+      ```}```
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
+- response:
+  - http_code: 400
+  - parameters:
+    - body: ```{```
+      ```'code': 3, ```
+      ```'message': 'Invalid domain'```
+      ```}```
+
+- response:
+  - http_code: 409
+  - parameters:
+    - body: ```{```
+      ```'code': 4, ```
+      ```'message': 'Domain already exists'```
+      ```}```
 
 -----------
 
-#### /domains/{domain} : DELETE
+#### /domains/{uuid} : DELETE
 - decription: Delete a domain
 - request
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
-    - __domain__: Canary domain name
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - __{uuid}__: Canary domain uuid
 - response:
   - http_code: 200
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
 
 -----------
 -----------
@@ -267,15 +508,45 @@ S - System
 - request
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - limit (optional): `10`
+    - offset (optional): `100`
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{ 'domains': [ 'facebook.com', 'azet.sk' ] }```
+    - body: ```{```
+      ```'count': 10, ```
+      ```'total': 234, ```
+      ```'sites': [```
+      ```{ 'uuid': 'uuidstring1', 'site': 'facebook.com' },```
+      ```{ 'uuid': 'uuidstring2', 'site': 'azet.sk' },```
+      ```...```
+      ``` ]``` 
+      ```}```
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
 
 -----------
 
@@ -284,30 +555,75 @@ S - System
 - request:
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
-    - body: ```{ 'sites': [ 'bazos.sk' ] }```
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - site: `bazos.sk`
 - response:
   - http_code: 200
+  - parameters:
+    - body: `{ `
+      `'uuid': 'uuidstring', `
+      `'site': 'bazos.sk' `
+      `}`
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
 
 -----------
 
-#### /sites/{site} : DELETE
+#### /sites/{uuid} : DELETE
 - decription: Delete a site
 - request
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
-    - __site__: Monitored site
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - __{uuid}__: Monitored site uuid
 - response:
   - http_code: 200
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
 
 -----------
 -----------
@@ -319,48 +635,126 @@ S - System
 - request
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - limit (optional): `10`
+    - offset (optional): `100`
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{ 'canaries': [ { 'id': 'd43uyy7f2y9', 'domain': 'domainname.tld', 'site': 'facebook.com', 'username': 'milan.paradajka', 'password': 'hesielko123', 'worker': 'uuidstring', 'testing': false, 'other': {} } ] }```
+    - body: ```{ ```
+      ```'count': 10, ```
+      ```'total': 11456, ```
+      ```'canaries': [```
+      ```{```
+      ```'uuid': 'uuidstring', ```
+      ```'domain': 'uuidstring', ```
+      ```'site': 'uuidstring', ```
+      ```'assignee': 'uuidstring', ```
+      ```'testing': false, ```
+      ```'data': { ```
+      ```'username': 'milan.paradajka', ```
+      ```'password': 'hesielko123', ```
+      ```'name': 'Milan', ```
+      ```'surname': 'Paradajka', ```
+      ```'phone': '+412 123 456 789'```
+      ```} ```
+      ```},```
+       ```... ```
+      ```] ```
+      ```}```
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
 
 -----------
 
-#### /canaries/{id} : GET
+#### /canaries/{uuid} : GET
 - description: Prints information about a particular canary node
 - request
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
-    - __id__: Canary node ID
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - __{uuid}__: Canary node uuid
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{ 'id': '3ry2o877r94', 'domain': 'other.tld', 'site': 'fortuna.sk', 'username': 'petra.kosicka', 'password': 'lubimferka', 'worker': 'uuidstring', 'testing': false, 'other': {} }```
+    - body: ```{```
+      ```'uuid': 'uuidstring', ```
+      ```'domain': 'uuidstring', ```
+      ```'site': 'uuidstring', ```
+      ```'assignee': 'uuidstring', ```
+      ```'testing': false, ```
+      ```'data': { ```
+      ```'username': 'milan.paradajka', ```
+      ```'password': 'hesielko123', ```
+      ```'name': 'Milan', ```
+      ```'surname': 'Paradajka', ```
+      ```'phone': '+412 123 456 789'```
+      ```} ```
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
 - response:
-  - http_code: 400
+  - http_code: 401
   - parameters:
-    - body: ```{'code': 1, 'message': 'Node does not exist'}```
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
+
+- response:
+  - http_code: 404
+  - parameters:
+    - body: ```{```
+      ```'code': 3, ```
+      ```'message': 'Canary does not exist'```
+      ```}```
 
 -----------
 
-#### /canaries/{id}/{parameter} : GET
-- description: Generates and prints fake information for the canary node registration process
+#### /canaries/{uuid}/{parameter} : GET
+- description: Generates fake information for the canary node registration process
 - request
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
-    - __id__: Canary node ID
-    - __parameter__: Parameter name
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - __{uuid}__: Canary node uuid
+    - __{parameter}__: Parameter name
       - __username__
       - __password__
       - __email__
@@ -375,74 +769,155 @@ S - System
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{ 'parameter': 'value' }```
+    - body: ```{```
+      ```'uuid': 'uuidstring', ```
+      ```'domain': 'uuidstring', ```
+      ```'site': 'uuidstring', ```
+      ```'assignee': 'uuidstring', ```
+      ```'testing': false, ```
+      ```'data': { ```
+      ```'username': 'milan.paradajka', ```
+      ```'password': 'hesielko123', ```
+      ```'name': 'Milan', ```
+      ```'surname': 'Paradajka', ```
+      ```'phone': '+412 123 456 789', ```
+      ```'parameter': 'value', ```
+      ```...```
+      ```} ```
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
+
+- response:
+  - http_code: 404
+  - parameters:
+    - body: ```{```
+      ```'code': 3, ```
+      ```'message': 'Canary node does not exist'```
+      ```}```
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 1, 'message': 'Node does not exist'}```
-- response:
-  - http_code: 400
-  - parameters:
-    - body: ```{'code': 2, 'message': 'Unknown parameter'}```
+    - body: ```{```
+      ```'code': 4, ```
+      ```'message': 'Unknown parameter'```
+      ```}```
 
 -----------
 
 #### /canaries : POST
-- description: Add new canary nodes
+- description: Create new canary nodes
 - request:
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
-    - body: ```{ 'domain': 'domainname.tld', 'site': 'facebook.com', 'testing': false, 'cout': 10 }```
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - domain: `uuidstring`
+    - site: `uuidstring`
+    - testing: `false`
+    - cout: `10`
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{ 'canaries': [ { 'id': 'd43uyy7f2y9', 'username': 'milan.paradajka', 'password': 'hesielko123', 'worker': 'uuidstring', 'other': {} } ] }```
+    - body: ```[```
+      ```{```
+      ```'uuid': 'uuidstring', ```
+      ```'domain': 'uuidstring', ```
+      ```'site': 'uuidstring', ```
+      ```'assignee': 'uuidstring', ```
+      ```'testing': false, ```
+      ```'data': { ```
+      ```'username': 'milan.paradajka', ```
+      ```'password': 'hesielko123', ```
+      ```} ```
+      ```},```
+       ```... ```
+      ```] ```
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
+- response:
+  - http_code: 400
+  - parameters:
+    - body: ```{```
+      ```'code': 3, ```
+      ```'message': 'Bad request'```
+      ```}```
 
 -----------
 
-#### /canaries/{id} : PUT
-- description: Edit canary node
-- request:
-  - parameters:
-    - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
-    - body: ```{ 'username': 'karol', 'password': 'lepsieheslo', 'testing': true, 'other': { 'address': 'Bratislava' } }```
-    - __id__: Canary node ID
-- response:
-  - http_code: 200
-  - parameters:
-    - body: ```{ 'canaries': [ { 'id': 'd43uyy7f2y9', 'username': 'milan.paradajka', 'password': 'hesielko123', 'worker': 'uuidstring' } ] }```
-- response:
-  - http_code: 400
-  - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
-- response:
-  - http_code: 400
-  - parameters:
-    - body: ```{'code': 1, 'message': 'Unknown paramter'}```
-
------------
-
-#### /canaries/{id} : DELETE
+#### /canaries/{uuid} : DELETE
 - decription: Delete a canary node
 - request
   - parameters:
     - http_headers: 
-      - ```X-Access-Token: 'accesstoken'```
-    - __id__: Canary node ID
+      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+    - __{uuid}__: Canary node uuid
 - response:
   - http_code: 200
+
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{'code': 0, 'message': 'Unauthorized'}```
+    - body: ```{```
+      ```'code': 0, ```
+      ```'message': 'Token not provided'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 1, ```
+      ```'message': 'Unauthorized'```
+      ```}```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: ```{```
+      ```'code': 2, ```
+      ```'message': 'Token expired'```
+      ```}```
 
