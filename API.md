@@ -1,18 +1,4 @@
-# APILDS API
-A - Active
-
-P - Personal
-
-I - Information
-
-L - Leak
-
-D - Detection
-
-S - System
-
-či?
-
+# Canaries API
 ## Endpoints
 
 ### Auth
