@@ -32,3 +32,7 @@ Canary nodes
 - get_details
 - get_mail
 - complete/activate - by worker "mark registred"?
+
+### Mail
+
+Received e-mails by canary nodes

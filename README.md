@@ -5,7 +5,7 @@ This repository holds source codes for the back-end portion of the Leak-detectio
 
 ## Contains
 
-- REST API for Active Personal Information Leak Detection  (APILDS)
+- [REST API](API.md)
 
 
 ## Requirements
@@ -13,10 +13,9 @@ This repository holds source codes for the back-end portion of the Leak-detectio
 ### Platform & services
 
 - Windows Server or any Unix/Linux operating system
-
 - MySQL Server - preferably MariaDB
-- Postfix SMTP server
-- Dovecot IMAP server
+- PHP
+- NginX / Apache
 
 
 ## API Modules
