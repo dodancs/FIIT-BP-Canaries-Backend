@@ -1,3 +1,5 @@
-config.ini
-env
-__pycache__
+/vendor
+/.idea
+Homestead.json
+Homestead.yaml
+.env
