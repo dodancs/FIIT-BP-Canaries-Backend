@@ -854,6 +854,7 @@
 		'offset': 0,
 		'emails': [
 				{
+					'uuid': 'uuidstring',
 					'from': 'sender@domain.tld',
 					'subject': 'message subject',
 					'body': 'raw body'

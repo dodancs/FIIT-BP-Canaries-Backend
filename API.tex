@@ -1,0 +1,2020 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\date{}
+
+\begin{document}
+
+\hypertarget{header-n60600}{%
+\section{Canaries API}\label{header-n60600}}
+
+\hypertarget{header-n60602}{%
+\subsection{Endpoints}\label{header-n60602}}
+
+\begin{itemize}
+\item
+  v1 - API version 1
+\item
+  fake - Fake API as a placeholder
+\end{itemize}
+
+\hypertarget{header-n60608}{%
+\subsection{Routes}\label{header-n60608}}
+
+\begin{itemize}
+\item
+  \protect\hyperlink{route-auth}{Auth}
+\item
+  \protect\hyperlink{route-domains}{Domains}
+\item
+  \protect\hyperlink{route-sites}{Monitored sites}
+\item
+  \protect\hyperlink{route-canaries}{Canary nodes}
+\item
+  \protect\hyperlink{route-mail}{Mail}
+\end{itemize}
+
+\hypertarget{header-n60620}{%
+\subsubsection{Auth}\label{header-n60620}}
+
+\hypertarget{header-n60621}{%
+\paragraph{/\{endpoint\}/auth/login : POST}\label{header-n60621}}
+
+\begin{itemize}
+\item
+  description: Log in and get access token
+\item
+  request:
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body:
+      \texttt{\{\textquotesingle{}username\textquotesingle{}:\ \textquotesingle{}user\textquotesingle{},\ \textquotesingle{}password\textquotesingle{}:\ \textquotesingle{}secret123\textquotesingle{}\}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}token\textquotesingle{}:\ \textquotesingle{}JWT\_ACCESSTOKEN\textquotesingle{},\ 
+      \textquotesingle{}token\_type\textquotesingle{}:\ \textquotesingle{}bearer\textquotesingle{},\ 
+      \textquotesingle{}expires\textquotesingle{}:\ 3600,
+      \textquotesingle{}uuid\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},\ 
+      \textquotesingle{}permissions\textquotesingle{}:\ {[}\textquotesingle{}admin\textquotesingle{}{]},
+      \textquotesingle{}canaries\textquotesingle{}:\ {[}{]}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Bad\ request\textquotesingle{},
+      \textquotesingle{}details\textquotesingle{}:\ \textquotesingle{}User\ does\ not\ exist...\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 429
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Rate\ limit\ exceeded\textquotesingle{},\ 
+      \textquotesingle{}retry\textquotesingle{}:\ 3600
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n60664}{%
+\paragraph{/\{endpoint\}/auth/logout : GET}\label{header-n60664}}
+
+\begin{itemize}
+\item
+  decription: Log user out
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n60685}{%
+\paragraph{/\{endpoint\}/auth/users : GET}\label{header-n60685}}
+
+\begin{itemize}
+\item
+  decription: Get all users
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      body (with limit - optional):
+      \texttt{\{\textquotesingle{}limit\textquotesingle{}:\ 10\}}
+    \item
+      body (with offset - optional):
+      \texttt{\{\textquotesingle{}offset\textquotesingle{}:\ 100\}}
+    \item
+      body (with limit \& offset):
+      \texttt{\{\textquotesingle{}limit\textquotesingle{}:\ 5,\ \textquotesingle{}offset\textquotesingle{}:\ 50\}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}count\textquotesingle{}:\ 10,\ 
+      \textquotesingle{}total\textquotesingle{}:\ 2314,
+      \textquotesingle{}offset\textquotesingle{}:\ 100,
+      \textquotesingle{}users\textquotesingle{}:\ {[}
+      	\{\ 
+      		\textquotesingle{}uuid\textquotesingle{}:\ \textquotesingle{}uuidstring1\textquotesingle{},\ 
+      		\textquotesingle{}username\textquotesingle{}:\ \textquotesingle{}jozkomrkvicka\textquotesingle{},\ 
+      		\textquotesingle{}permissions\textquotesingle{}:\ {[}\textquotesingle{}admin\textquotesingle{},\ \textquotesingle{}worker\textquotesingle{},\ ...{]},
+      		\textquotesingle{}canaries\textquotesingle{}:\ {[}{]}
+      	\},\ 
+      	\{\ 
+      		\textquotesingle{}uuid\textquotesingle{}:\ \textquotesingle{}uuidstring2\textquotesingle{},\ 
+      		\textquotesingle{}username\textquotesingle{}:\ \textquotesingle{}peter\textquotesingle{},
+      		\textquotesingle{}permissions\textquotesingle{}:\ {[}\textquotesingle{}worker\textquotesingle{}{]},
+      		\textquotesingle{}canaries\textquotesingle{}:\ {[}\textquotesingle{}uuidstring1\textquotesingle{},\ \textquotesingle{}uuidstring2\textquotesingle{},\ ...{]}
+      	\},
+      	...
+      {]}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 2,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Invalid\ range\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n60747}{%
+\paragraph{/\{endpoint\}/auth/users/\{uuid\} :
+GET}\label{header-n60747}}
+
+\begin{itemize}
+\item
+  decription: Get a particular user information
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      \textbf{\{uuid\}}: Public user identification string
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}uuid\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},
+      \textquotesingle{}username\textquotesingle{}:\ \textquotesingle{}jozkomrkvicka\textquotesingle{},
+      \textquotesingle{}permissions\textquotesingle{}:\ {[}\textquotesingle{}admin\textquotesingle{},\ \textquotesingle{}worker\textquotesingle{},\ ...{]},\ 
+      \textquotesingle{}canaries\textquotesingle{}:\ {[}\textquotesingle{}uuidstring1\textquotesingle{},\ \textquotesingle{}uuidstring2\textquotesingle{},\ ...{]}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 2,
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Bad\ request\textquotesingle{},
+      \textquotesingle{}details\textquotesingle{}:\ \textquotesingle{}...\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n60805}{%
+\paragraph{/\{endpoint\}/auth/users : POST}\label{header-n60805}}
+
+\begin{itemize}
+\item
+  decription: Create a new user
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}users\textquotesingle{}:\ {[}
+      	\{
+      		\textquotesingle{}username\textquotesingle{}:\ \textquotesingle{}peter\textquotesingle{},
+      		\textquotesingle{}password\textquotesingle{}:\ \textquotesingle{}heslo\textquotesingle{},
+      		\textquotesingle{}permissions\textquotesingle{}:\ {[}\textquotesingle{}worker\textquotesingle{},\ ...{]},
+      		\textquotesingle{}canaries\textquotesingle{}:\ {[}\textquotesingle{}uuidstring1\textquotesingle{},\ \textquotesingle{}uuidstring2\textquotesingle{},\ ...{]}
+      	\},
+      	...
+      {]}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}uuid\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},
+      \textquotesingle{}username\textquotesingle{}:\ \textquotesingle{}peter\textquotesingle{},
+      \textquotesingle{}permissions\textquotesingle{}:\ {[}\textquotesingle{}worker\textquotesingle{},\ ...{]}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 2,
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Bad\ request\textquotesingle{},
+      \textquotesingle{}details\textquotesingle{}:\ \textquotesingle{}...\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n60863}{%
+\paragraph{/\{endpoint\}/auth/users/\{uuid\} :
+PUT}\label{header-n60863}}
+
+\begin{itemize}
+\item
+  decription: Update a particular user
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      \textbf{\{uuid\}}: Public user identification string
+    \item
+      body: \texttt{\{
+      \textquotesingle{}username\textquotesingle{}:\ \textquotesingle{}peter1\textquotesingle{},
+      \textquotesingle{}password\textquotesingle{}:\ \textquotesingle{}noveheslo\textquotesingle{},
+      \textquotesingle{}permissions\textquotesingle{}:\ \{\textquotesingle{}admin\textquotesingle{}:\ true,\ \textquotesingle{}worker\textquotesingle{}:\ false,\ ...\},
+      \textquotesingle{}canaries\textquotesingle{}:\ {[}\textquotesingle{}uuidstring1\textquotesingle{},\ \textquotesingle{}uuidstring2\textquotesingle{},\ ...{]}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 2,
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Bad\ request\textquotesingle{},
+      \textquotesingle{}details\textquotesingle{}:\ \textquotesingle{}...\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n60918}{%
+\paragraph{/\{endpoint\}/auth/users/\{uuid\} :
+DELETE}\label{header-n60918}}
+
+\begin{itemize}
+\item
+  decription: Delete a particular user
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      \textbf{\{uuid\}}: Public user identification string
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n60961}{%
+\paragraph{/\{endpoint\}/auth/refresh\_token :
+GET}\label{header-n60961}}
+
+\begin{itemize}
+\item
+  decription: Get new access token
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}token\textquotesingle{}:\ \textquotesingle{}JWT\_ACCESSTOKEN\textquotesingle{},
+      \textquotesingle{}token\_type\textquotesingle{}:\ \textquotesingle{}bearer\textquotesingle{},
+      \textquotesingle{}expires\textquotesingle{}:\ 3600,
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n61008}{%
+\subsubsection{Domains}\label{header-n61008}}
+
+\hypertarget{header-n61009}{%
+\paragraph{/\{endpoint\}/domains : GET}\label{header-n61009}}
+
+\begin{itemize}
+\item
+  description: Prints all available canary domains
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      body (with limit - optional):
+      \texttt{\{\textquotesingle{}limit\textquotesingle{}:\ 10\}}
+    \item
+      body (with offset - optional):
+      \texttt{\{\textquotesingle{}offset\textquotesingle{}:\ 100\}}
+    \item
+      body (with limit \& offset):
+      \texttt{\{\textquotesingle{}limit\textquotesingle{}:\ 5,\ \textquotesingle{}offset\textquotesingle{}:\ 50\}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}count\textquotesingle{}:\ 10,
+      \textquotesingle{}total\textquotesingle{}:\ 455,
+      \textquotesingle{}offset\textquotesingle{}:\ 100,
+      \textquotesingle{}domains\textquotesingle{}:\ {[}
+      	\{\textquotesingle{}uuid\textquotesingle{}:\ \textquotesingle{}uuidstring1\textquotesingle{},\ \textquotesingle{}domain\textquotesingle{}:\ \textquotesingle{}domainname.tld\textquotesingle{}\},
+      	\{\textquotesingle{}uuid\textquotesingle{}:\ \textquotesingle{}uuidstring2\textquotesingle{},\ \textquotesingle{}domain\textquotesingle{}:\ \textquotesingle{}another.tld\textquotesingle{}\},
+      	...
+      {]}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 2,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Invalid\ range\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n61071}{%
+\paragraph{/\{endpoint\}/domains : POST}\label{header-n61071}}
+
+\begin{itemize}
+\item
+  description: Add new domain(s)
+\item
+  request:
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      body:
+      \texttt{\{\textquotesingle{}domains\textquotesingle{}:\ {[}\textquotesingle{}domena.sk\textquotesingle{},\ ...{]}\}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}domains\textquotesingle{}:\ {[}
+      	\{
+      		\textquotesingle{}uuid\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},
+      		\textquotesingle{}domain\textquotesingle{}:\ \textquotesingle{}domena.sk\textquotesingle{}
+      	\},
+      	...
+      {]}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 2,
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Bad\ request\textquotesingle{},
+      \textquotesingle{}details\textquotesingle{}:\ \textquotesingle{}Domains\ already\ exist...\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n61129}{%
+\paragraph{/\{endpoint\}/domains/\{uuid\} :
+DELETE}\label{header-n61129}}
+
+\begin{itemize}
+\item
+  decription: Delete a domain
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      \textbf{\{uuid\}}: Canary domain uuid
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n61173}{%
+\subsubsection{Monitored sites}\label{header-n61173}}
+
+\hypertarget{header-n61174}{%
+\paragraph{/\{endpoint\}/sites : GET}\label{header-n61174}}
+
+\begin{itemize}
+\item
+  description: Prints all monitored sites
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      body (with limit - optional):
+      \texttt{\{\textquotesingle{}limit\textquotesingle{}:\ 10\}}
+    \item
+      body (with offset - optional):
+      \texttt{\{\textquotesingle{}offset\textquotesingle{}:\ 100\}}
+    \item
+      body (with limit \& offset):
+      \texttt{\{\textquotesingle{}limit\textquotesingle{}:\ 5,\ \textquotesingle{}offset\textquotesingle{}:\ 50\}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}count\textquotesingle{}:\ 10,
+      \textquotesingle{}total\textquotesingle{}:\ 234,
+      \textquotesingle{}offset\textquotesingle{}:\ 100,
+      \textquotesingle{}sites\textquotesingle{}:\ {[}
+      	\{\textquotesingle{}uuid\textquotesingle{}:\ \textquotesingle{}uuidstring1\textquotesingle{},\ \textquotesingle{}site\textquotesingle{}:\ \textquotesingle{}facebook.com\textquotesingle{}\},
+      	\{\textquotesingle{}uuid\textquotesingle{}:\ \textquotesingle{}uuidstring2\textquotesingle{},\ \textquotesingle{}site\textquotesingle{}:\ \textquotesingle{}azet.sk\textquotesingle{}\},
+      	...
+      {]}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 2,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Invalid\ range\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n61236}{%
+\paragraph{/\{endpoint\}/sites : POST}\label{header-n61236}}
+
+\begin{itemize}
+\item
+  description: Add new site(s)
+\item
+  request:
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      body:
+      \texttt{\{\textquotesingle{}sites\textquotesingle{}:\ {[}\textquotesingle{}bazos.sk\textquotesingle{},\ ...{]}\}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}sites\textquotesingle{}:\ {[}
+      	\{
+      		\textquotesingle{}uuid\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},
+      		\textquotesingle{}site\textquotesingle{}:\ \textquotesingle{}bazos.sk\textquotesingle{}
+      	\},
+      	...
+      {]}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 2,
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Bad\ request\textquotesingle{},
+      \textquotesingle{}details\textquotesingle{}:\ \textquotesingle{}Sites\ already\ exist...\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n61294}{%
+\paragraph{/\{endpoint\}/sites/\{uuid\} : DELETE}\label{header-n61294}}
+
+\begin{itemize}
+\item
+  decription: Delete a site
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      \textbf{\{uuid\}}: Monitored site uuid
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n61338}{%
+\subsubsection{Canary nodes}\label{header-n61338}}
+
+\hypertarget{header-n61339}{%
+\paragraph{/\{endpoint\}/canaries : GET}\label{header-n61339}}
+
+\begin{itemize}
+\item
+  description: Prints all canary nodes available to the user
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      body (with limit - optional):
+      \texttt{\{\textquotesingle{}limit\textquotesingle{}:\ 10\}}
+    \item
+      body (with offset - optional):
+      \texttt{\{\textquotesingle{}offset\textquotesingle{}:\ 100\}}
+    \item
+      body (with limit \& offset):
+      \texttt{\{\textquotesingle{}limit\textquotesingle{}:\ 5,\ \textquotesingle{}offset\textquotesingle{}:\ 50\}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}count\textquotesingle{}:\ 10,
+      \textquotesingle{}total\textquotesingle{}:\ 11456,
+      \textquotesingle{}offset\textquotesingle{}:\ 100,
+      \textquotesingle{}canaries\textquotesingle{}:\ {[}
+      	\{
+      		\textquotesingle{}uuid\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},
+      		\textquotesingle{}domain\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},
+      		\textquotesingle{}site\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},
+      		\textquotesingle{}assignee\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},
+      		\textquotesingle{}testing\textquotesingle{}:\ false,
+      		\textquotesingle{}data\textquotesingle{}:\ \{
+      			\textquotesingle{}username\textquotesingle{}:\ \textquotesingle{}milan.paradajka\textquotesingle{},
+      			\textquotesingle{}password\textquotesingle{}:\ \textquotesingle{}hesielko123\textquotesingle{},
+      			\textquotesingle{}name\textquotesingle{}:\ \textquotesingle{}Milan\textquotesingle{},
+      			\textquotesingle{}surname\textquotesingle{}:\ \textquotesingle{}Paradajka\textquotesingle{},
+      			\textquotesingle{}phone\textquotesingle{}:\ \textquotesingle{}+412\ 123\ 456\ 789\textquotesingle{}
+      		\}
+      	\},
+      	...
+      {]}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 2,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Invalid\ range\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n61401}{%
+\paragraph{/\{endpoint\}/canaries/\{uuid\} : GET}\label{header-n61401}}
+
+\begin{itemize}
+\item
+  description: Prints information about a particular canary node
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      \textbf{\{uuid\}}: Canary node uuid
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}uuid\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},
+      \textquotesingle{}domain\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},
+      \textquotesingle{}site\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},
+      \textquotesingle{}assignee\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},
+      \textquotesingle{}testing\textquotesingle{}:\ false,
+      \textquotesingle{}data\textquotesingle{}:\ \{
+      	\textquotesingle{}username\textquotesingle{}:\ \textquotesingle{}milan.paradajka\textquotesingle{},
+      	\textquotesingle{}password\textquotesingle{}:\ \textquotesingle{}hesielko123\textquotesingle{},
+      	\textquotesingle{}name\textquotesingle{}:\ \textquotesingle{}Milan\textquotesingle{},
+      	\textquotesingle{}surname\textquotesingle{}:\ \textquotesingle{}Paradajka\textquotesingle{},
+      	\textquotesingle{}phone\textquotesingle{}:\ \textquotesingle{}+412\ 123\ 456\ 789\textquotesingle{},
+      	...
+      \}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 2,
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Bad\ request\textquotesingle{},
+      \textquotesingle{}details\textquotesingle{}:\ \textquotesingle{}Canary\ does\ not\ exist...\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n61459}{%
+\paragraph{/\{endpoint\}/canaries/\{uuid\}/\{parameter\} :
+GET}\label{header-n61459}}
+
+\begin{itemize}
+\item
+  description: Generates fake information for the canary node
+  registration process
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      \textbf{\{uuid\}}: Canary node uuid
+    \item
+      \textbf{\{parameter\}}: Parameter name
+
+      \begin{itemize}
+      \item
+        \textbf{username}
+      \item
+        \textbf{password}
+      \item
+        \textbf{email}
+      \item
+        \textbf{site}
+      \item
+        \textbf{testing}
+      \item
+        firstname
+      \item
+        lastname
+      \item
+        birthday
+      \item
+        sex
+      \item
+        address
+      \item
+        phone
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body:
+      \texttt{\{\textquotesingle{}parameter\textquotesingle{}:\ \textquotesingle{}value\textquotesingle{}\}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 2,
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Bad\ request\textquotesingle{},
+      \textquotesingle{}details\textquotesingle{}:\ \textquotesingle{}...\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n61542}{%
+\paragraph{/\{endpoint\}/canaries : POST}\label{header-n61542}}
+
+\begin{itemize}
+\item
+  description: Create new canary nodes
+\item
+  request:
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}domain\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},
+      \textquotesingle{}site\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},
+      \textquotesingle{}testing\textquotesingle{}:\ false,
+      \textquotesingle{}count\textquotesingle{}:\ 10
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}canaries\textquotesingle{}:\ {[}
+      	\{
+      		\textquotesingle{}uuid\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},\ 
+      		\textquotesingle{}domain\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},\ 
+      		\textquotesingle{}site\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},\ 
+      		\textquotesingle{}assignee\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},\ 
+      		\textquotesingle{}testing\textquotesingle{}:\ false,\ 
+      		\textquotesingle{}data\textquotesingle{}:\ \{\ 
+      			\textquotesingle{}username\textquotesingle{}:\ \textquotesingle{}milan.paradajka\textquotesingle{},\ 
+      			\textquotesingle{}password\textquotesingle{}:\ \textquotesingle{}hesielko123\textquotesingle{},\ 
+      		\}\ 
+      	\},
+      	...\ 
+      {]}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 2,
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Bad\ request\textquotesingle{},
+      \textquotesingle{}details\textquotesingle{}:\ \textquotesingle{}...\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n61600}{%
+\paragraph{/\{endpoint\}/canaries/\{uuid\} :
+DELETE}\label{header-n61600}}
+
+\begin{itemize}
+\item
+  decription: Delete a canary node
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      \textbf{\{uuid\}}: Canary node uuid
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{header-n61644}{%
+\subsubsection{Mail}\label{header-n61644}}
+
+\hypertarget{header-n61645}{%
+\paragraph{/\{endpoint\}/mail/\{uuid\} : GET}\label{header-n61645}}
+
+\begin{itemize}
+\item
+  description: Prints all e-mails received by a particular canary
+  account
+\item
+  request
+
+  \begin{itemize}
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      http\_headers:
+
+      \begin{itemize}
+      \item
+        \texttt{Authentication:\ \textquotesingle{}bearer\ JWT\_ACCESSTOKEN\textquotesingle{}}
+      \end{itemize}
+    \item
+      \textbf{\{uuid\}}: Canary node uuid
+    \item
+      body (with limit - optional):
+      \texttt{\{\textquotesingle{}limit\textquotesingle{}:\ 10\}}
+    \item
+      body (with offset - optional):
+      \texttt{\{\textquotesingle{}offset\textquotesingle{}:\ 100\}}
+    \item
+      body (with limit \& offset):
+      \texttt{\{\textquotesingle{}limit\textquotesingle{}:\ 5,\ \textquotesingle{}offset\textquotesingle{}:\ 50\}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 200
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}count\textquotesingle{}:\ 3,
+      \textquotesingle{}total\textquotesingle{}:\ 3,
+      \textquotesingle{}offset\textquotesingle{}:\ 0,
+      \textquotesingle{}emails\textquotesingle{}:\ {[}
+      	\{
+      		\textquotesingle{}uuid\textquotesingle{}:\ \textquotesingle{}uuidstring\textquotesingle{},
+      		\textquotesingle{}from\textquotesingle{}:\ \textquotesingle{}sender@domain.tld\textquotesingle{},
+      		\textquotesingle{}subject\textquotesingle{}:\ \textquotesingle{}message\ subject\textquotesingle{},
+      		\textquotesingle{}body\textquotesingle{}:\ \textquotesingle{}raw\ body\textquotesingle{}
+      	\},
+      	...
+      {]}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 0,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Token\ not\ provided\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 401
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 1,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Unauthorized\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\item
+  response:
+
+  \begin{itemize}
+  \item
+    http\_code: 400
+  \item
+    parameters:
+
+    \begin{itemize}
+    \item
+      body: \texttt{\{
+      \textquotesingle{}code\textquotesingle{}:\ 2,\ 
+      \textquotesingle{}message\textquotesingle{}:\ \textquotesingle{}Invalid\ range\textquotesingle{}
+      \}}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\end{document}
