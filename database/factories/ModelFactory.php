@@ -4,6 +4,8 @@
 
 use App\User;
 use Faker\Generator as Faker;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +19,11 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(User::class, function (Faker $faker) {
-    return [
-        'name' => $faker->name,
-        'email' => $faker->email,
-    ];
+    try {
+        return [
+            'username' => $faker->name,
+            'uuid' => Uuid::uuid4(),
+        ];
+    } catch (UnsatisfiedDependencyException $e) {
+    }
 });
