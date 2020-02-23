@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class Handler extends ExceptionHandler {
+class Handler extends ExceptionHandler
+{
 	/**
 	 * A list of the exception types that should not be reported.
 	 *
@@ -42,7 +43,8 @@ class Handler extends ExceptionHandler {
 	 * @param  \Exception  $e
 	 * @return \Illuminate\Http\Response
 	 */
-	public function render($request, Exception $e) {
+	public function render($request, Exception $e)
+	{
 		$code = 422;
 		if (method_exists($e, 'getStatusCode')) {
 			$code = $e->getStatusCode();
@@ -61,13 +63,33 @@ class Handler extends ExceptionHandler {
 		if (env('APP_DEBUG')) {
 			$response['file'] = $e->getFile();
 			$response['line'] = $e->getLine();
-	//		$response['trace'] = $e->getTrace();
-			$response['trace'] = explode("\n",$e->getTraceAsString());
+			//		$response['trace'] = $e->getTrace();
+			$response['trace'] = explode("\n", $e->getTraceAsString());
 		}
 
 		if (!empty($request)) {
 			try {
-				return response()->json($response, $code);
+				switch ($response['error']) {
+					case "Token not provided":
+						return response()->json(['code' => 0, 'message' => 'Token not provided'], 400);
+						break;
+					case "Token has expired":
+						return response()->json(['code' => 0, 'message' => 'Unauthorized', 'details' => 'Token has expired'], 401);
+						break;
+					case "Token Signature could not be verified.":
+						return response()->json(['code' => 0, 'message' => 'Unauthorized', 'details' => 'Invalid token'], 401);
+						break;
+					case "Too Many Attempts.":
+						return response()->json(['code' => 1, 'message' => 'Rate limit exceeded', 'retry' => $e->getHeaders()['Retry-After']], 429)
+							->header('X-RateLimit-Limit', $e->getHeaders()['X-RateLimit-Limit'])
+							->header('X-RateLimit-Remaining', $e->getHeaders()['X-RateLimit-Remaining'])
+							->header('X-RateLimit-Reset', $e->getHeaders()['X-RateLimit-Reset'])
+							->header('Retry-After', $e->getHeaders()['Retry-After']);
+						break;
+					default:
+						return response()->json($response['error'], $code);
+						break;
+				}
 			} catch (\Exception $e) {
 				print_r($e);
 				die('failed to raise exception');

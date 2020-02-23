@@ -58,7 +58,8 @@ class ThrottleRequests
 		$response = $next($request);
 
 		return $this->addHeaders(
-			$response, $maxAttempts,
+			$response,
+			$maxAttempts,
 			$this->calculateRemainingAttempts($key, $maxAttempts)
 		);
 	}
@@ -76,7 +77,7 @@ class ThrottleRequests
 			$maxAttempts = explode('|', $maxAttempts, 2)[$request->user() ? 1 : 0];
 		}
 
-		if (! is_numeric($maxAttempts) && $request->user()) {
+		if (!is_numeric($maxAttempts) && $request->user()) {
 			$maxAttempts = $request->user()->{$maxAttempts};
 		}
 
@@ -95,12 +96,12 @@ class ThrottleRequests
 	{
 		return sha1(
 			$request->method() .
-			'|' . $request->server('SERVER_NAME') .
-			'|' . $request->path() .
-			'|' . $request->ip()
+				'|' . $request->server('SERVER_NAME') .
+				'|' . $request->path() .
+				'|' . $request->ip()
 		);
 
-		throw new nuntimeException('Unable to generate the request signature. Route unavailable.');
+		throw new RuntimeException('Unable to generate the request signature. Route unavailable.');
 	}
 
 	/**
@@ -121,7 +122,9 @@ class ThrottleRequests
 		);
 
 		return new ThrottleRequestsException(
-			'Too Many Attempts.', null, $headers
+			'Too Many Attempts.',
+			null,
+			$headers
 		);
 	}
 
@@ -169,7 +172,7 @@ class ThrottleRequests
 			'X-RateLimit-Remaining' => $remainingAttempts,
 		];
 
-		if (! is_null($retryAfter)) {
+		if (!is_null($retryAfter)) {
 			$headers['Retry-After'] = $retryAfter;
 			$headers['X-RateLimit-Reset'] = $this->availableAt($retryAfter);
 		}

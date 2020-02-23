@@ -35,19 +35,27 @@
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0,
-		'message': 'Bad request',
-		'details': 'User does not exist...'
-      }```
+    - http_headers: 
+		  - ```X-RateLimit-Limit: 10```
+			- ```X-RateLimit-Remaining: 7```
+		- body: ```{
+      'code': 0,
+	    'message': 'Bad request',
+	    'details': 'Invalid credentials...'
+	    }```
 	
 - response:
   - http_code: 429
   - parameters:
+    - http_headers: 
+		  - ```X-RateLimit-Limit: 10```
+			- ```X-RateLimit-Remaining: 0```
+			- ```X-RateLimit-Reset: 1582480798```
+    	- ```Retry-After: 60```
     - body: ```{
-		'code': 1, 
-		'message': 'Rate limit exceeded', 
-		'retry': 3600
+      'code': 1, 
+      'message': 'Rate limit exceeded', 
+      'retry': 60
       }```
 
 -----------
@@ -69,9 +77,9 @@
   - parameters:
     - http_headers: 
       - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
-    - body (with limit - optional): `{'limit': 10}`
-    - body (with offset - optional): `{'offset': 100}`
-    - body (with limit & offset): `{'limit': 5, 'offset': 50}`
+    - request (with limit - optional): `limit=10`
+    - request (with offset - optional): `offset=100`
+    - request (with limit & offset): `limit=5&offset=50`
 - response:
   - http_code: 200
   - parameters:
