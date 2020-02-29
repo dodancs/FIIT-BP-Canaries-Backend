@@ -19,44 +19,59 @@
 - description: Log in and get access token
 - request:
   - parameters:
-    - body: `{'username': 'user', 'password': 'secret123'}`
+    - body:
+      ```json
+      {
+        'username': 'user', 
+        'password': 'secret123'
+      }
+      ```
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{
-		'token': 'JWT_ACCESSTOKEN', 
-		'token_type': 'bearer', 
-		'expires': 3600,
-		'uuid': 'uuidstring', 
-		'permissions': ['admin'],
-		'canaries': []
-      }```
+    - body:
+      ```json
+      {
+        'token': 'JWT_ACCESSTOKEN', 
+        'token_type': 'bearer', 
+        'expires': 3600,
+        'uuid': 'uuidstring', 
+        'permissions': ['admin'],
+        'canaries': []
+      }
+      ```
 	
 - response:
   - http_code: 400
   - parameters:
     - http_headers: 
-		  - ```X-RateLimit-Limit: 10```
-			- ```X-RateLimit-Remaining: 7```
-		- body: ```{
-      'code': 0,
-	    'message': 'Bad request',
-	    'details': 'Invalid credentials...'
-	    }```
+		  - `X-RateLimit-Limit: 10`
+			- `X-RateLimit-Remaining: 7`
+		- body: 
+      ```json
+      {
+        'code': 0,
+        'message': 'Bad request',
+        'details': 'Invalid credentials...'
+	    }
+      ```
 	
 - response:
   - http_code: 429
   - parameters:
     - http_headers: 
-		  - ```X-RateLimit-Limit: 10```
-			- ```X-RateLimit-Remaining: 0```
-			- ```X-RateLimit-Reset: 1582480798```
-    	- ```Retry-After: 60```
-    - body: ```{
-      'code': 1, 
-      'message': 'Rate limit exceeded', 
-      'retry': 60
-      }```
+		  - `X-RateLimit-Limit: 10`
+			- `X-RateLimit-Remaining: 0`
+			- `X-RateLimit-Reset: 1582480798`
+      - `Retry-After: 60`
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Rate limit exceeded', 
+        'retry': 60
+      }
+      ```
 
 -----------
 
@@ -65,7 +80,7 @@
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
 - response:
   - http_code: 200
 
@@ -76,56 +91,72 @@
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
     - request (with limit - optional): `limit=10`
     - request (with offset - optional): `offset=100`
     - request (with limit & offset): `limit=5&offset=50`
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{
-		'count': 10, 
-		'total': 2314,
-		'offset': 100,
-		'users': [
-				{ 
-					'uuid': 'uuidstring1', 
-					'username': 'jozkomrkvicka', 
-					'permissions': ['admin', 'worker', ...],
-					'canaries': []
-				}, 
-				{ 
-					'uuid': 'uuidstring2', 
-					'username': 'peter',
-					'permissions': ['worker'],
-					'canaries': ['uuidstring1', 'uuidstring2', ...]
-				},
-				...
-		]
-      }```
+    - body: 
+      ```json
+      {
+        'count': 10, 
+        'total': 2314,
+        'offset': 100,
+        'users': [
+          { 
+            'uuid': 'uuidstring1', 
+            'username': 'jozkomrkvicka', 
+            'permissions': ['admin', 'worker', ...],
+            'canaries': [],
+            'created_at': '2020-02-19 08:46:28',
+            'updated_at': '2020-02-19 08:46:28'
+          }, 
+          { 
+            'uuid': 'uuidstring2', 
+            'username': 'peter',
+            'permissions': ['worker'],
+            'canaries': ['uuidstring1', 'uuidstring2', ...],
+            'created_at': '2020-02-19 11:33:01',
+            'updated_at': '2020-02-19 11:33:01'
+          },
+          ...
+        ]
+      }
+      ```
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 	
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 2, 
-		'message': 'Invalid range'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 2, 
+        'message': 'Invalid range'
+      }
+      ```
 
 -----------
 
@@ -134,42 +165,56 @@
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
     - __{uuid}__: Public user identification string
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{
-		'uuid': 'uuidstring',
-		'username': 'jozkomrkvicka',
-		'permissions': ['admin', 'worker', ...], 
-		'canaries': ['uuidstring1', 'uuidstring2', ...]
-      }```
+    - body: 
+      ```json
+      {
+        'uuid': 'uuidstring',
+        'username': 'jozkomrkvicka',
+        'permissions': ['admin', 'worker', ...], 
+        'canaries': ['uuidstring1', 'uuidstring2', ...],
+        'created_at': '2020-02-19 08:46:28',
+        'updated_at': '2020-02-19 08:46:28'
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 	
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 2,
-		'message': 'Bad request',
-		'details': '...'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 2,
+        'message': 'Bad request',
+        'details': '...'
+      }
+      ```
 
 -----------
 
@@ -178,52 +223,68 @@
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
-    - body: ```{
-		'users': [
-				{
-					'username': 'peter',
-					'password': 'heslo',
-					'permissions': ['worker', ...],
-					'canaries': ['uuidstring1', 'uuidstring2', ...]
-				},
-				...
-		]
-	  }```
+      
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
+    - body: 
+      ```json
+      {
+        'users': [
+            {
+              'username': 'peter',
+              'password': 'heslo',
+              'permissions': ['worker', ...],
+              'canaries': ['uuidstring1', 'uuidstring2', ...]
+            },
+            ...
+        ]
+      }
+	    ```
 	
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{
-		'uuid': 'uuidstring',
-		'username': 'peter',
-		'permissions': ['worker', ...]
-      }```
+    - body: 
+      ```json
+      {
+        'uuid': 'uuidstring',
+        'username': 'peter',
+        'permissions': ['worker', ...]
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 2,
-		'message': 'Bad request',
-		'details': '...'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 2,
+        'message': 'Bad request',
+        'details': '...'
+      }
+      ```
 
 -----------
 
@@ -232,41 +293,55 @@
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+      
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
     - __{uuid}__: Public user identification string
-    - body: ```{
-		'username': 'peter1',
-		'password': 'noveheslo',
-		'permissions': {'admin': true, 'worker': false, ...},
-		'canaries': ['uuidstring1', 'uuidstring2', ...]
-      }```
+    - body: 
+      ```json
+      {
+        'username': 'peter1',
+        'password': 'noveheslo',
+        'permissions': {'admin': true, 'worker': false, ...},
+        'canaries': ['uuidstring1', 'uuidstring2', ...]
+      }
+      ```
 - response:
-  - http_code: 200
-
+  
+- http_code: 200
+  
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 2,
-		'message': 'Bad request',
-		'details': '...'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 2,
+        'message': 'Bad request',
+        'details': '...'
+      }
+      ```
 
 -----------
 
@@ -275,26 +350,33 @@
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
     - __{uuid}__: Public user identification string
 - response:
-  - http_code: 200
-
+  
+- http_code: 200
+  
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 
 -----------
 
@@ -303,31 +385,40 @@
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{
-		'token': 'JWT_ACCESSTOKEN',
-		'token_type': 'bearer',
-		'expires': 3600,
-      }```
+    - body: 
+      ```json
+      {
+        'token': 'JWT_ACCESSTOKEN',
+        'token_type': 'bearer',
+        'expires': 3600,
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 
 -----------
 -----------
@@ -339,47 +430,59 @@
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
-    - body (with limit - optional): `{'limit': 10}`
-    - body (with offset - optional): `{'offset': 100}`
-    - body (with limit & offset): `{'limit': 5, 'offset': 50}`
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
+    - request (with limit - optional): `limit=10`
+    - request (with offset - optional): `offset=100`
+    - request (with limit & offset): `limit=5&offset=50`
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{
-		'count': 10,
-		'total': 455,
-		'offset': 100,
-		'domains': [
-				{'uuid': 'uuidstring1', 'domain': 'domainname.tld'},
-				{'uuid': 'uuidstring2', 'domain': 'another.tld'},
-				...
-		]
-      }```
+    - body: 
+      ```json
+      {
+        'count': 10,
+        'total': 455,
+        'offset': 100,
+        'domains': [
+          {'uuid': 'uuidstring1', 'domain': 'domainname.tld'},
+          {'uuid': 'uuidstring2', 'domain': 'another.tld'},
+          ...
+        ]
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 	
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 2, 
-		'message': 'Invalid range'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 2, 
+        'message': 'Invalid range'
+      }
+      ```
 
 -----------
 
@@ -388,45 +491,65 @@
 - request:
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
-    - body: `{'domains': ['domena.sk', ...]}`
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
+    - body: 
+      ```json
+      {
+        'domains': [
+          'domena.sk',
+          ...
+        ]
+      }
+      ```
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{
-		'domains': [
-				{
-					'uuid': 'uuidstring',
-					'domain': 'domena.sk'
-				},
-				...
-		]
-	  }```
+    - body: 
+      ```json
+      {
+        'domains': [
+          {
+            'uuid': 'uuidstring',
+            'domain': 'domena.sk'
+          },
+          ...
+        ]
+	    }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 2,
-		'message': 'Bad request',
-		'details': 'Domains already exist...'
-      }```
+    - body: 
+      ```json
+      {
+		    'code': 2,
+        'message': 'Bad request',
+        'details': 'Domains already exist...'
+      }
+      ```
 
 -----------
 
@@ -435,7 +558,7 @@
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
     - __{uuid}__: Canary domain uuid
 - response:
   - http_code: 200
@@ -443,18 +566,24 @@
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 
 -----------
 -----------
@@ -466,47 +595,59 @@
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
-    - body (with limit - optional): `{'limit': 10}`
-    - body (with offset - optional): `{'offset': 100}`
-    - body (with limit & offset): `{'limit': 5, 'offset': 50}`
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
+    - request (with limit - optional): `limit=10`
+    - request (with offset - optional): `offset=100`
+    - request (with limit & offset): `limit=5&offset=50`
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{
-		'count': 10,
-		'total': 234,
-		'offset': 100,
-		'sites': [
-				{'uuid': 'uuidstring1', 'site': 'facebook.com'},
-				{'uuid': 'uuidstring2', 'site': 'azet.sk'},
-				...
-		]
-      }```
+    - body: 
+      ```json
+      {
+        'count': 10,
+        'total': 234,
+        'offset': 100,
+        'sites': [
+          {'uuid': 'uuidstring1', 'site': 'facebook.com'},
+          {'uuid': 'uuidstring2', 'site': 'azet.sk'},
+          ...
+        ]
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body:
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 	
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 2, 
-		'message': 'Invalid range'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 2, 
+        'message': 'Invalid range'
+      }
+      ```
 
 -----------
 
@@ -515,45 +656,65 @@
 - request:
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
-    - body: ```{'sites': ['bazos.sk', ...]}```
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
+    - body: 
+      ```json
+      {
+        'sites': [
+          'bazos.sk', 
+          ...
+        ]
+      }
+      ```
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{
-		'sites': [
-				{
-					'uuid': 'uuidstring',
-					'site': 'bazos.sk'
-				},
-				...
-		]
-	  }```
+    - body: 
+      ```json
+      {
+        'sites': [
+          {
+            'uuid': 'uuidstring',
+            'site': 'bazos.sk'
+          },
+          ...
+        ]
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body:  
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 	
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 2,
-		'message': 'Bad request',
-		'details': 'Sites already exist...'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 2,
+        'message': 'Bad request',
+        'details': 'Sites already exist...'
+      }
+      ```
 
 -----------
 
@@ -562,7 +723,7 @@
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
     - __{uuid}__: Monitored site uuid
 - response:
   - http_code: 200
@@ -570,18 +731,24 @@
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 
 -----------
 -----------
@@ -593,59 +760,71 @@
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
-    - body (with limit - optional): `{'limit': 10}`
-    - body (with offset - optional): `{'offset': 100}`
-    - body (with limit & offset): `{'limit': 5, 'offset': 50}`
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
+    - request (with limit - optional): `limit=10`
+    - request (with offset - optional): `offset=100`
+    - request (with limit & offset): `limit=5&offset=50`
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{
-		'count': 10,
-		'total': 11456,
-		'offset': 100,
-		'canaries': [
-				{
-					'uuid': 'uuidstring',
-					'domain': 'uuidstring',
-					'site': 'uuidstring',
-					'assignee': 'uuidstring',
-					'testing': false,
-					'data': {
-						'username': 'milan.paradajka',
-						'password': 'hesielko123',
-						'name': 'Milan',
-						'surname': 'Paradajka',
-						'phone': '+412 123 456 789'
-					}
-				},
-				...
-			]
-      }```
+    - body: 
+      ```json
+      {
+        'count': 10,
+        'total': 11456,
+        'offset': 100,
+        'canaries': [
+          {
+            'uuid': 'uuidstring',
+            'domain': 'uuidstring',
+            'site': 'uuidstring',
+            'assignee': 'uuidstring',
+            'testing': false,
+            'data': {
+              'username': 'milan.paradajka',
+              'password': 'hesielko123',
+              'name': 'Milan',
+              'surname': 'Paradajka',
+              'phone': '+412 123 456 789'
+            }
+          },
+          ...
+          ]
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 	
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 2, 
-		'message': 'Invalid range'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 2, 
+        'message': 'Invalid range'
+      }
+      ```
 
 -----------
 
@@ -654,60 +833,72 @@
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
     - __{uuid}__: Canary node uuid
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{
-		'uuid': 'uuidstring',
-		'domain': 'uuidstring',
-		'site': 'uuidstring',
-		'assignee': 'uuidstring',
-		'testing': false,
-		'data': {
-				'username': 'milan.paradajka',
-				'password': 'hesielko123',
-				'name': 'Milan',
-				'surname': 'Paradajka',
-				'phone': '+412 123 456 789',
-				...
-		}
-      } ```
+    - body: 
+      ```json
+      {
+        'uuid': 'uuidstring',
+        'domain': 'uuidstring',
+        'site': 'uuidstring',
+        'assignee': 'uuidstring',
+        'testing': false,
+        'data': {
+          'username': 'milan.paradajka',
+          'password': 'hesielko123',
+          'name': 'Milan',
+          'surname': 'Paradajka',
+          'phone': '+412 123 456 789',
+          ...
+        }
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 2,
-		'message': 'Bad request',
-		'details': 'Canary does not exist...'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 2,
+        'message': 'Bad request',
+        'details': 'Canary does not exist...'
+      }
+      ```
 
 -----------
 
 #### /{endpoint}/canaries/{uuid}/{parameter} : GET
-- description: Generates fake information for the canary node registration process
+- description: Gets or generates fake information for the canary node registration process
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
     - __{uuid}__: Canary node uuid
     - __{parameter}__: Parameter name
       - __username__
@@ -715,41 +906,115 @@
       - __email__
       - __site__
       - __testing__
-      - firstname 
-      - lastname 
-      - birthday 
+      - firstname
+      - lastname
+      - birthday
       - sex
       - address
       - phone
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{'parameter': 'value'}```
+    - body: 
+      ```json
+      {
+        'parameter': 'value'
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 2,
-		'message': 'Bad request',
-		'details': '...'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 2,
+        'message': 'Bad request',
+        'details': '...'
+      }
+      ```
+
+-----------
+
+#### /{endpoint}/canaries/{uuid}/{parameter}/new : GET
+- description: Re-generates fake information
+- request
+  - parameters:
+    - http_headers: 
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
+    - __{uuid}__: Canary node uuid
+    - __{parameter}__: Parameter name
+      - firstname
+      - lastname
+      - birthday
+      - sex
+      - address
+      - phone
+- response:
+  - http_code: 200
+  - parameters:
+    - body: 
+      ```json
+      {
+        'parameter': 'value'
+      }
+      ```
+
+- response:
+  - http_code: 400
+  - parameters:
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
+
+- response:
+  - http_code: 400
+  - parameters:
+    - body: 
+      ```json
+      {
+        'code': 2,
+        'message': 'Bad request',
+        'details': '...'
+      }
+      ```
 
 -----------
 
@@ -758,57 +1023,72 @@
 - request:
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
-    - body: ```{
-		'domain': 'uuidstring',
-		'site': 'uuidstring',
-		'testing': false,
-		'count': 10
-		}```
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
+    - body: 
+      ```json
+      {
+        'domain': 'uuidstring',
+        'site': 'uuidstring',
+        'testing': false,
+        'count': 10
+		  }
+      ```
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{
-	'canaries': [
-				{
-					'uuid': 'uuidstring', 
-					'domain': 'uuidstring', 
-					'site': 'uuidstring', 
-					'assignee': 'uuidstring', 
-					'testing': false, 
-					'data': { 
-						'username': 'milan.paradajka', 
-						'password': 'hesielko123', 
-					} 
-				},
-				... 
-      ]
-	  } ```
+    - body: 
+      ```json
+      {
+        'canaries': [
+          {
+            'uuid': 'uuidstring', 
+            'domain': 'uuidstring', 
+            'site': 'uuidstring', 
+            'assignee': 'uuidstring', 
+            'testing': false, 
+            'data': { 
+              'username': 'milan.paradajka', 
+              'password': 'hesielko123', 
+            } 
+          },
+          ... 
+        ]
+	    }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 2,
-		'message': 'Bad request',
-		'details': '...'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 2,
+        'message': 'Bad request',
+        'details': '...'
+      }
+      ```
 
 -----------
 
@@ -817,7 +1097,7 @@
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
     - __{uuid}__: Canary node uuid
 - response:
   - http_code: 200
@@ -825,18 +1105,24 @@
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 
 -----------
 -----------
@@ -848,49 +1134,61 @@
 - request
   - parameters:
     - http_headers: 
-      - ```Authentication: 'bearer JWT_ACCESSTOKEN'```
+      - `Authentication: 'bearer JWT_ACCESSTOKEN'`
     - __{uuid}__: Canary node uuid
-    - body (with limit - optional): `{'limit': 10}`
-    - body (with offset - optional): `{'offset': 100}`
-    - body (with limit & offset): `{'limit': 5, 'offset': 50}`
+    - request (with limit - optional): `limit=10`
+    - request (with offset - optional): `offset=100`
+    - request (with limit & offset): `limit=5&offset=50`
 - response:
   - http_code: 200
   - parameters:
-    - body: ```{
-		'count': 3,
-		'total': 3,
-		'offset': 0,
-		'emails': [
-				{
-					'uuid': 'uuidstring',
-					'from': 'sender@domain.tld',
-					'subject': 'message subject',
-					'body': 'raw body'
-				},
-				...
-			]
-      }```
+    - body: 
+      ```json
+      {
+        'count': 3,
+        'total': 3,
+        'offset': 0,
+        'emails': [
+          {
+            'uuid': 'uuidstring',
+            'from': 'sender@domain.tld',
+            'subject': 'message subject',
+            'body': 'raw body'
+          },
+          ...
+        ]
+      }
+      ```
 
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 0, 
-		'message': 'Token not provided'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 0, 
+        'message': 'Token not provided'
+      }
+      ```
 
 - response:
   - http_code: 401
   - parameters:
-    - body: ```{
-		'code': 1, 
-		'message': 'Unauthorized'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 1, 
+        'message': 'Unauthorized'
+      }
+      ```
 	
 - response:
   - http_code: 400
   - parameters:
-    - body: ```{
-		'code': 2, 
-		'message': 'Invalid range'
-      }```
+    - body: 
+      ```json
+      {
+        'code': 2, 
+        'message': 'Invalid range'
+      }
+      ```
