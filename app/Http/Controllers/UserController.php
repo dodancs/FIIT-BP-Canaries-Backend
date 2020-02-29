@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\User;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Ramsey\Uuid\Uuid;
 
@@ -23,7 +25,11 @@ class UserController extends Controller
 			return response()->json(['code' => 2, 'message' => 'Invalid range'], 400);
 		}
 
-		if ($req->has('limit') && ((int) $req->input('limit') == 0)) {
+		if ($req->has('limit') && ((int) $req->input('limit') < 1)) {
+			return response()->json(['code' => 2, 'message' => 'Invalid range'], 400);
+		}
+
+		if ($req->has('offset') && ((int) $req->input('offset') < 0)) {
 			return response()->json(['code' => 2, 'message' => 'Invalid range'], 400);
 		}
 
@@ -38,43 +44,52 @@ class UserController extends Controller
 			return response()->json(['code' => 2, 'message' => 'Invalid range', 'details' => 'Offset cannot be used without limit'], 400);
 		}
 
-		$response = array();
+		return response()->json(['users' => $users]);
+	}
 
-		foreach ($users as $u) {
-			array_push($response, [
-				'uuid' => $u->uuid,
-				'username' => $u->username,
-				'permissions' => $u->permissions,
-			]);
+	public function createUsers(Request $req)
+	{
+		$rules = [
+			'username' => 'required|unique:users|max:100',
+			'password' => 'required|min:8',
+		];
+
+		if (!$req->has('users')) {
+			return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'No users supplied'], 400);
+		}
+
+		foreach ($req->input('users') as $u) {
+			$validator = Validator::make($u, $rules);
+			if ($validator->fails()) {
+				return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => $validator->errors()->first()], 400);
+			}
+		}
+
+		$response = [];
+
+		foreach ($req->input('users') as $u) {
+			$user = new User(['username' => $u['username']]);
+			$user->password = Hash::make($u['password']);
+			$user->permissions = $u['permissions'];
+			$user->save();
+			array_push($response, $user);
 		}
 
 		return response()->json(['users' => $response]);
 	}
 
-	public function createUser(Request $req)
+	public function getUser(Request $req, $uuid)
 	{
-		$rules = [
-			'login' => 'required|unique:users|max:100',
-			'password' => 'required|min:8',
-		];
+		$me = JWTAuth::user();
+		if (strcmp($me->uuid, $uuid) && (!isset($me->permissions) || !in_array("admin", $me->permissions))) {
+			return response()->json(['code' => 1, 'message' => 'Unauthorized'], 401);
+		}
 
-		$this->validate($req, $rules);
+		$u = User::where('uuid', $uuid)->first();
+		if (empty($u))
+			return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'User does not exist'], 400);
 
-		// create new user
-		$user = new User($req->only(['login', 'permissions']));
-		$user->password = password_hash($req->password, PASSWORD_DEFAULT);
-		$user->save();
-
-		return response($user);
-	}
-
-	public function getUser($uuid)
-	{
-		$user = User::where('uuid', $uuid)->first();
-		if (empty($user))
-			return abort(400, "no such user");
-
-		return response($user);
+		return response($u);
 	}
 
 	public function modifyUser(Request $req, $uuid)

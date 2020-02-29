@@ -21,12 +21,14 @@ class AuthController extends Controller
             return response()->json(['code' => 0, 'message' => 'Bad request', 'details' => 'Invalid credentials'], 400);
         }
 
+        $me = JWTAuth::user();
+
         return response()->json([
             'token' => $token,
             'token_type' => 'bearer',
             'expires' => config('jwt.refresh_ttl'),
-            'uuid' => JWTAuth::user()->uuid,
-            'permissions' => JWTAuth::user()->permissions,
+            'uuid' => $me->uuid,
+            'permissions' => $me->permissions,
         ]);
     }
 

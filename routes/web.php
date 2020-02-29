@@ -28,12 +28,12 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
 
             $router->group(['middleware' => 'perm:admin'], function () use ($router) {
                 $router->get('/users', 'UserController@listUsers');
-                $router->get('/users/{uuid}', 'UserController@listUsers');
-                $router->post('/users', 'UserController@createUser');
+                $router->post('/users', 'UserController@createUsers');
                 $router->put('/users/{uuid}', 'UserController@modifyUser');
                 $router->delete('/users/{uuid}', function ($uuid) {
                 });
             });
+            $router->get('/users/{uuid}', 'UserController@getUser');
 
             $router->group(['middleware' => 'throttle:60,1'], function () use ($router) {
                 $router->get('/refresh_token', 'AuthController@refresh');
@@ -74,6 +74,8 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
             });
             $router->get('/{uuid}/{parameter}', function ($uuid, $parameter) {
             });
+            $router->get('/{uuid}/{parameter}/new', function ($uuid, $parameter) {
+            });
 
             $router->group(['middleware' => 'perm:admin'], function () use ($router) {
                 $router->post('/', function () {
@@ -108,37 +110,14 @@ $router->group(['prefix' => 'fake'], function () use ($router) {
 
     $router->group(['prefix' => 'auth'], function () use ($router) {
 
-        $router->post('/login', function () {
-            return response()->json(array(
-                'token' => 'fr78324i76td6i74yf4y378fo2',
-                'token_type' => 'bearer',
-                'expires' => 3600,
-                'uuid' => 'r89u247ry-r42ht8547-r42yuj876',
-                'permissions' => array('admin'),
-                'canaries' => array('rf4u83y8743r76tr247')
-            ));
-        });
-
-        $router->get('/logout', function () {
-        });
-
-        $router->get('/users', function () {
-        });
-
-        $router->get('/users/{uuid}', function ($uuid) {
-        });
-
-        $router->post('/users', function () {
-        });
-
-        $router->put('/users/{uuid}', function ($uuid) {
-        });
-
-        $router->delete('/users/{uuid}', function ($uuid) {
-        });
-
-        $router->get('/refresh_token', function () {
-        });
+        $router->post('/login', 'FakeController@login');
+        $router->get('/logout', 'FakeController@logout');
+        $router->get('/users', 'FakeController@users');
+        $router->get('/users/{uuid}', 'FakeController@users');
+        $router->post('/users', 'FakeController@addusers');
+        $router->put('/users/{uuid}', 'FakeController@updateuser');
+        $router->delete('/users/{uuid}', 'FakeController@deleteuser');
+        $router->get('/refresh_token', 'FakeController@refresh');
     });
 
     $router->group(['prefix' => 'domains'], function () use ($router) {

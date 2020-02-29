@@ -77,6 +77,7 @@ class Handler extends ExceptionHandler
 						return response()->json(['code' => 0, 'message' => 'Unauthorized', 'details' => 'Token has expired'], 401);
 						break;
 					case "Token Signature could not be verified.":
+					case "Wrong number of segments":
 						return response()->json(['code' => 0, 'message' => 'Unauthorized', 'details' => 'Invalid token'], 401);
 						break;
 					case "Too Many Attempts.":

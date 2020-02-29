@@ -26,7 +26,7 @@ class Permissions
 		if (empty($me))
 			return abort(401, "authentication required");
 		if (!isset($me->permissions))
-			return abort(403, "forbidden");
+			return response()->json(['code' => 1, 'message' => 'Unauthorized'], 401);
 
 		// normalize input
 		$required_perms = explode(';', $required_perms);
@@ -38,6 +38,6 @@ class Permissions
 			}
 		}
 
-		return abort(403, "forbidden");
+		return response()->json(['code' => 1, 'message' => 'Unauthorized'], 401);
 	}
 }
