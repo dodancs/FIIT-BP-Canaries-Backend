@@ -108,7 +108,7 @@
           { 
             "uuid": "uuidstring1", 
             "username": "jozkomrkvicka", 
-            "permissions": ["admin", "worker", ...],
+            "permissions": ["admin", "worker"],
             "canaries": [],
             "created_at": "2020-02-19 08:46:28",
             "updated_at": "2020-02-19 08:46:28"
@@ -117,11 +117,10 @@
             "uuid": "uuidstring2", 
             "username": "peter",
             "permissions": ["worker"],
-            "canaries": ["uuidstring1", "uuidstring2", ...],
+            "canaries": ["uuidstring1", "uuidstring2"],
             "created_at": "2020-02-19 11:33:01",
             "updated_at": "2020-02-19 11:33:01"
-          },
-          ...
+          }
         ]
       }
       ```
@@ -175,8 +174,8 @@
       {
         "uuid": "uuidstring",
         "username": "jozkomrkvicka",
-        "permissions": ["admin", "worker", ...], 
-        "canaries": ["uuidstring1", "uuidstring2", ...],
+        "permissions": ["admin", "worker"], 
+        "canaries": ["uuidstring1", "uuidstring2"],
         "created_at": "2020-02-19 08:46:28",
         "updated_at": "2020-02-19 08:46:28"
       }
@@ -229,13 +228,12 @@
       ```json
       {
         "users": [
-            {
-              "username": "peter",
-              "password": "heslo",
-              "permissions": ["worker", ...],
-              "canaries": ["uuidstring1", "uuidstring2", ...]
-            },
-            ...
+          {
+            "username": "peter",
+            "password": "heslo",
+            "permissions": ["worker"],
+            "canaries": ["uuidstring1", "uuidstring2"]
+          }
         ]
       }
 	    ```
@@ -246,11 +244,18 @@
     - body: 
       ```json
       {
-        "uuid": "uuidstring",
-        "username": "peter",
-        "permissions": ["worker", ...]
+        "users": [
+          {
+            "username": "peter",
+            "permissions": ["worker"],
+            "canaries": ["uuidstring1", "uuidstring2"],
+            "uuid": "uuidstring",
+            "created_at": "2020-02-19 08:46:28",
+            "updated_at": "2020-02-19 08:46:28"
+          }
+        ]
       }
-      ```
+	    ```
 
 - response:
   - http_code: 400
@@ -301,8 +306,8 @@
       {
         "username": "peter1",
         "password": "noveheslo",
-        "permissions": {"admin": true, "worker": false, ...},
-        "canaries": ["uuidstring1", "uuidstring2", ...]
+        "permissions": {"admin": true, "worker": false},
+        "canaries": ["uuidstring1", "uuidstring2"]
       }
       ```
 - response:
@@ -445,8 +450,7 @@
         "offset": 100,
         "domains": [
           {"uuid": "uuidstring1", "domain": "domainname.tld"},
-          {"uuid": "uuidstring2", "domain": "another.tld"},
-          ...
+          {"uuid": "uuidstring2", "domain": "another.tld"}
         ]
       }
       ```
@@ -496,8 +500,7 @@
       ```json
       {
         "domains": [
-          "domena.sk",
-          ...
+          "domena.sk"
         ]
       }
       ```
@@ -511,8 +514,7 @@
           {
             "uuid": "uuidstring",
             "domain": "domena.sk"
-          },
-          ...
+          }
         ]
 	    }
       ```
@@ -610,8 +612,7 @@
         "offset": 100,
         "sites": [
           {"uuid": "uuidstring1", "site": "facebook.com"},
-          {"uuid": "uuidstring2", "site": "azet.sk"},
-          ...
+          {"uuid": "uuidstring2", "site": "azet.sk"}
         ]
       }
       ```
@@ -661,8 +662,7 @@
       ```json
       {
         "sites": [
-          "bazos.sk", 
-          ...
+          "bazos.sk"
         ]
       }
       ```
@@ -676,8 +676,7 @@
           {
             "uuid": "uuidstring",
             "site": "bazos.sk"
-          },
-          ...
+          }
         ]
       }
       ```
@@ -787,9 +786,8 @@
               "surname": "Paradajka",
               "phone": "+412 123 456 789"
             }
-          },
-          ...
-          ]
+          }
+        ]
       }
       ```
 
@@ -851,8 +849,7 @@
           "password": "hesielko123",
           "name": "Milan",
           "surname": "Paradajka",
-          "phone": "+412 123 456 789",
-          ...
+          "phone": "+412 123 456 789"
         }
       }
       ```
@@ -1050,8 +1047,7 @@
               "username": "milan.paradajka", 
               "password": "hesielko123", 
             } 
-          },
-          ... 
+          }
         ]
 	    }
       ```
@@ -1154,8 +1150,7 @@
             "from": "sender@domain.tld",
             "subject": "message subject",
             "body": "raw body"
-          },
-          ...
+          }
         ]
       }
       ```
