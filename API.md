@@ -142,7 +142,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 	
@@ -199,7 +200,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 	
@@ -275,7 +277,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 
@@ -332,7 +335,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 
@@ -379,7 +383,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 
@@ -421,7 +426,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 
@@ -473,7 +479,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 	
@@ -537,7 +544,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 
@@ -583,7 +591,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 
@@ -635,7 +644,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 	
@@ -699,7 +709,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 	
@@ -745,7 +756,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 
@@ -809,7 +821,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 	
@@ -872,7 +885,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 
@@ -937,7 +951,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 
@@ -997,7 +1012,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 
@@ -1070,7 +1086,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 
@@ -1116,7 +1133,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 
@@ -1173,7 +1191,8 @@
       ```json
       {
         "code": 1, 
-        "message": "Unauthorized"
+        "message": "Unauthorized",
+        "details": "..."
       }
       ```
 	
