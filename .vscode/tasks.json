@@ -4,12 +4,27 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Launch app",
+            "label": "Launch app: Windows",
             "type": "shell",
             "command": "ubuntu",
             "args": [
                 "run",
                 "php",
+                "-S",
+                "localhost:8000",
+                "-t",
+                "public"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Launch app: Linux",
+            "type": "shell",
+            "command": "php",
+            "args": [
                 "-S",
                 "localhost:8000",
                 "-t",
