@@ -155,6 +155,9 @@ $router->group(['prefix' => 'fake'], function () use ($router) {
         $router->get('/{uuid}/{parameter}', function ($uuid, $parameter) {
         });
 
+        $router->get('/{uuid}/{parameter}/new', function ($uuid, $parameter) {
+        });
+
         $router->post('/', function () {
         });
 
