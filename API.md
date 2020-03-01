@@ -111,7 +111,8 @@
             "permissions": ["admin", "worker"],
             "canaries": [],
             "created_at": "2020-02-19 08:46:28",
-            "updated_at": "2020-02-19 08:46:28"
+            "updated_at": "2020-02-19 08:46:28",
+            "updated_by": null
           }, 
           { 
             "uuid": "uuidstring2", 
@@ -119,7 +120,8 @@
             "permissions": ["worker"],
             "canaries": ["uuidstring1", "uuidstring2"],
             "created_at": "2020-02-19 11:33:01",
-            "updated_at": "2020-02-19 11:33:01"
+            "updated_at": "2020-02-19 11:33:01",
+            "updated_by": "adminuuidstring"
           }
         ]
       }
@@ -253,7 +255,8 @@
             "canaries": ["uuidstring1", "uuidstring2"],
             "uuid": "uuidstring",
             "created_at": "2020-02-19 08:46:28",
-            "updated_at": "2020-02-19 08:46:28"
+            "updated_at": "2020-02-19 08:46:28",
+            "updated_by": "adminuuidstring"
           }
         ]
       }
@@ -820,7 +823,8 @@
               "phone": "+412 123 456 789"
             },
             "created_at": "2020-02-19 08:46:28",
-            "updated_at": "2020-02-19 08:46:28"
+            "updated_at": "2020-02-19 08:46:28",
+            "updated_by": "adminuuidstring"
           }
         ]
       }
@@ -888,7 +892,8 @@
           "phone": "+412 123 456 789"
         },
         "created_at": "2020-02-19 08:46:28",
-        "updated_at": "2020-02-19 08:46:28"
+        "updated_at": "2020-02-19 08:46:28",
+        "updated_by": "adminuuidstring"
       }
       ```
 
@@ -1089,7 +1094,8 @@
               "password": "hesielko123", 
             },
             "created_at": "2020-02-19 08:46:28",
-            "updated_at": "2020-02-19 08:46:28"
+            "updated_at": "2020-02-19 08:46:28",
+            "updated_by": "adminuuidstring"
           }
         ]
 	    }
