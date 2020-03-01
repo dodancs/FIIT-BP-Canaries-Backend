@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Canary;
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -43,7 +44,18 @@ class UserController extends Controller
 			return response()->json(['code' => 2, 'message' => 'Invalid range', 'details' => 'Offset cannot be used without limit'], 400);
 		}
 
-		return response()->json(['users' => $users]);
+		$response = [];
+		foreach ($users as $u) {
+			$canaries = Canary::where('assignee', $u->uuid)->pluck('uuid')->toArray();
+			array_push($response, array_merge(
+				$u->toArray(),
+				[
+					'canaries' => $canaries
+				]
+			));
+		}
+
+		return response()->json(['users' => $response]);
 	}
 
 	public function createUsers(Request $req)
@@ -88,7 +100,14 @@ class UserController extends Controller
 		if (empty($u))
 			return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'User does not exist'], 400);
 
-		return response($u);
+		$canaries = Canary::where('assignee', $u->uuid)->pluck('uuid')->toArray();
+
+		return response()->json(array_merge(
+			$u->toArray(),
+			[
+				'canaries' => $canaries
+			]
+		));
 	}
 
 	public function modifyUser(Request $req, $uuid)
