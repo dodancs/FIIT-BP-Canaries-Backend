@@ -455,8 +455,18 @@
         "total": 455,
         "offset": 100,
         "domains": [
-          {"uuid": "uuidstring1", "domain": "domainname.tld"},
-          {"uuid": "uuidstring2", "domain": "another.tld"}
+          {
+            "uuid": "uuidstring1", 
+            "domain": "domainname.tld",
+            "created_at": "2020-02-19 08:46:28",
+            "updated_at": "2020-02-19 08:46:28"
+          },
+          {
+            "uuid": "uuidstring2", 
+            "domain": "another.tld",
+            "created_at": "2020-02-19 08:46:28",
+            "updated_at": "2020-02-19 08:46:28"
+           }
         ]
       }
       ```
@@ -520,7 +530,9 @@
         "domains": [
           {
             "uuid": "uuidstring",
-            "domain": "domena.sk"
+            "domain": "domena.sk",
+            "created_at": "2020-02-19 08:46:28",
+            "updated_at": "2020-02-19 08:46:28"
           }
         ]
 	    }
@@ -620,8 +632,18 @@
         "total": 234,
         "offset": 100,
         "sites": [
-          {"uuid": "uuidstring1", "site": "facebook.com"},
-          {"uuid": "uuidstring2", "site": "azet.sk"}
+          {
+            "uuid": "uuidstring1", 
+            "site": "facebook.com",
+            "created_at": "2020-02-19 08:46:28",
+            "updated_at": "2020-02-19 08:46:28"
+          },
+          {
+            "uuid": "uuidstring2", 
+            "site": "azet.sk",
+            "created_at": "2020-02-19 08:46:28",
+            "updated_at": "2020-02-19 08:46:28"
+          }
         ]
       }
       ```
@@ -685,7 +707,9 @@
         "sites": [
           {
             "uuid": "uuidstring",
-            "site": "bazos.sk"
+            "site": "bazos.sk",
+            "created_at": "2020-02-19 08:46:28",
+            "updated_at": "2020-02-19 08:46:28"
           }
         ]
       }
@@ -797,7 +821,9 @@
               "name": "Milan",
               "surname": "Paradajka",
               "phone": "+412 123 456 789"
-            }
+            },
+            "created_at": "2020-02-19 08:46:28",
+            "updated_at": "2020-02-19 08:46:28"
           }
         ]
       }
@@ -863,7 +889,9 @@
           "name": "Milan",
           "surname": "Paradajka",
           "phone": "+412 123 456 789"
-        }
+        },
+        "created_at": "2020-02-19 08:46:28",
+        "updated_at": "2020-02-19 08:46:28"
       }
       ```
 
@@ -1062,7 +1090,9 @@
             "data": { 
               "username": "milan.paradajka", 
               "password": "hesielko123", 
-            } 
+            },
+            "created_at": "2020-02-19 08:46:28",
+            "updated_at": "2020-02-19 08:46:28"
           }
         ]
 	    }
@@ -1167,7 +1197,9 @@
             "uuid": "uuidstring",
             "from": "sender@domain.tld",
             "subject": "message subject",
-            "body": "raw body"
+            "body": "raw body",
+            "created_at": "2020-02-19 08:46:28",
+            "updated_at": "2020-02-19 08:46:28"
           }
         ]
       }
