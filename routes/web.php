@@ -30,8 +30,7 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
                 $router->get('/users', 'UserController@listUsers');
                 $router->post('/users', 'UserController@createUsers');
                 $router->put('/users/{uuid}', 'UserController@modifyUser');
-                $router->delete('/users/{uuid}', function ($uuid) {
-                });
+                $router->delete('/users/{uuid}', 'UserController@deleteUser');
             });
             $router->get('/users/{uuid}', 'UserController@getUser');
 

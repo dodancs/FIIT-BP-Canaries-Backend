@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Canary;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -86,6 +87,7 @@ class UserController extends Controller {
 
     public function getUser(Request $req, $uuid) {
         $me = JWTAuth::user();
+
         if (strcmp($me->uuid, $uuid) && (!isset($me->permissions) || !in_array("admin", $me->permissions))) {
             return response()->json(['code' => 1, 'message' => 'Unauthorized'], 401);
         }
@@ -108,25 +110,45 @@ class UserController extends Controller {
     public function modifyUser(Request $req, $uuid) {
         $user = User::where('uuid', $uuid)->first();
         if (empty($user)) {
-            return abort(400, "no such user");
+            return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'User does not exist'], 400);
         }
 
-        $rules = [
-            'login' => 'unique:users|max:100',
-            'password' => 'min:8',
-        ];
-        $this->validate($req, $rules);
-
-        if ($req->has('login')) {
-            $user->login = $req->input('login');
+        if ($req->has('username')) {
+            $rules = [
+                'username' => 'required|unique:users|max:100',
+            ];
+            try {
+                $this->validate($req, $rules);
+            } catch (Exception $e) {
+                return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Username did not validate'], 400);
+            }
+            $user->username = $req->input('username');
         }
 
         if ($req->has('password')) {
-            $user->password = password_hash($req->input('password'), PASSWORD_DEFAULT);
+            $rules = [
+                'password' => 'required|min:8',
+            ];
+            try {
+                $this->validate($req, $rules);
+            } catch (Exception $e) {
+                return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Password did not validate'], 400);
+            }
+            $user->password = Hash::make($req->input('password'));
         }
 
         if ($req->has('permissions')) {
-            $user->permissions = $req->input('permissions');
+            $permissions = $user->permissions; // old permissions
+            $perms = []; // permissions to remove
+            $perms_add = [];
+            foreach ($req->input('permissions') as $perm => $val) {
+                if (!$val) {
+                    array_push($perms, $perm);
+                } else {
+                    array_push($perms_add, $perm);
+                }
+            }
+            $user->permissions = array_merge(array_diff($permissions, $perms), $perms_add);
         }
 
         $user->save();
@@ -136,16 +158,11 @@ class UserController extends Controller {
 
     public function deleteUser(Request $req, $uuid) {
         $user = User::where('uuid', $uuid)->first();
-        if (empty($user)) {
-            return abort(400, "no such user");
+        if (!empty($user)) {
+            $user->delete();
         }
 
-        $user->delete();
-
-        return response(['status' => "ok"]);
+        return response(null, 200);
     }
 
-    public function refresh(Request $req) {
-
-    }
 }

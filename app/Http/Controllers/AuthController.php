@@ -37,7 +37,11 @@ class AuthController extends Controller {
 
     public function refresh(Request $req) {
         $token = JWTAuth::refresh();
-        return response()->json(['token' => $token]);
+        return response()->json([
+            'token' => $token,
+            'token_type' => 'bearer',
+            'expires' => config('jwt.refresh_ttl'),
+        ]);
     }
 
     public function me() {
