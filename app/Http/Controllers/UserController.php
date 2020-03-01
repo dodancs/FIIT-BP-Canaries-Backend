@@ -153,7 +153,7 @@ class UserController extends Controller {
 
         $user->save();
 
-        return response($user);
+        return response(null, 200);
     }
 
     public function deleteUser(Request $req, $uuid) {

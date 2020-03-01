@@ -313,8 +313,7 @@
       }
       ```
 - response:
-  
-- http_code: 200
+  - http_code: 200
   
 - response:
   - http_code: 400
