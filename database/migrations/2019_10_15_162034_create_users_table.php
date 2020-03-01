@@ -17,8 +17,12 @@ class CreateUsersTable extends Migration {
             $table->string('username')->unique();
             $table->string('password');
             $table->json('permissions')->nullable();
-            $table->rememberToken();
+            $table->uuid('updated_by')->nullable()->default(null)->index();
+            // $table->rememberToken();
             $table->timestamps();
+        });
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('updated_by')->references('uuid')->on('users');
         });
     }
 

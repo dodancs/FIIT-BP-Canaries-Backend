@@ -32,7 +32,7 @@ class UserController extends Controller {
         }
 
         if ($req->has('limit') && $req->has('offset')) {
-            if ((int) $req->input('offset') + (int) $req->input('limit') > $users->count()) {
+            if ((int) $req->input('offset') + (int) $req->input('limit') > $totalCount) {
                 return response()->json(['code' => 2, 'message' => 'Invalid range'], 400);
             }
             $users = $users->slice((int) $req->input('offset'), (int) $req->input('limit'));
@@ -78,12 +78,15 @@ class UserController extends Controller {
             }
         }
 
+        $me = JWTAuth::user();
+
         $response = [];
 
         foreach ($req->input('users') as $u) {
             $user = new User(['username' => $u['username']]);
             $user->password = Hash::make($u['password']);
             $user->permissions = $u['permissions'];
+            $user->modified_by = $me->uuid;
             $user->save();
             array_push($response, $user);
         }
@@ -156,6 +159,9 @@ class UserController extends Controller {
             }
             $user->permissions = array_merge(array_diff($permissions, $perms), $perms_add);
         }
+
+        $me = JWTAuth::user();
+        $user->modified_by = $me->uuid;
 
         $user->save();
 

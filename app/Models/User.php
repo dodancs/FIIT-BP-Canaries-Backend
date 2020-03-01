@@ -14,7 +14,7 @@ class User extends UuidModel implements AuthenticatableContract, AuthorizableCon
 
     protected $fillable = ['username', 'password'];
     protected $casts = ['permissions' => 'array'];
-    protected $hidden = ['password', 'id', 'remember_token'];
+    protected $hidden = ['password', 'id' /*'remember_token',*/];
 
     public function getJWTIdentifier() {
         return $this->getKey();

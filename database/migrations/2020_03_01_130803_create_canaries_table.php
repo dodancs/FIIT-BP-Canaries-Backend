@@ -14,12 +14,14 @@ class CreateCanariesTable extends Migration {
         Schema::create('canaries', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('uuid')->unique()->notNullable()->index();
-            $table->uuid('domain')->index();
-            $table->uuid('site')->index();
-            $table->uuid('assignee')->index();
-            $table->foreign('domain')->references('uuid')->on('domains')->notNullable()->onDelete('cascade');
-            $table->foreign('site')->references('uuid')->on('sites')->notNullable()->onDelete('cascade');
-            $table->foreign('assignee')->references('uuid')->on('users')->nullable()->default(null);
+            $table->uuid('domain')->notNullable()->index();
+            $table->uuid('site')->notNullable()->index();
+            $table->uuid('assignee')->nullable()->default(null)->index();
+            $table->uuid('updated_by')->nullable()->default(null)->index();
+            $table->foreign('updated_by')->references('uuid')->on('users');
+            $table->foreign('domain')->references('uuid')->on('domains')->onDelete('cascade');
+            $table->foreign('site')->references('uuid')->on('sites')->onDelete('cascade');
+            $table->foreign('assignee')->references('uuid')->on('users');
             $table->boolean('testing')->default(false);
             $table->json('data')->nullable()->default(null);
             $table->timestamps();
