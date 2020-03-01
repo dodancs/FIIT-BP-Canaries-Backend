@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Ramsey\Uuid\Uuid;
 
 class UserController extends Controller
 {
