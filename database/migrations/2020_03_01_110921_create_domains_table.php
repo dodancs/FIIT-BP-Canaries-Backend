@@ -4,15 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDomainsTable extends Migration
-{
+class CreateDomainsTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('domains', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('uuid')->unique()->notNullable()->index();
@@ -26,8 +24,7 @@ class CreateDomainsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('domains');
     }
 }

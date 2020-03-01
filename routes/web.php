@@ -9,7 +9,7 @@
 | It is a breeze. Simply tell Lumen the URIs it should respond to
 | and give it the Closure to call when that URI is requested.
 |
-*/
+ */
 
 $router->get('/', function () {
     return response()->json(getallheaders());
@@ -92,18 +92,6 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
         });
     });
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Fake api
 $router->group(['prefix' => 'fake'], function () use ($router) {

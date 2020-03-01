@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-
 use Illuminate\Http\Request;
 
-class FakeController extends Controller
-{
+class FakeController extends Controller {
 
     private $admin = [
         'uuid' => '5757ecea-24e5-44b1-b92f-65c2fd0458ac',
         'permissions' => ['admin'],
         'canaries' => [],
         'created_at' => '2020-02-19 08:46:28',
-        'updated_at' => '2020-02-19 08:46:28'
+        'updated_at' => '2020-02-19 08:46:28',
     ];
     private $admin_token = [
         'token' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvdjFcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNTgzMDA4OTI1LCJleHAiOjE1ODMwMTI1MjUsIm5iZiI6MTU4MzAwODkyNSwianRpIjoiQUdGVGlYRFVkMWZaaHRGSCIsInN1YiI6IjlkOGFiMmQxLTUxYTctNDg5Ny1hY2Q4LWI1NmQ0MTAxZjQ5MyIsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.c1sw6yFBFx36QqqEd9EXwlGziYQ5k6_AL4wgWJBOsDY',
@@ -26,7 +23,7 @@ class FakeController extends Controller
         'permissions' => ['worker'],
         'canaries' => ['731a4675-60c1-48f5-82fc-459f4237e154'],
         'created_at' => '2020-02-19 11:33:01',
-        'updated_at' => '2020-02-19 11:33:01'
+        'updated_at' => '2020-02-19 11:33:01',
     ];
     private $worker_token = [
         'token' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvdjFcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNTgzMDA4OTI1LCJleHAiOjE1ODMwMTI1MjUsIm5iZiI6MTU4MzAwODkyNSwianRpIjoiQUdGVGlYRFVkMWZaaHRGSCIsInN1YiI6IjlkOGFiMmQxLTUxYTctNDg5Ny1hY2Q4LWI1NmQ0MTAxZjQ5MyIsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.c1sw6yFBFx36QqqEd9EXwlGziYQ5k6_AL4wgWJBOsDY',
@@ -34,12 +31,10 @@ class FakeController extends Controller
         'expires' => 3600,
     ];
 
-    public function __construct()
-    {
+    public function __construct() {
     }
 
-    public function login(Request $req)
-    {
+    public function login(Request $req) {
         if ($req->has('username') && $req->has('password')) {
             if (!strcmp($req->input('username'), 'admin') && !strcmp($req->input('password'), 'admin')) {
                 return response()->json(array_merge($this->admin_token, $this->admin));
@@ -54,13 +49,11 @@ class FakeController extends Controller
         }
     }
 
-    public function logout(Request $req)
-    {
+    public function logout(Request $req) {
         return response(null, 200);
     }
 
-    public function users(Request $req, $uuid = null)
-    {
+    public function users(Request $req, $uuid = null) {
         if ($uuid && !strcmp($this->admin['uuid'], $uuid)) {
             return response()->json($this->admin);
         }
@@ -93,8 +86,8 @@ class FakeController extends Controller
                     'total' => 2,
                     'offset' => 1,
                     'users' => [
-                        $this->worker
-                    ]
+                        $this->worker,
+                    ],
                 ]);
             } else {
                 return response()->json([
@@ -102,8 +95,8 @@ class FakeController extends Controller
                     'total' => 2,
                     'offset' => 0,
                     'users' => [
-                        $this->admin
-                    ]
+                        $this->admin,
+                    ],
                 ]);
             }
         } else if ($req->has('limit') && ((int) $req->input('limit') == 1)) {
@@ -112,8 +105,8 @@ class FakeController extends Controller
                 'total' => 2,
                 'offset' => 0,
                 'users' => [
-                    $this->admin
-                ]
+                    $this->admin,
+                ],
             ]);
         } else if ($req->has('offset')) {
             return response()->json(['code' => 2, 'message' => 'Invalid range', 'details' => 'Offset cannot be used without limit'], 400);
@@ -125,8 +118,8 @@ class FakeController extends Controller
             'offset' => 0,
             'users' => [
                 $this->admin,
-                $this->worker
-            ]
+                $this->worker,
+            ],
         ]);
     }
 }
