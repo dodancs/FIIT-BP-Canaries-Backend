@@ -309,8 +309,7 @@
       {
         "username": "peter1",
         "password": "noveheslo",
-        "permissions": {"admin": true, "worker": false},
-        "canaries": ["uuidstring1", "uuidstring2"]
+        "permissions": {"admin": true, "worker": false}
       }
       ```
 - response:
@@ -404,7 +403,7 @@
       {
         "token": "JWT_ACCESSTOKEN",
         "token_type": "bearer",
-        "expires": 3600,
+        "expires": 3600
       }
       ```
 
