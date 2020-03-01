@@ -45,28 +45,19 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
         $router->group(['middleware' => 'perm:admin'], function () use ($router) {
 
             $router->group(['prefix' => 'domains'], function () use ($router) {
-
-                $router->get('/', function () {
-                });
-                $router->post('/', function () {
-                });
-                $router->delete('/{uuid}', function () {
-                });
+                $router->get('/', 'DomainController@get');
+                $router->post('/', 'DomainController@add');
+                $router->delete('/{uuid}', 'DomainController@delete');
             });
 
             $router->group(['prefix' => 'sites'], function () use ($router) {
-
-                $router->get('/', function () {
-                });
-                $router->post('/', function () {
-                });
-                $router->delete('/{uuid}', function () {
-                });
+                $router->get('/', 'SiteController@get');
+                $router->post('/', 'SiteController@add');
+                $router->delete('/{uuid}', 'SiteController@delete');
             });
         });
 
         $router->group(['prefix' => 'canaries'], function () use ($router) {
-
             $router->get('/', function () {
             });
             $router->get('/{uuid}', function ($uuid) {
@@ -85,7 +76,6 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
         });
 
         $router->group(['prefix' => 'mail'], function () use ($router) {
-
             $router->get('/{uuid}', function ($uuid) {
             });
         });
@@ -96,7 +86,6 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
 $router->group(['prefix' => 'fake'], function () use ($router) {
 
     $router->group(['prefix' => 'auth'], function () use ($router) {
-
         $router->post('/login', 'FakeController@login');
         $router->get('/logout', 'FakeController@logout');
         $router->get('/users', 'FakeController@users');
@@ -108,7 +97,6 @@ $router->group(['prefix' => 'fake'], function () use ($router) {
     });
 
     $router->group(['prefix' => 'domains'], function () use ($router) {
-
         $router->get('/', function () {
         });
 
@@ -120,7 +108,6 @@ $router->group(['prefix' => 'fake'], function () use ($router) {
     });
 
     $router->group(['prefix' => 'sites'], function () use ($router) {
-
         $router->get('/', function () {
         });
 
@@ -132,7 +119,6 @@ $router->group(['prefix' => 'fake'], function () use ($router) {
     });
 
     $router->group(['prefix' => 'canaries'], function () use ($router) {
-
         $router->get('/', function () {
         });
 
@@ -153,7 +139,6 @@ $router->group(['prefix' => 'fake'], function () use ($router) {
     });
 
     $router->group(['prefix' => 'mail'], function () use ($router) {
-
         $router->get('/{uuid}', function ($uuid) {
         });
     });

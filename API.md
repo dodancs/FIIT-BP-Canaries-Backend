@@ -360,8 +360,7 @@
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Public user identification string
 - response:
-  
-- http_code: 200
+  - http_code: 200
   
 - response:
   - http_code: 400

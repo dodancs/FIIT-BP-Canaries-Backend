@@ -17,6 +17,7 @@ class UserController extends Controller {
     public function listUsers(Request $req) {
 
         $users = User::all();
+        $totalCount = $users->count();
 
         if (($req->has('limit') && !is_numeric($req->input('limit'))) || ($req->has('offset') && !is_numeric($req->input('offset')))) {
             return response()->json(['code' => 2, 'message' => 'Invalid range'], 400);
@@ -52,7 +53,12 @@ class UserController extends Controller {
             ));
         }
 
-        return response()->json(['users' => $response]);
+        return response()->json([
+            'count' => $req->has('limit') ? (int) $req->input('limit') : $totalCount,
+            'total' => $totalCount,
+            'offset' => $req->has('offset') ? (int) $req->input('offset') : 0,
+            'users' => $response,
+        ]);
     }
 
     public function createUsers(Request $req) {
@@ -66,7 +72,7 @@ class UserController extends Controller {
         }
 
         foreach ($req->input('users') as $u) {
-            $validator = Validator::make($u, $rules);
+            $validator = Validator::make($u, $rules, ['unique' => 'The username \':input\' has already been taken.']);
             if ($validator->fails()) {
                 return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => $validator->errors()->first()], 400);
             }
