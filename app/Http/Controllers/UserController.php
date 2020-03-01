@@ -86,7 +86,7 @@ class UserController extends Controller {
             $user = new User(['username' => $u['username']]);
             $user->password = Hash::make($u['password']);
             $user->permissions = $u['permissions'];
-            $user->modified_by = $me->uuid;
+            $user->updated_by = $me->uuid;
             $user->save();
             array_push($response, $user);
         }
@@ -161,7 +161,7 @@ class UserController extends Controller {
         }
 
         $me = JWTAuth::user();
-        $user->modified_by = $me->uuid;
+        $user->updated_by = $me->uuid;
 
         $user->save();
 
