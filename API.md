@@ -8,14 +8,42 @@
 ## Routes
 
 - [Auth](#route-auth)
+  - [Login](#route-auth-login)
+  - [Logout](#route-auth-logout)
+  - [Get all users](#route-auth-getUsers)
+  - [Get a particular user](#route-auth-getUser)
+  - [Add new users](#route-auth-addUsers)
+  - [Update a particular user](#route-auth-updateUser)
+  - [Delete a particular user](#route-auth-deleteUser)
 - [Domains](#route-domains)
+  - [Get all domains](#route-domains-get)
+  - [Add new domains](#route-domains-add)
+  - [Delete a particular domain](#route-domains-delete)
 - [Monitored sites](#route-sites)
+  - [Get all sites](#route-sites-get)
+  - [Add new sites](#route-sites-add)
+  - [Delete a particular site](#route-sites-delete)
 - [Canary nodes](#route-canaries)
+  - [Get all canary nodes](#route-canaries-getAll)
+  - [Get a particular canary node](#route-canaries-get)
+  - [Generate new fake data for canary node](#route-canaries-gen)
+  - [Re-generate fake data for canary node](#route-canaries-genNew)
+  - [Delete fake data for canary node](#route-canaries-genDel)
+  - [Create new canary nodes](#route-canaries-add)
+  - [Delete a particular canary node](#route-canaries-delete)
 - [Mail](#route-mail)
+  - [Get all mail for a particular canary node](#route-mail-get)
 
 ### <a name="route-auth"></a>Auth
+- [Login](#route-auth-login)
+- [Logout](#route-auth-logout)
+- [Get all users](#route-auth-getUsers)
+- [Get a particular user](#route-auth-getUser)
+- [Add new users](#route-auth-addUsers)
+- [Update a particular user](#route-auth-updateUser)
+- [Delete a particular user](#route-auth-deleteUser)
 
-#### /{endpoint}/auth/login : POST
+#### <a name="route-auth-login"></a>/{endpoint}/auth/login : POST
 - description: Log in and get access token
 - request:
   - parameters:
@@ -75,7 +103,7 @@
 
 -----------
 
-#### /{endpoint}/auth/logout : GET
+#### <a name="route-auth-logout"></a>/{endpoint}/auth/logout : GET
 - decription: Log user out
 - request
   - parameters:
@@ -86,7 +114,7 @@
 
 -----------
 
-#### /{endpoint}/auth/users : GET
+#### <a name="route-auth-getUsers"></a>/{endpoint}/auth/users : GET
 - decription: Get all users
 - request
   - parameters:
@@ -162,7 +190,7 @@
 
 -----------
 
-#### /{endpoint}/auth/users/{uuid} : GET
+#### <a name="route-auth-getUser"></a>/{endpoint}/auth/users/{uuid} : GET
 - decription: Get a particular user information
 - request
   - parameters:
@@ -221,7 +249,7 @@
 
 -----------
 
-#### /{endpoint}/auth/users : POST
+#### <a name="route-auth-addUsers"></a>/{endpoint}/auth/users : POST
 - decription: Create a new user
 - request
   - parameters:
@@ -299,7 +327,7 @@
 
 -----------
 
-#### /{endpoint}/auth/users/{uuid} : PUT
+#### <a name="route-auth-updateUser"></a>/{endpoint}/auth/users/{uuid} : PUT
 - decription: Update a particular user
 - request
   - parameters:
@@ -355,7 +383,7 @@
 
 -----------
 
-#### /{endpoint}/auth/users/{uuid} : DELETE
+#### <a name="route-auth-deleteUser"></a>/{endpoint}/auth/users/{uuid} : DELETE
 - decription: Delete a particular user
 - request
   - parameters:
@@ -390,7 +418,7 @@
 
 -----------
 
-#### /{endpoint}/auth/refresh_token : GET
+#### <a name="route-auth-refreshToken"></a>/{endpoint}/auth/refresh_token : GET
 - decription: Get new access token
 - request
   - parameters:
@@ -435,8 +463,11 @@
 -----------
 
 ### <a name="route-domains"></a>Domains
+- [Get all domains](#route-domains-get)
+- [Add new domains](#route-domains-add)
+- [Delete a particular domain](#route-domains-delete)
 
-#### /{endpoint}/domains : GET
+#### <a name="route-domains-get"></a>/{endpoint}/domains : GET
 - description: Prints all available canary domains
 - request
   - parameters:
@@ -507,7 +538,7 @@
 
 -----------
 
-#### /{endpoint}/domains : POST
+#### <a name="route-domains-add"></a>/{endpoint}/domains : POST
 - description: Add new domain(s)
 - request:
   - parameters:
@@ -575,7 +606,7 @@
 
 -----------
 
-#### /{endpoint}/domains/{uuid} : DELETE
+#### <a name="route-domains-delete"></a>/{endpoint}/domains/{uuid} : DELETE
 - decription: Delete a domain
 - request
   - parameters:
@@ -612,8 +643,11 @@
 -----------
 
 ### <a name="route-sites"></a>Monitored sites
+- [Get all sites](#route-sites-get)
+- [Add new sites](#route-sites-add)
+- [Delete a particular site](#route-sites-delete)
 
-#### /{endpoint}/sites : GET
+#### <a name="route-sites-get"></a>/{endpoint}/sites : GET
 - description: Prints all monitored sites
 - request
   - parameters:
@@ -684,7 +718,7 @@
 
 -----------
 
-#### /{endpoint}/sites : POST
+#### <a name="route-sites-add"></a>/{endpoint}/sites : POST
 - description: Add new site(s)
 - request:
   - parameters:
@@ -752,7 +786,7 @@
 
 -----------
 
-#### /{endpoint}/sites/{uuid} : DELETE
+#### <a name="route-sites-delete"></a>/{endpoint}/sites/{uuid} : DELETE
 - decription: Delete a site
 - request
   - parameters:
@@ -789,8 +823,15 @@
 -----------
 
 ### <a name="route-canaries"></a>Canary nodes
+- [Get all canary nodes](#route-canaries-getAll)
+- [Get a particular canary node](#route-canaries-get)
+- [Generate new fake data for canary node](#route-canaries-gen)
+- [Re-generate fake data for canary node](#route-canaries-genNew)
+- [Delete fake data for canary node](#route-canaries-genDel)
+- [Create new canary nodes](#route-canaries-add)
+- [Delete a particular canary node](#route-canaries-delete)
 
-#### /{endpoint}/canaries : GET
+#### <a name="route-canaries-getAll"></a>/{endpoint}/canaries : GET
 - description: Prints all canary nodes available to the user
 - request
   - parameters:
@@ -815,11 +856,13 @@
             "site": "uuidstring",
             "assignee": "uuidstring",
             "testing": false,
+            "setup": false,
+            "email": "milan.paradajka@domena.tld",
+            "password": "hesielko123",
             "data": {
               "username": "milan.paradajka",
-              "password": "hesielko123",
-              "name": "Milan",
-              "surname": "Paradajka",
+              "firstname": "Milan",
+              "lastname": "Paradajka",
               "phone": "+412 123 456 789"
             },
             "created_at": "2020-02-19 08:46:28",
@@ -866,7 +909,7 @@
 
 -----------
 
-#### /{endpoint}/canaries/{uuid} : GET
+#### <a name="route-canaries-get"></a>/{endpoint}/canaries/{uuid} : GET
 - description: Prints information about a particular canary node
 - request
   - parameters:
@@ -884,11 +927,13 @@
         "site": "uuidstring",
         "assignee": "uuidstring",
         "testing": false,
+        "setup": true,
+        "email": "milan.paradajka@domena.tld",
+        "password": "hesielko123",
         "data": {
           "username": "milan.paradajka",
-          "password": "hesielko123",
-          "name": "Milan",
-          "surname": "Paradajka",
+          "firstname": "Milan",
+          "lastname": "Paradajka",
           "phone": "+412 123 456 789"
         },
         "created_at": "2020-02-19 08:46:28",
@@ -934,19 +979,15 @@
 
 -----------
 
-#### /{endpoint}/canaries/{uuid}/{parameter} : GET
-- description: Gets or generates fake information for the canary node registration process
+#### <a name="route-canaries-gen"></a>/{endpoint}/canaries/{uuid}/{parameter} : GET
+- description: Generates fake information for the canary node registration process
 - request
   - parameters:
     - http_headers: 
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Canary node uuid
     - __{parameter}__: Parameter name
-      - __username__
-      - __password__
-      - __email__
-      - __site__
-      - __testing__
+      - username
       - firstname
       - lastname
       - birthday
@@ -1000,7 +1041,7 @@
 
 -----------
 
-#### /{endpoint}/canaries/{uuid}/{parameter}/new : GET
+#### <a name="route-canaries-genNew"></a>/{endpoint}/canaries/{uuid}/{parameter} : POST
 - description: Re-generates fake information
 - request
   - parameters:
@@ -1008,6 +1049,7 @@
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Canary node uuid
     - __{parameter}__: Parameter name
+      - username
       - firstname
       - lastname
       - birthday
@@ -1061,7 +1103,50 @@
 
 -----------
 
-#### /{endpoint}/canaries : POST
+#### <a name="route-canaries-genDel"></a>/{endpoint}/canaries/{uuid}/{parameter} : DELETE
+- description: Deletes fake information
+- request
+  - parameters:
+    - http_headers: 
+      - `Authentication: "bearer JWT_ACCESSTOKEN"`
+    - __{uuid}__: Canary node uuid
+    - __{parameter}__: Parameter name
+      - username
+      - firstname
+      - lastname
+      - birthday
+      - sex
+      - address
+      - phone
+- response:
+  - http_code: 200
+
+- response:
+  - http_code: 400
+  - parameters:
+    - body: 
+      ```json
+      {
+        "code": 0, 
+        "message": "Token not provided"
+      }
+      ```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: 
+      ```json
+      {
+        "code": 1, 
+        "message": "Unauthorized",
+        "details": "..."
+      }
+      ```
+
+-----------
+
+#### <a name="route-canaries-add"></a>/{endpoint}/canaries : POST
 - description: Create new canary nodes
 - request:
   - parameters:
@@ -1089,6 +1174,7 @@
             "site": "uuidstring", 
             "assignee": "uuidstring", 
             "testing": false, 
+            "setup": false,
             "data": { 
               "username": "milan.paradajka", 
               "password": "hesielko123", 
@@ -1138,7 +1224,7 @@
 
 -----------
 
-#### /{endpoint}/canaries/{uuid} : DELETE
+#### <a name="route-canaries-delete"></a>/{endpoint}/canaries/{uuid} : DELETE
 - decription: Delete a canary node
 - request
   - parameters:
@@ -1175,8 +1261,9 @@
 -----------
 
 ### <a name="route-mail"></a>Mail
+- [Get all mail for a particular canary node](#route-mail-get)
 
-#### /{endpoint}/mail/{uuid} : GET
+#### <a name="route-mail-get"></a>/{endpoint}/mail/{uuid} : GET
 - description: Prints all e-mails received by a particular canary account
 - request
   - parameters:
