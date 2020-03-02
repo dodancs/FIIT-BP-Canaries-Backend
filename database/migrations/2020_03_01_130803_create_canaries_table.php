@@ -23,6 +23,9 @@ class CreateCanariesTable extends Migration {
             $table->foreign('site')->references('uuid')->on('sites')->onDelete('cascade');
             $table->foreign('assignee')->references('uuid')->on('users');
             $table->boolean('testing')->default(false);
+            $table->boolean('setup')->default(false);
+            $table->string('email')->notNullable();
+            $table->string('password')->notNullable();
             $table->json('data')->nullable()->default(null);
             $table->timestamps();
         });

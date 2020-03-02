@@ -27,7 +27,7 @@ class SiteController extends Controller {
         }
 
         if ($req->has('limit') && $req->has('offset')) {
-            if ((int) $req->input('offset') + (int) $req->input('limit') > $sites->count()) {
+            if ((int) $req->input('offset') + (int) $req->input('limit') > $totalCount) {
                 return response()->json(['code' => 2, 'message' => 'Invalid range'], 400);
             }
             $sites = $sites->slice((int) $req->input('offset'), (int) $req->input('limit'));

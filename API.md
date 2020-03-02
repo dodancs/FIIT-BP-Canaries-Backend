@@ -1285,6 +1285,7 @@
         "emails": [
           {
             "uuid": "uuidstring",
+            "canary": "uuidstring",
             "from": "sender@domain.tld",
             "subject": "message subject",
             "body": "raw body",
