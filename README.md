@@ -70,7 +70,7 @@ You may use the PHP internal web server to host the API:
 
 Otherwise, you can run Nginx or Apache discrete web servers.
 
-Then just specify the root of the site to be in `/path/to/project/`__public__ and allow the site access to `/path/to/project/` (the parent directory).
+Then just specify the root of the site to be in `/path/to/project/public` and allow the site access to `/path/to/project/` (the parent directory).
 
 ## API Documentation
 
