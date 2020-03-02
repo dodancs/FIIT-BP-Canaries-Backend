@@ -64,7 +64,9 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
             });
             $router->get('/{uuid}/{parameter}', function ($uuid, $parameter) {
             });
-            $router->get('/{uuid}/{parameter}/new', function ($uuid, $parameter) {
+            $router->post('/{uuid}/{parameter}', function ($uuid, $parameter) {
+            });
+            $router->delete('/{uuid}/{parameter}', function ($uuid, $parameter) {
             });
 
             $router->group(['middleware' => 'perm:admin'], function () use ($router) {
@@ -82,64 +84,3 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     });
 });
 
-// Fake api
-$router->group(['prefix' => 'fake'], function () use ($router) {
-
-    $router->group(['prefix' => 'auth'], function () use ($router) {
-        $router->post('/login', 'FakeController@login');
-        $router->get('/logout', 'FakeController@logout');
-        $router->get('/users', 'FakeController@users');
-        $router->get('/users/{uuid}', 'FakeController@users');
-        $router->post('/users', 'FakeController@addusers');
-        $router->put('/users/{uuid}', 'FakeController@updateuser');
-        $router->delete('/users/{uuid}', 'FakeController@deleteuser');
-        $router->get('/refresh_token', 'FakeController@refresh');
-    });
-
-    $router->group(['prefix' => 'domains'], function () use ($router) {
-        $router->get('/', function () {
-        });
-
-        $router->post('/', function () {
-        });
-
-        $router->delete('/{uuid}', function () {
-        });
-    });
-
-    $router->group(['prefix' => 'sites'], function () use ($router) {
-        $router->get('/', function () {
-        });
-
-        $router->post('/', function () {
-        });
-
-        $router->delete('/{uuid}', function () {
-        });
-    });
-
-    $router->group(['prefix' => 'canaries'], function () use ($router) {
-        $router->get('/', function () {
-        });
-
-        $router->get('/{uuid}', function ($uuid) {
-        });
-
-        $router->get('/{uuid}/{parameter}', function ($uuid, $parameter) {
-        });
-
-        $router->get('/{uuid}/{parameter}/new', function ($uuid, $parameter) {
-        });
-
-        $router->post('/', function () {
-        });
-
-        $router->delete('/{uuid}', function ($uuid) {
-        });
-    });
-
-    $router->group(['prefix' => 'mail'], function () use ($router) {
-        $router->get('/{uuid}', function ($uuid) {
-        });
-    });
-});
