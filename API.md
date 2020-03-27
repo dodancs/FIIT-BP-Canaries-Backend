@@ -4,7 +4,9 @@
 
 - v1 - API version 1
 
+
 ## Routes
+
 
 - [Auth](#route-auth)
   - [Login](#route-auth-login)
@@ -34,6 +36,7 @@
 - [Mail](#route-mail)
   - [Get all mail for a particular canary node](#route-mail-get)
 
+
 ### <a name="route-auth"></a>Auth
 - [Login](#route-auth-login)
 - [Logout](#route-auth-logout)
@@ -42,6 +45,7 @@
 - [Add new users](#route-auth-addUsers)
 - [Update a particular user](#route-auth-updateUser)
 - [Delete a particular user](#route-auth-deleteUser)
+
 
 #### <a name="route-auth-login"></a>/{endpoint}/auth/login : POST
 - description: Log in and get access token
@@ -54,6 +58,8 @@
         "password": "secret123"
       }
       ```
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -68,7 +74,8 @@
         "canaries": []
       }
       ```
-  
+
+
 - response:
   - http_code: 400
   - parameters:
@@ -83,7 +90,8 @@
         "details": "Invalid credentials..."
       }
       ```
-  
+
+
 - response:
   - http_code: 429
   - parameters:
@@ -101,7 +109,9 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-auth-logout"></a>/{endpoint}/auth/logout : GET
 - decription: Log user out
@@ -109,10 +119,14 @@
   - parameters:
     - http_headers: 
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
+
+
 - response:
   - http_code: 200
 
+
 -----------
+
 
 #### <a name="route-auth-getUsers"></a>/{endpoint}/auth/users : GET
 - decription: Get all users
@@ -123,6 +137,8 @@
     - request (with limit - optional): `limit=10`
     - request (with offset - optional): `offset=100`
     - request (with limit & offset): `limit=5&offset=50`
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -154,6 +170,8 @@
         ]
       }
       ```
+
+
 - response:
   - http_code: 400
   - parameters:
@@ -164,6 +182,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -176,7 +195,8 @@
         "details": "..."
       }
       ```
-  
+
+
 - response:
   - http_code: 400
   - parameters:
@@ -188,7 +208,9 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-auth-getUser"></a>/{endpoint}/auth/users/{uuid} : GET
 - decription: Get a particular user information
@@ -197,6 +219,8 @@
     - http_headers: 
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Public user identification string
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -212,6 +236,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -222,6 +247,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -234,7 +260,8 @@
         "details": "..."
       }
       ```
-  
+
+
 - response:
   - http_code: 400
   - parameters:
@@ -247,14 +274,15 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-auth-addUsers"></a>/{endpoint}/auth/users : POST
 - decription: Create a new user
 - request
   - parameters:
     - http_headers: 
-      
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - body: 
       ```json
@@ -269,7 +297,8 @@
         ]
       }
       ```
-  
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -290,6 +319,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -300,6 +330,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -313,6 +344,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -325,14 +357,15 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-auth-updateUser"></a>/{endpoint}/auth/users/{uuid} : PUT
 - decription: Update a particular user
 - request
   - parameters:
     - http_headers: 
-      
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Public user identification string
     - body: 
@@ -343,10 +376,12 @@
         "permissions": {"admin": true, "worker": false}
       }
       ```
+
+
 - response:
-  
   - http_code: 200
-  
+
+
 - response:
   - http_code: 400
   - parameters:
@@ -357,6 +392,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -369,6 +405,7 @@
         "details": "..."
       }
       ```
+
 
 - response:
   - http_code: 400
@@ -382,7 +419,9 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-auth-deleteUser"></a>/{endpoint}/auth/users/{uuid} : DELETE
 - decription: Delete a particular user
@@ -391,10 +430,12 @@
     - http_headers: 
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Public user identification string
+
+
 - response:
-  
   - http_code: 200
-  
+
+
 - response:
   - http_code: 400
   - parameters:
@@ -405,6 +446,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -418,7 +460,9 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-auth-refreshToken"></a>/{endpoint}/auth/refresh_token : GET
 - decription: Get new access token
@@ -426,6 +470,8 @@
   - parameters:
     - http_headers: 
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -438,6 +484,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -448,6 +495,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -461,13 +509,16 @@
       }
       ```
 
+
 -----------
 -----------
+
 
 ### <a name="route-domains"></a>Domains
 - [Get all domains](#route-domains-get)
 - [Add new domains](#route-domains-add)
 - [Delete a particular domain](#route-domains-delete)
+
 
 #### <a name="route-domains-get"></a>/{endpoint}/domains : GET
 - description: Prints all available canary domains
@@ -478,6 +529,8 @@
     - request (with limit - optional): `limit=10`
     - request (with offset - optional): `offset=100`
     - request (with limit & offset): `limit=5&offset=50`
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -504,6 +557,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -514,6 +568,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -526,7 +581,8 @@
         "details": "..."
       }
       ```
-  
+
+
 - response:
   - http_code: 400
   - parameters:
@@ -538,14 +594,15 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-domains-add"></a>/{endpoint}/domains : POST
 - description: Add new domain(s)
 - request:
   - parameters:
     - http_headers: 
-      
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - body: 
       ```json
@@ -555,6 +612,8 @@
         ]
       }
       ```
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -572,6 +631,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -582,6 +642,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -594,6 +655,7 @@
         "details": "..."
       }
       ```
+
 
 - response:
   - http_code: 400
@@ -607,7 +669,9 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-domains-delete"></a>/{endpoint}/domains/{uuid} : DELETE
 - decription: Delete a domain
@@ -616,10 +680,12 @@
     - http_headers: 
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Canary domain uuid
+
+
 - response:
-  
-- http_code: 200
-  
+  - http_code: 200
+
+
 - response:
   - http_code: 400
   - parameters:
@@ -630,6 +696,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -643,13 +710,16 @@
       }
       ```
 
+
 -----------
 -----------
+
 
 ### <a name="route-sites"></a>Monitored sites
 - [Get all sites](#route-sites-get)
 - [Add new sites](#route-sites-add)
 - [Delete a particular site](#route-sites-delete)
+
 
 #### <a name="route-sites-get"></a>/{endpoint}/sites : GET
 - description: Prints all monitored sites
@@ -660,6 +730,8 @@
     - request (with limit - optional): `limit=10`
     - request (with offset - optional): `offset=100`
     - request (with limit & offset): `limit=5&offset=50`
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -686,6 +758,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -696,6 +769,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -708,7 +782,8 @@
         "details": "..."
       }
       ```
-  
+
+
 - response:
   - http_code: 400
   - parameters:
@@ -720,14 +795,15 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-sites-add"></a>/{endpoint}/sites : POST
 - description: Add new site(s)
 - request:
   - parameters:
     - http_headers: 
-      
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - body: 
       ```json
@@ -737,6 +813,8 @@
         ]
       }
       ```
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -754,6 +832,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -764,6 +843,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -776,7 +856,8 @@
         "details": "..."
       }
       ```
-  
+
+
 - response:
   - http_code: 400
   - parameters:
@@ -789,7 +870,9 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-sites-delete"></a>/{endpoint}/sites/{uuid} : DELETE
 - decription: Delete a site
@@ -798,10 +881,12 @@
     - http_headers: 
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Monitored site uuid
+
+
 - response:
-  
-- http_code: 200
-  
+  - http_code: 200
+
+
 - response:
   - http_code: 400
   - parameters:
@@ -812,6 +897,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -825,8 +911,10 @@
       }
       ```
 
+
 -----------
 -----------
+
 
 ### <a name="route-canaries"></a>Canary nodes
 - [Get all canary nodes](#route-canaries-getAll)
@@ -838,6 +926,7 @@
 - [Create new canary nodes](#route-canaries-add)
 - [Delete a particular canary node](#route-canaries-delete)
 
+
 #### <a name="route-canaries-getAll"></a>/{endpoint}/canaries : GET
 - description: Prints all canary nodes available to the user
 - request
@@ -847,6 +936,8 @@
     - request (with limit - optional): `limit=10`
     - request (with offset - optional): `offset=100`
     - request (with limit & offset): `limit=5&offset=50`
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -880,6 +971,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -890,6 +982,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -902,7 +995,8 @@
         "details": "..."
       }
       ```
-  
+
+
 - response:
   - http_code: 400
   - parameters:
@@ -914,7 +1008,9 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-canaries-get"></a>/{endpoint}/canaries/{uuid} : GET
 - description: Prints information about a particular canary node
@@ -923,6 +1019,8 @@
     - http_headers: 
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Canary node uuid
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -949,6 +1047,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -959,6 +1058,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -972,6 +1072,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -984,7 +1085,9 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-canaries-getEmail"></a>/{endpoint}/canaries/{email} : GET
 - description: Prints information about a particular canary node based on provided email address
@@ -993,6 +1096,8 @@
     - http_headers: 
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{email}__: Canary node email address
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -1019,6 +1124,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -1029,6 +1135,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -1042,6 +1149,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -1054,7 +1162,9 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-canaries-gen"></a>/{endpoint}/canaries/{uuid}/{parameter} : GET
 - description: Generates fake information for the canary node registration process
@@ -1071,6 +1181,8 @@
       - sex
       - address
       - phone
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -1080,6 +1192,7 @@
         "parameter": "value"
       }
       ```
+
 
 - response:
   - http_code: 400
@@ -1091,6 +1204,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -1104,6 +1218,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -1116,7 +1231,9 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-canaries-genNew"></a>/{endpoint}/canaries/{uuid}/{parameter} : POST
 - description: Re-generates fake information
@@ -1133,6 +1250,8 @@
       - sex
       - address
       - phone
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -1142,6 +1261,7 @@
         "parameter": "value"
       }
       ```
+
 
 - response:
   - http_code: 400
@@ -1153,6 +1273,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -1166,6 +1287,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -1178,7 +1300,9 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-canaries-genDel"></a>/{endpoint}/canaries/{uuid}/{parameter} : DELETE
 - description: Deletes fake information
@@ -1195,10 +1319,12 @@
       - sex
       - address
       - phone
+
+
 - response:
-  
-- http_code: 200
-  
+  - http_code: 200
+
+
 - response:
   - http_code: 400
   - parameters:
@@ -1209,6 +1335,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -1222,14 +1349,15 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-canaries-add"></a>/{endpoint}/canaries : POST
 - description: Create new canary nodes
 - request:
   - parameters:
     - http_headers: 
-      
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - body: 
       ```json
@@ -1240,6 +1368,8 @@
         "count": 10
       }
       ```
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -1266,6 +1396,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -1276,6 +1407,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -1288,6 +1420,7 @@
         "details": "..."
       }
       ```
+
 
 - response:
   - http_code: 400
@@ -1301,7 +1434,9 @@
       }
       ```
 
+
 -----------
+
 
 #### <a name="route-canaries-delete"></a>/{endpoint}/canaries/{uuid} : DELETE
 - decription: Delete a canary node
@@ -1310,10 +1445,12 @@
     - http_headers: 
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Canary node uuid
+
+
 - response:
-  
-- http_code: 200
-  
+  - http_code: 200
+
+
 - response:
   - http_code: 400
   - parameters:
@@ -1324,6 +1461,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -1336,6 +1474,7 @@
         "details": "..."
       }
       ```
+
 
 -----------
 -----------
@@ -1353,6 +1492,8 @@
     - request (with limit - optional): `limit=10`
     - request (with offset - optional): `offset=100`
     - request (with limit & offset): `limit=5&offset=50`
+
+
 - response:
   - http_code: 200
   - parameters:
@@ -1376,6 +1517,7 @@
       }
       ```
 
+
 - response:
   - http_code: 400
   - parameters:
@@ -1386,6 +1528,7 @@
         "message": "Token not provided"
       }
       ```
+
 
 - response:
   - http_code: 401
@@ -1398,7 +1541,8 @@
         "details": "..."
       }
       ```
-  
+
+
 - response:
   - http_code: 400
   - parameters:
