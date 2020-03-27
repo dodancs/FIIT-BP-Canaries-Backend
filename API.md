@@ -68,29 +68,29 @@
         "canaries": []
       }
       ```
-	
+    
 - response:
   - http_code: 400
   - parameters:
     - http_headers: 
-		  - `X-RateLimit-Limit: 10`
-			- `X-RateLimit-Remaining: 7`
-		- body: 
+      - `X-RateLimit-Limit: 10`
+      - `X-RateLimit-Remaining: 7`
+    - body: 
       ```json
       {
         "code": 0,
         "message": "Bad request",
         "details": "Invalid credentials..."
-	    }
+      }
       ```
-	
+    
 - response:
   - http_code: 429
   - parameters:
     - http_headers: 
-		  - `X-RateLimit-Limit: 10`
-			- `X-RateLimit-Remaining: 0`
-			- `X-RateLimit-Reset: 1582480798`
+      - `X-RateLimit-Limit: 10`
+      - `X-RateLimit-Remaining: 0`
+      - `X-RateLimit-Reset: 1582480798`
       - `Retry-After: 60`
     - body: 
       ```json
@@ -176,7 +176,7 @@
         "details": "..."
       }
       ```
-	
+    
 - response:
   - http_code: 400
   - parameters:
@@ -234,7 +234,7 @@
         "details": "..."
       }
       ```
-	
+    
 - response:
   - http_code: 400
   - parameters:
@@ -254,7 +254,6 @@
 - request
   - parameters:
     - http_headers: 
-      
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - body: 
       ```json
@@ -268,8 +267,8 @@
           }
         ]
       }
-	    ```
-	
+      ```
+    
 - response:
   - http_code: 200
   - parameters:
@@ -288,7 +287,7 @@
           }
         ]
       }
-	    ```
+      ```
 
 - response:
   - http_code: 400
@@ -524,7 +523,7 @@
         "details": "..."
       }
       ```
-	
+    
 - response:
   - http_code: 400
   - parameters:
@@ -566,7 +565,7 @@
             "updated_at": "2020-02-19 08:46:28"
           }
         ]
-	    }
+      }
       ```
 
 - response:
@@ -598,7 +597,7 @@
     - body: 
       ```json
       {
-		    "code": 2,
+        "code": 2,
         "message": "Bad request",
         "details": "Domains already exist..."
       }
@@ -704,7 +703,7 @@
         "details": "..."
       }
       ```
-	
+    
 - response:
   - http_code: 400
   - parameters:
@@ -771,7 +770,7 @@
         "details": "..."
       }
       ```
-	
+    
 - response:
   - http_code: 400
   - parameters:
@@ -895,7 +894,7 @@
         "details": "..."
       }
       ```
-	
+    
 - response:
   - http_code: 400
   - parameters:
@@ -1159,7 +1158,7 @@
         "site": "uuidstring",
         "testing": false,
         "count": 10
-		  }
+      }
       ```
 - response:
   - http_code: 200
@@ -1184,7 +1183,7 @@
             "updated_by": "adminuuidstring"
           }
         ]
-	    }
+      }
       ```
 
 - response:
@@ -1318,7 +1317,7 @@
         "details": "..."
       }
       ```
-	
+    
 - response:
   - http_code: 400
   - parameters:
