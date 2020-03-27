@@ -3,7 +3,6 @@
 ## Endpoints
 
 - v1 - API version 1
-- fake - Fake API as a placeholder
 
 ## Routes
 
@@ -26,6 +25,7 @@
 - [Canary nodes](#route-canaries)
   - [Get all canary nodes](#route-canaries-getAll)
   - [Get a particular canary node](#route-canaries-get)
+  - [Get canary details by email address](#route-canaries-getEmail)
   - [Generate new fake data for canary node](#route-canaries-gen)
   - [Re-generate fake data for canary node](#route-canaries-genNew)
   - [Delete fake data for canary node](#route-canaries-genDel)
@@ -68,7 +68,7 @@
         "canaries": []
       }
       ```
-    
+  
 - response:
   - http_code: 400
   - parameters:
@@ -83,7 +83,7 @@
         "details": "Invalid credentials..."
       }
       ```
-    
+  
 - response:
   - http_code: 429
   - parameters:
@@ -176,7 +176,7 @@
         "details": "..."
       }
       ```
-    
+  
 - response:
   - http_code: 400
   - parameters:
@@ -234,7 +234,7 @@
         "details": "..."
       }
       ```
-    
+  
 - response:
   - http_code: 400
   - parameters:
@@ -254,6 +254,7 @@
 - request
   - parameters:
     - http_headers: 
+      
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - body: 
       ```json
@@ -268,7 +269,7 @@
         ]
       }
       ```
-    
+  
 - response:
   - http_code: 200
   - parameters:
@@ -343,6 +344,7 @@
       }
       ```
 - response:
+  
   - http_code: 200
   
 - response:
@@ -390,6 +392,7 @@
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Public user identification string
 - response:
+  
   - http_code: 200
   
 - response:
@@ -523,7 +526,7 @@
         "details": "..."
       }
       ```
-    
+  
 - response:
   - http_code: 400
   - parameters:
@@ -542,6 +545,7 @@
 - request:
   - parameters:
     - http_headers: 
+      
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - body: 
       ```json
@@ -613,8 +617,9 @@
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Canary domain uuid
 - response:
-  - http_code: 200
-
+  
+- http_code: 200
+  
 - response:
   - http_code: 400
   - parameters:
@@ -703,7 +708,7 @@
         "details": "..."
       }
       ```
-    
+  
 - response:
   - http_code: 400
   - parameters:
@@ -722,6 +727,7 @@
 - request:
   - parameters:
     - http_headers: 
+      
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - body: 
       ```json
@@ -770,7 +776,7 @@
         "details": "..."
       }
       ```
-    
+  
 - response:
   - http_code: 400
   - parameters:
@@ -793,8 +799,9 @@
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Monitored site uuid
 - response:
-  - http_code: 200
-
+  
+- http_code: 200
+  
 - response:
   - http_code: 400
   - parameters:
@@ -824,6 +831,7 @@
 ### <a name="route-canaries"></a>Canary nodes
 - [Get all canary nodes](#route-canaries-getAll)
 - [Get a particular canary node](#route-canaries-get)
+- [Get canary details by email address](#route-canaries-getEmail)
 - [Generate new fake data for canary node](#route-canaries-gen)
 - [Re-generate fake data for canary node](#route-canaries-genNew)
 - [Delete fake data for canary node](#route-canaries-genDel)
@@ -894,7 +902,7 @@
         "details": "..."
       }
       ```
-    
+  
 - response:
   - http_code: 400
   - parameters:
@@ -915,6 +923,76 @@
     - http_headers: 
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Canary node uuid
+- response:
+  - http_code: 200
+  - parameters:
+    - body: 
+      ```json
+      {
+        "uuid": "uuidstring",
+        "domain": "uuidstring",
+        "site": "uuidstring",
+        "assignee": "uuidstring",
+        "testing": false,
+        "setup": true,
+        "email": "milan.paradajka@domena.tld",
+        "password": "hesielko123",
+        "data": {
+          "username": "milan.paradajka",
+          "firstname": "Milan",
+          "lastname": "Paradajka",
+          "phone": "+412 123 456 789"
+        },
+        "created_at": "2020-02-19 08:46:28",
+        "updated_at": "2020-02-19 08:46:28",
+        "updated_by": "adminuuidstring"
+      }
+      ```
+
+- response:
+  - http_code: 400
+  - parameters:
+    - body: 
+      ```json
+      {
+        "code": 0, 
+        "message": "Token not provided"
+      }
+      ```
+
+- response:
+  - http_code: 401
+  - parameters:
+    - body: 
+      ```json
+      {
+        "code": 1, 
+        "message": "Unauthorized",
+        "details": "..."
+      }
+      ```
+
+- response:
+  - http_code: 400
+  - parameters:
+    - body: 
+      ```json
+      {
+        "code": 2,
+        "message": "Bad request",
+        "details": "Canary does not exist..."
+      }
+      ```
+
+-----------
+
+#### <a name="route-canaries-getEmail"></a>/{endpoint}/canaries/{email} : GET
+- description: Prints information about a particular canary node based on provided email address
+- request
+  - parameters:
+    - http_headers: 
+      - `Authentication: "bearer JWT_ACCESSTOKEN"`
+    - __{email}__: Canary node email address
 - response:
   - http_code: 200
   - parameters:
@@ -1118,8 +1196,9 @@
       - address
       - phone
 - response:
-  - http_code: 200
-
+  
+- http_code: 200
+  
 - response:
   - http_code: 400
   - parameters:
@@ -1150,6 +1229,7 @@
 - request:
   - parameters:
     - http_headers: 
+      
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - body: 
       ```json
@@ -1231,8 +1311,9 @@
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Canary node uuid
 - response:
-  - http_code: 200
-
+  
+- http_code: 200
+  
 - response:
   - http_code: 400
   - parameters:
@@ -1317,7 +1398,7 @@
         "details": "..."
       }
       ```
-    
+  
 - response:
   - http_code: 400
   - parameters:
