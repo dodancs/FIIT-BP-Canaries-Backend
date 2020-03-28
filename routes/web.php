@@ -58,8 +58,7 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
         });
 
         $router->group(['prefix' => 'canaries'], function () use ($router) {
-            $router->get('/', function () {
-            });
+            $router->get('/', 'CanaryController@listCanaries');
             $router->get('/{uuid}', function ($uuid) {
             });
             $router->get('/{uuid}/{parameter}', function ($uuid, $parameter) {
@@ -70,8 +69,7 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
             });
 
             $router->group(['middleware' => 'perm:admin'], function () use ($router) {
-                $router->post('/', function () {
-                });
+                $router->post('/', 'CanaryController@add');
                 $router->delete('/{uuid}', function ($uuid) {
                 });
             });
@@ -83,4 +81,3 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
         });
     });
 });
-

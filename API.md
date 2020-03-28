@@ -1384,9 +1384,10 @@
             "assignee": "uuidstring", 
             "testing": false, 
             "setup": false,
+            "email": "milan.paradajka@domena.tld",
+            "password": "hesielko123",
             "data": { 
-              "username": "milan.paradajka", 
-              "password": "hesielko123", 
+              "username": "milan.paradajka"
             },
             "created_at": "2020-02-19 08:46:28",
             "updated_at": "2020-02-19 08:46:28",
