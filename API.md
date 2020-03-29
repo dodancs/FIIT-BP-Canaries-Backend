@@ -25,9 +25,7 @@
   - [Add new sites](#route-sites-add)
   - [Delete a particular site](#route-sites-delete)
 - [Canary nodes](#route-canaries)
-  - [Get all canary nodes](#route-canaries-getAll)
-  - [Get a particular canary node](#route-canaries-get)
-  - [Get canary details by email address](#route-canaries-getEmail)
+  - [Get all canary nodes](#route-canaries-get)
   - [Generate new fake data for canary node](#route-canaries-gen)
   - [Re-generate fake data for canary node](#route-canaries-genNew)
   - [Delete fake data for canary node](#route-canaries-genDel)
@@ -917,9 +915,7 @@
 
 
 ### <a name="route-canaries"></a>Canary nodes
-- [Get all canary nodes](#route-canaries-getAll)
-- [Get a particular canary node](#route-canaries-get)
-- [Get canary details by email address](#route-canaries-getEmail)
+- [Get all canary nodes or canary details](#route-canaries-get)
 - [Generate new fake data for canary node](#route-canaries-gen)
 - [Re-generate fake data for canary node](#route-canaries-genNew)
 - [Delete fake data for canary node](#route-canaries-genDel)
@@ -927,8 +923,8 @@
 - [Delete a particular canary node](#route-canaries-delete)
 
 
-#### <a name="route-canaries-getAll"></a>/{endpoint}/canaries : GET
-- description: Prints all canary nodes available to the user
+#### <a name="route-canaries-get"></a>/{endpoint}/canaries : GET
+- description: Prints all canary nodes available to the user. If uuid or email parameters are specified, then only detail of that canary will be returned.
 - request
   - parameters:
     - http_headers: 
@@ -936,6 +932,8 @@
     - request (with limit - optional): `limit=10`
     - request (with offset - optional): `offset=100`
     - request (with limit & offset): `limit=5&offset=50`
+    - request (with uuid): `uuid=uuidstring`
+    - request (with email): `email=milan.paradajka@domena.tld`
 
 
 - response:
@@ -968,6 +966,33 @@
             "updated_by": "adminuuidstring"
           }
         ]
+      }
+      ```
+
+
+- response:
+  - http_code: 200
+  - parameters:
+    - body: 
+      ```json
+      {
+        "uuid": "uuidstring",
+        "domain": "uuidstring",
+        "site": "uuidstring",
+        "assignee": "uuidstring",
+        "testing": false,
+        "setup": true,
+        "email": "milan.paradajka@domena.tld",
+        "password": "hesielko123",
+        "data": {
+          "username": "milan.paradajka",
+          "firstname": "Milan",
+          "lastname": "Paradajka",
+          "phone": "+412 123 456 789"
+        },
+        "created_at": "2020-02-19 08:46:28",
+        "updated_at": "2020-02-19 08:46:28",
+        "updated_by": "adminuuidstring"
       }
       ```
 
@@ -1008,155 +1033,13 @@
       }
       ```
 
-
------------
-
-
-#### <a name="route-canaries-get"></a>/{endpoint}/canaries/{uuid} : GET
-- description: Prints information about a particular canary node
-- request
-  - parameters:
-    - http_headers: 
-      - `Authentication: "bearer JWT_ACCESSTOKEN"`
-    - __{uuid}__: Canary node uuid
-
-
-- response:
-  - http_code: 200
-  - parameters:
-    - body: 
-      ```json
-      {
-        "uuid": "uuidstring",
-        "domain": "uuidstring",
-        "site": "uuidstring",
-        "assignee": "uuidstring",
-        "testing": false,
-        "setup": true,
-        "email": "milan.paradajka@domena.tld",
-        "password": "hesielko123",
-        "data": {
-          "username": "milan.paradajka",
-          "firstname": "Milan",
-          "lastname": "Paradajka",
-          "phone": "+412 123 456 789"
-        },
-        "created_at": "2020-02-19 08:46:28",
-        "updated_at": "2020-02-19 08:46:28",
-        "updated_by": "adminuuidstring"
-      }
-      ```
-
-
 - response:
   - http_code: 400
   - parameters:
     - body: 
       ```json
       {
-        "code": 0, 
-        "message": "Token not provided"
-      }
-      ```
-
-
-- response:
-  - http_code: 401
-  - parameters:
-    - body: 
-      ```json
-      {
-        "code": 1, 
-        "message": "Unauthorized",
-        "details": "..."
-      }
-      ```
-
-
-- response:
-  - http_code: 400
-  - parameters:
-    - body: 
-      ```json
-      {
-        "code": 2,
-        "message": "Bad request",
-        "details": "Canary does not exist..."
-      }
-      ```
-
-
------------
-
-
-#### <a name="route-canaries-getEmail"></a>/{endpoint}/canaries/{email} : GET
-- description: Prints information about a particular canary node based on provided email address
-- request
-  - parameters:
-    - http_headers: 
-      - `Authentication: "bearer JWT_ACCESSTOKEN"`
-    - __{email}__: Canary node email address
-
-
-- response:
-  - http_code: 200
-  - parameters:
-    - body: 
-      ```json
-      {
-        "uuid": "uuidstring",
-        "domain": "uuidstring",
-        "site": "uuidstring",
-        "assignee": "uuidstring",
-        "testing": false,
-        "setup": true,
-        "email": "milan.paradajka@domena.tld",
-        "password": "hesielko123",
-        "data": {
-          "username": "milan.paradajka",
-          "firstname": "Milan",
-          "lastname": "Paradajka",
-          "phone": "+412 123 456 789"
-        },
-        "created_at": "2020-02-19 08:46:28",
-        "updated_at": "2020-02-19 08:46:28",
-        "updated_by": "adminuuidstring"
-      }
-      ```
-
-
-- response:
-  - http_code: 400
-  - parameters:
-    - body: 
-      ```json
-      {
-        "code": 0, 
-        "message": "Token not provided"
-      }
-      ```
-
-
-- response:
-  - http_code: 401
-  - parameters:
-    - body: 
-      ```json
-      {
-        "code": 1, 
-        "message": "Unauthorized",
-        "details": "..."
-      }
-      ```
-
-
-- response:
-  - http_code: 400
-  - parameters:
-    - body: 
-      ```json
-      {
-        "code": 2,
+        "code": 3,
         "message": "Bad request",
         "details": "Canary does not exist..."
       }
@@ -1508,6 +1391,7 @@
           {
             "uuid": "uuidstring",
             "canary": "uuidstring",
+            "received_on": "2020-02-19 08:45:00",
             "from": "sender@domain.tld",
             "subject": "message subject",
             "body": "raw body",

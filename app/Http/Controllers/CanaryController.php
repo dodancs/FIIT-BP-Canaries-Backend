@@ -15,6 +15,31 @@ class CanaryController extends Controller {
 
     public function listCanaries(Request $req) {
         $me = JWTAuth::user();
+
+        if ($req->has('uuid')) {
+            $c = Canary::where('uuid', $req->input('uuid'))->first();
+            if (empty($c)) {
+                return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Canary does not exist'], 400);
+            }
+
+            if ($c->assignee != $me->uuid && (!isset($me->permissions) || !in_array("admin", $me->permissions))) {
+                return response()->json(['code' => 1, 'message' => 'Unauthorized'], 401);
+            }
+
+            return response()->json($c);
+        } else if ($req->has('email')) {
+            $c = Canary::where('email', $req->input('email'))->first();
+            if (empty($c)) {
+                return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Canary does not exist'], 400);
+            }
+
+            if ($c->assignee != $me->uuid && (!isset($me->permissions) || !in_array("admin", $me->permissions))) {
+                return response()->json(['code' => 1, 'message' => 'Unauthorized'], 401);
+            }
+
+            return response()->json($c);
+        }
+
         if (isset($me->permissions) && in_array("admin", $me->permissions)) {
             $canaries = Canary::all();
         } else {
@@ -52,6 +77,86 @@ class CanaryController extends Controller {
             'canaries' => $canaries,
         ]);
 
+    }
+
+    public function getParameter(Request $req, $uuid, $parameter, $regen = false) {
+        if (!in_array($parameter, array('username', 'firstname', 'lastname', 'birthday', 'sex', 'address', 'phone'))) {
+            return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Parameter does not exist'], 400);
+        }
+
+        $c = Canary::where('uuid', $uuid)->first();
+        if (empty($c)) {
+            return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Canary does not exist'], 400);
+        }
+
+        $me = JWTAuth::user();
+
+        if ($c->assignee != $me->uuid && (!isset($me->permissions) || !in_array("admin", $me->permissions))) {
+            return response()->json(['code' => 1, 'message' => 'Unauthorized'], 401);
+        }
+
+        $faker = Faker\Factory::create();
+
+        $data = $c->data;
+
+        if (!array_key_exists($parameter, $data) || $regen) {
+
+            if (array_key_exists($parameter, $data)) {
+                unset($data[$parameter]);
+            }
+
+            switch ($parameter) {
+            case 'username':$data[$parameter] = $faker->userName();
+                break;
+            case 'firstname':$data[$parameter] = $faker->firstName();
+                break;
+            case 'lastname':$data[$parameter] = $faker->lastName();
+                break;
+            case 'birthday':$data[$parameter] = $faker->dateTimeThisCentury->format('Y-m-d');
+                break;
+            case 'sex':$data[$parameter] = $faker->boolean() ? 'female' : 'male';
+                break;
+            case 'address':$data[$parameter] = [
+                    'street' => $faker->streetAddress(),
+                    'city' => $faker->city(),
+                    'postcode' => $faker->postcode(),
+                    'state' => $faker->state(),
+                ];
+                break;
+            case 'phone':$data[$parameter] = $faker->phoneNumber();
+                break;
+            }
+            $c->update(['data' => $data]);
+        }
+
+        return response()->json([$parameter => $c->data[$parameter]], 200);
+
+    }
+
+    public function regenParameter(Request $req, $uuid, $parameter) {
+        return $this->getParameter($req, $uuid, $parameter, true);
+    }
+
+    public function deleteParameter(Request $req, $uuid, $parameter) {
+        $c = Canary::where('uuid', $uuid)->first();
+        if (empty($c)) {
+            return response(null, 200);
+        }
+
+        $me = JWTAuth::user();
+
+        if ($c->assignee != $me->uuid && (!isset($me->permissions) || !in_array("admin", $me->permissions))) {
+            return response()->json(['code' => 1, 'message' => 'Unauthorized'], 401);
+        }
+
+        $data = $c->data;
+
+        if (array_key_exists($parameter, $data)) {
+            unset($data[$parameter]);
+            $c->update(['data' => $data]);
+        }
+
+        return response(null, 200);
     }
 
     public function add(Request $req) {

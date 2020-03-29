@@ -59,19 +59,13 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
 
         $router->group(['prefix' => 'canaries'], function () use ($router) {
             $router->get('/', 'CanaryController@listCanaries');
-            $router->get('/{uuid}', function ($uuid) {
-            });
-            $router->get('/{uuid}/{parameter}', function ($uuid, $parameter) {
-            });
-            $router->post('/{uuid}/{parameter}', function ($uuid, $parameter) {
-            });
-            $router->delete('/{uuid}/{parameter}', function ($uuid, $parameter) {
-            });
+            $router->get('/{uuid}/{parameter}', 'CanaryController@getParameter');
+            $router->post('/{uuid}/{parameter}', 'CanaryController@regenParameter');
+            $router->delete('/{uuid}/{parameter}', 'CanaryController@deleteParameter');
 
             $router->group(['middleware' => 'perm:admin'], function () use ($router) {
                 $router->post('/', 'CanaryController@add');
-                $router->delete('/{uuid}', function ($uuid) {
-                });
+                $router->delete('/{uuid}', 'CanaryController@delete');
             });
         });
 
