@@ -1373,9 +1373,6 @@
     - http_headers: 
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
     - __{uuid}__: Canary node uuid
-    - request (with limit - optional): `limit=10`
-    - request (with offset - optional): `offset=100`
-    - request (with limit & offset): `limit=5&offset=50`
 
 
 - response:
@@ -1384,9 +1381,6 @@
     - body: 
       ```json
       {
-        "count": 3,
-        "total": 3,
-        "offset": 0,
         "emails": [
           {
             "uuid": "uuidstring",

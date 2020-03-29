@@ -70,8 +70,7 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
         });
 
         $router->group(['prefix' => 'mail'], function () use ($router) {
-            $router->get('/{uuid}', function ($uuid) {
-            });
+            $router->get('/{uuid}', 'MailController@get');
         });
     });
 });
