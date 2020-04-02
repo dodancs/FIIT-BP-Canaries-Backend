@@ -80,6 +80,8 @@ APP_KEY=MVmGWBQwJejrmOPCAyboh6DECGcXpADB
 JWT_SECRET=EKXJXXDWKFBYXTR3Gc7w6Mii3atLHFrOzr3CvegkowXrE0zRQUBck4DlYkPp3yn8
 ```
 
+You can also change any other relevant settings in the `.env` file.
+
 Create database structure:
 ```bash
 /path/to/project/$ php artisan migrate
