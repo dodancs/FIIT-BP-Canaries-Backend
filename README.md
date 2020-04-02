@@ -26,9 +26,19 @@ This repository holds source code for the back-end portion with full API documen
 - PHP
 - NginX / Apache
 
-### How to run for development
+### How to run
 
 Before running the API a few things need to be taken care of:
+
+Create a MySQL user and database:
+```bash
+~$ mysql -u root -p
+mysql> CREATE USER 'user'@'host' IDENTIFIED BY 'password';
+mysql> GRANT ALL PRIVILEGES ON `database` . * TO 'user'@'host';
+mysql> FLUSH PRIVILEGES;
+mysql> CREATE DATABASE `database`;
+mysql> quit;
+```
 
 Clone and navigate to the project folder:
 ```bash
@@ -47,9 +57,43 @@ Create an environment configuration file and setup connection to a database:
 /path/to/project/$ vi .env
 ```
 
+Setup connection to MySQL (use credentials from the previous step) in `.env`:
+```ini
+DB_CONNECTION=mysql
+DB_HOST=host
+DB_PORT=port
+DB_DATABASE=database
+DB_USERNAME=user
+DB_PASSWORD=password
+```
+
+Generate APP key and JWT secret:
+```bash
+/path/to/project/$ php artisan tinker
+>>> echo \Illuminate\Support\Str::random(32);
+>>> echo \Illuminate\Support\Str::random(64);
+>>> exit;
+```
+The two echo commands will generate a 32 char APP key and 64 char JWT_SECRET key. Set these in the `.env` file.
+```ini
+APP_KEY=MVmGWBQwJejrmOPCAyboh6DECGcXpADB
+JWT_SECRET=EKXJXXDWKFBYXTR3Gc7w6Mii3atLHFrOzr3CvegkowXrE0zRQUBck4DlYkPp3yn8
+```
+
 Create database structure:
 ```bash
 /path/to/project/$ php artisan migrate
+```
+
+Add an administrator user:
+```bash
+/path/to/project/$ php artisan tinker
+>>> use App\Models\User;
+>>> use Illuminate\Support\Facades\Hash;
+>>> $user = new User(['username' => 'admin', 'password' => Hash::make('supersecret')])
+>>> $user->permissions = ['admin']
+>>> $user->save();
+>>> exit;
 ```
 
 #### Running using Visual Studio Code
