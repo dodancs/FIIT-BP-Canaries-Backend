@@ -35,12 +35,12 @@ class UserController extends Controller {
             if ((int) $req->input('offset') + (int) $req->input('limit') > $totalCount) {
                 return response()->json(['code' => 2, 'message' => 'Invalid range'], 400);
             }
-            if (!empty($users)) {
+            if ($users->isNotEmpty()) {
                 $users = $users->slice((int) $req->input('offset'), (int) $req->input('limit'));
             }
 
         } else if ($req->has('limit')) {
-            if (!empty($users)) {
+            if ($users->isNotEmpty()) {
                 $users = $users->slice(0, (int) $req->input('limit'));
             }
 

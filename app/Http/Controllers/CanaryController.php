@@ -63,12 +63,12 @@ class CanaryController extends Controller {
             if ((int) $req->input('offset') + (int) $req->input('limit') > $totalCount) {
                 return response()->json(['code' => 2, 'message' => 'Invalid range'], 400);
             }
-            if (!empty($canaries)) {
+            if ($canaries->isNotEmpty()) {
                 $canaries = $canaries->slice((int) $req->input('offset'), (int) $req->input('limit'));
             }
 
         } else if ($req->has('limit')) {
-            if (!empty($canaries)) {
+            if ($canaries->isNotEmpty()) {
                 $canaries = $canaries->slice(0, (int) $req->input('limit'));
             }
 
