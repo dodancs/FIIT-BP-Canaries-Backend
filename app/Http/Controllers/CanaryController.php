@@ -22,7 +22,7 @@ class CanaryController extends Controller {
                 return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Canary does not exist'], 400);
             }
 
-            if ($c->assignee != $me->uuid && (!isset($me->permissions) || !in_array("admin", $me->permissions) || !in_array("expert", $me->permissions))) {
+            if ($c->assignee != $me->uuid && (!isset($me->permissions) || (!in_array("admin", $me->permissions) && !in_array("expert", $me->permissions)))) {
                 return response()->json(['code' => 1, 'message' => 'Unauthorized'], 401);
             }
 
@@ -33,7 +33,7 @@ class CanaryController extends Controller {
                 return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Canary does not exist'], 400);
             }
 
-            if ($c->assignee != $me->uuid && (!isset($me->permissions) || !in_array("admin", $me->permissions) || !in_array("expert", $me->permissions))) {
+            if ($c->assignee != $me->uuid && (!isset($me->permissions) || (!in_array("admin", $me->permissions) && !in_array("expert", $me->permissions)))) {
                 return response()->json(['code' => 1, 'message' => 'Unauthorized'], 401);
             }
 
