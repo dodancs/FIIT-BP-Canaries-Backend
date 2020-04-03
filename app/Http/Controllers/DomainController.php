@@ -30,12 +30,12 @@ class DomainController extends Controller {
             if ((int) $req->input('offset') + (int) $req->input('limit') > $totalCount) {
                 return response()->json(['code' => 2, 'message' => 'Invalid range'], 400);
             }
-            if ($domains->isNotEmpty()) {
+            if ($domains->count()) {
                 $domains = $domains->slice((int) $req->input('offset'), (int) $req->input('limit'));
             }
 
         } else if ($req->has('limit')) {
-            if ($domains->isNotEmpty()) {
+            if ($domains->count()) {
                 $domains = $domains->slice(0, (int) $req->input('limit'));
             }
 
