@@ -168,6 +168,8 @@ class CanaryController extends Controller {
     public function add(Request $req) {
         $faker = Faker\Factory::create();
 
+        $password_strenght = 'random';
+
         if (!$req->has('domain')) {
             return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'No domain supplied'], 400);
         }
@@ -186,6 +188,7 @@ class CanaryController extends Controller {
             'site' => 'required|exists:App\Models\Site,uuid',
             'testing' => 'required|boolean',
             'count' => 'required|integer',
+            'password_strength' => 'in:dictionary,simple,random,strong',
         ];
 
         try {
@@ -200,11 +203,49 @@ class CanaryController extends Controller {
                 $message = $e->response->original['testing'][0];
             } else if (array_key_exists('count', $e->response->original)) {
                 $message = $e->response->original['count'][0];
+            } else if (array_key_exists('password_strength', $e->response->original)) {
+                $message = $e->response->original['password_strength'][0];
             }
             return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => $message], 400);
         }
 
+        if ($req->has('password_strength')) {
+            $password_strength = $req->input('password_strength');
+        }
+
         $domain = Domain::where('uuid', $req->input('domain'))->first();
+
+        // Default random function
+        $password_generator = function () {
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $randomString = '';
+
+            for ($i = 0; $i < 8; $i++) {
+                $index = rand(0, strlen($characters) - 1);
+                $randomString .= $characters[$index];
+            }
+
+            return $randomString;
+        };
+
+        // Setup password generation method
+        switch ($password_strength) {
+        case "dictionary":
+            $password_generator = function () {
+                return config('milPasswords')[rand(0, config('numPasswords') - 1)];
+            };
+            break;
+        case "simple":
+            $password_generator = function () {
+                $password = config('englishWords')[rand(0, config('numWords') - 1)];
+                if (rand(0, 100) <= 70) {$password .= config('englishWords')[rand(0, config('numWords') - 1)];}
+                $password .= rand(0, 9);
+                if (rand(0, 100) <= 50) {$password .= rand(0, 9);}
+                if (rand(0, 100) <= 10) {$password .= rand(0, 9);}
+                return $password;
+            };
+            break;
+        }
 
         $response = [];
 
@@ -212,7 +253,7 @@ class CanaryController extends Controller {
             $username = $faker->userName();
             $email = $username . '@' . $domain->domain;
 
-            $canary = new Canary(['domain' => $req->input('domain'), 'site' => $req->input('site'), 'testing' => $req->input('testing'), 'email' => $email, 'password' => $faker->password(), 'data' => [
+            $canary = new Canary(['domain' => $req->input('domain'), 'site' => $req->input('site'), 'testing' => $req->input('testing'), 'email' => $email, 'password' => ($password_strength == "strong" ? $faker->password(13, 18) : $password_generator()), 'data' => [
                 'username' => $username,
             ]]);
 

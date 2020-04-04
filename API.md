@@ -1242,13 +1242,19 @@
   - parameters:
     - http_headers: 
       - `Authentication: "bearer JWT_ACCESSTOKEN"`
+    - password strength (optional - default `random`):
+      - `dictionary` - random password from the top 1 million
+      - `simple` - word + word(p=0.7) + digit + digit(p=0.5) + digit(p=0.1)
+      - `random` - 8 random characters from `[a-zA-Z0-9]`
+      - `strong` - 13 - 18 totally random characters
     - body: 
       ```json
       {
         "domain": "uuidstring",
         "site": "uuidstring",
         "testing": false,
-        "count": 10
+        "count": 10,
+        "password_strength": "simple"
       }
       ```
 
