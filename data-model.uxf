@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.1.1">
-  <zoom_level>6</zoom_level>
+  <zoom_level>12</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>162</x>
-      <y>120</y>
-      <w>258</w>
-      <h>126</h>
+      <x>396</x>
+      <y>0</y>
+      <w>516</w>
+      <h>252</h>
     </coordinates>
     <panel_attributes>__users__
 --
@@ -24,10 +24,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>162</x>
-      <y>258</y>
-      <w>138</w>
-      <h>90</h>
+      <x>396</x>
+      <y>276</y>
+      <w>276</w>
+      <h>180</h>
     </coordinates>
     <panel_attributes>__sites__
 --
@@ -41,10 +41,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>162</x>
-      <y>360</y>
-      <w>138</w>
-      <h>90</h>
+      <x>396</x>
+      <y>480</y>
+      <w>276</w>
+      <h>180</h>
     </coordinates>
     <panel_attributes>__domains__
 --
@@ -58,10 +58,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>486</x>
-      <y>258</y>
-      <w>252</w>
-      <h>192</h>
+      <x>1044</x>
+      <y>276</y>
+      <w>504</w>
+      <h>384</h>
     </coordinates>
     <panel_attributes>__canaries__
 --
@@ -83,10 +83,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>294</x>
-      <y>276</y>
-      <w>204</w>
-      <h>36</h>
+      <x>660</x>
+      <y>312</y>
+      <w>408</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=0..n
@@ -97,10 +97,10 @@ canaries have a monitored site</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>294</x>
-      <y>378</y>
-      <w>204</w>
-      <h>36</h>
+      <x>660</x>
+      <y>516</y>
+      <w>408</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=0..n
@@ -111,10 +111,10 @@ canaries have a domain name</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>414</x>
-      <y>162</y>
-      <w>324</w>
-      <h>108</h>
+      <x>900</x>
+      <y>84</y>
+      <w>648</w>
+      <h>216</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=0..n
@@ -125,16 +125,17 @@ canaries have an assignee</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>162</x>
-      <y>462</y>
-      <w>258</w>
-      <h>126</h>
+      <x>396</x>
+      <y>684</y>
+      <w>516</w>
+      <h>276</h>
     </coordinates>
     <panel_attributes>__mail__
 --
 - &lt;&lt;PK&gt;&gt; id: bigint(20)
 - uuid: char(36)
 - &lt;&lt;FK&gt;&gt; canary: char(36) -&gt; uuid on canaries
+- received_on: timestamp
 - from: varchar(255)
 - subject: varchar(255)
 - body: longtext
@@ -145,10 +146,10 @@ canaries have an assignee</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>414</x>
-      <y>444</y>
-      <w>300</w>
-      <h>90</h>
+      <x>900</x>
+      <y>648</y>
+      <w>600</w>
+      <h>180</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
