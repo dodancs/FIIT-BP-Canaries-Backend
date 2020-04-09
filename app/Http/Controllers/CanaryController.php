@@ -178,6 +178,9 @@ class CanaryController extends Controller {
         if ($req->has('site')) {
             //return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'No site supplied'], 400);
             $site = $req->input('site');
+            if (empty($req->input('site'))) {
+                $site = null;
+            }
         }
 
         if (!$req->has('testing')) {
