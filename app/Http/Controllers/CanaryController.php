@@ -173,8 +173,12 @@ class CanaryController extends Controller {
         if (!$req->has('domain')) {
             return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'No domain supplied'], 400);
         }
-        if (!$req->has('site')) {
-            return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'No site supplied'], 400);
+
+        $site = null;
+
+        if ($req->has('site')) {
+            //return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'No site supplied'], 400);
+            $site = $req->input('site');
         }
         if (!$req->has('testing')) {
             return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Testing vs. production not specified'], 400);
@@ -185,11 +189,14 @@ class CanaryController extends Controller {
 
         $rules = [
             'domain' => 'required|exists:App\Models\Domain,uuid',
-            'site' => 'required|exists:App\Models\Site,uuid',
             'testing' => 'required|boolean',
             'count' => 'required|integer',
             'password_strength' => 'in:dictionary,simple,random,strong',
         ];
+
+        if ($site != null) {
+            $rules['site'] = 'required|exists:App\Models\Site,uuid';
+        }
 
         try {
             $this->validate($req, $rules);
