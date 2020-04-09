@@ -316,9 +316,15 @@ class CanaryController extends Controller {
 
             if ($req->has('assignee')) {
                 $c->assignee = $req->input('assignee');
+                if (empty($req->input('assignee'))) {
+                    $c->assignee = null;
+                }
             }
             if ($req->has('site')) {
                 $c->site = $req->input('site');
+                if (empty($req->input('site'))) {
+                    $c->site = null;
+                }
             }
             if ($req->has('testing')) {
                 $c->testing = $req->input('testing');
