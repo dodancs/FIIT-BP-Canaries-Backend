@@ -62,6 +62,7 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
             $router->get('/{uuid}/{parameter}', 'CanaryController@getParameter');
             $router->post('/{uuid}/{parameter}', 'CanaryController@regenParameter');
             $router->delete('/{uuid}/{parameter}', 'CanaryController@deleteParameter');
+            $router->put('/{uuid}', 'CanaryController@update');
 
             $router->group(['middleware' => 'perm:admin'], function () use ($router) {
                 $router->post('/', 'CanaryController@add');

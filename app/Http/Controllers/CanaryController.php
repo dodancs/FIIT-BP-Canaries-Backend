@@ -175,11 +175,11 @@ class CanaryController extends Controller {
         }
 
         $site = null;
-
         if ($req->has('site')) {
             //return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'No site supplied'], 400);
             $site = $req->input('site');
         }
+
         if (!$req->has('testing')) {
             return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Testing vs. production not specified'], 400);
         }
@@ -189,14 +189,11 @@ class CanaryController extends Controller {
 
         $rules = [
             'domain' => 'required|exists:App\Models\Domain,uuid',
+            'site' => 'nullable|exists:App\Models\Site,uuid',
             'testing' => 'required|boolean',
             'count' => 'required|integer',
             'password_strength' => 'in:dictionary,simple,random,strong',
         ];
-
-        if ($site != null) {
-            $rules['site'] = 'required|exists:App\Models\Site,uuid';
-        }
 
         try {
             $this->validate($req, $rules);
@@ -279,6 +276,64 @@ class CanaryController extends Controller {
         }
 
         return response(null, 200);
+    }
+
+    public function update(Request $req, $uuid) {
+        $c = Canary::where('uuid', $uuid)->first();
+        if (empty($c)) {
+            return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Canary does not exist'], 400);
+        }
+
+        $rules = [
+            'site' => 'nullable|exists:App\Models\Site,uuid',
+            'testing' => 'boolean',
+            'setup' => 'boolean',
+            'assignee' => 'nullable|exists:App\Models\User,uuid',
+        ];
+
+        try {
+            $this->validate($req, $rules);
+        } catch (Exception $e) {
+            $message = "";
+            if (array_key_exists('assignee', $e->response->original)) {
+                $message = $e->response->original['assignee'][0];
+            } else if (array_key_exists('site', $e->response->original)) {
+                $message = $e->response->original['site'][0];
+            } else if (array_key_exists('testing', $e->response->original)) {
+                $message = $e->response->original['testing'][0];
+            } else if (array_key_exists('setup', $e->response->original)) {
+                $message = $e->response->original['setup'][0];
+            }
+            return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => $message], 400);
+        }
+
+        $me = JWTAuth::user();
+
+        if ($req->has('assignee') | $req->has('site') | $req->has('testing')) {
+            if (!isset($me->permissions) || !in_array("admin", $me->permissions)) {
+                return response()->json(['code' => 1, 'message' => 'Unauthorized'], 401);
+            }
+
+            if ($req->has('assignee')) {
+                $c->assignee = $req->input('assignee');
+            }
+            if ($req->has('site')) {
+                $c->site = $req->input('site');
+            }
+            if ($req->has('testing')) {
+                $c->testing = $req->input('testing');
+            }
+
+        }
+        if ($req->has('setup')) {
+            if ($c->assignee != $me->uuid && (!isset($me->permissions) || !in_array("admin", $me->permissions))) {
+                return response()->json(['code' => 1, 'message' => 'Unauthorized'], 401);
+            }
+            $c->setup = $req->input('setup');
+        }
+
+        $c->save();
+
     }
 
 }
