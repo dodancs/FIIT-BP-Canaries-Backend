@@ -266,6 +266,9 @@
         -   http_headers:
             
             -   `Authentication: "bearer JWT_ACCESSTOKEN"`
+            
+        - permissions: User permissions - can be: `admin`, `worker` or `expert`
+        
         -   body:
             ```json
             {
@@ -345,7 +348,11 @@
         -   http_headers:
             
             -   `Authentication: "bearer JWT_ACCESSTOKEN"`
-        -   **{uuid}**: Public user identification string
+            
+        - **{uuid}**: Public user identification string
+        
+        - permissions: User permissions - can be: `admin`, `worker` or `expert`
+        
         -   body:
             ```json
             {

@@ -204,6 +204,12 @@ class UserController extends Controller {
     public function deleteUser(Request $req, $uuid) {
         $user = User::where('uuid', $uuid)->first();
         if (!empty($user)) {
+            // unassign all canaries for that user
+            $canaries = Canary::where('assignee', $user->uuid)->get();
+            foreach ($canaries as $c) {
+                $c->assignee = null;
+                $c->save();
+            }
             $user->delete();
         }
 
