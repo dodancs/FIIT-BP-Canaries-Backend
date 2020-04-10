@@ -264,6 +264,7 @@
 -   request
     -   parameters:
         -   http_headers:
+            
             -   `Authentication: "bearer JWT_ACCESSTOKEN"`
         -   body:
             ```json
@@ -342,6 +343,7 @@
 -   request
     -   parameters:
         -   http_headers:
+            
             -   `Authentication: "bearer JWT_ACCESSTOKEN"`
         -   **{uuid}**: Public user identification string
         -   body:
@@ -349,7 +351,8 @@
             {
                 "username": "peter1",
                 "password": "noveheslo",
-                "permissions": { "admin": true, "worker": false }
+                "permissions": ["admin"],
+                "canaries": ["uuidstring"]
             }
             ```
 
@@ -562,6 +565,7 @@
 -   request:
     -   parameters:
         -   http_headers:
+            
             -   `Authentication: "bearer JWT_ACCESSTOKEN"`
         -   body:
             ```json
@@ -748,6 +752,7 @@
 -   request:
     -   parameters:
         -   http_headers:
+            
             -   `Authentication: "bearer JWT_ACCESSTOKEN"`
         -   body:
             ```json
@@ -1159,6 +1164,7 @@
 -   request:
     -   parameters:
         -   http_headers:
+            
             -   `Authentication: "bearer JWT_ACCESSTOKEN"`
         -   password strength (optional - default `random`):
             -   `dictionary` - random password from the top 1 million

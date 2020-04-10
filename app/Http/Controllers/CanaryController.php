@@ -43,7 +43,7 @@ class CanaryController extends Controller {
         if (isset($me->permissions) && in_array("admin", $me->permissions)) {
             $canaries = Canary::all();
         } else {
-            $canaries = Canary::where('assignee', $me->uuid);
+            $canaries = Canary::where('assignee', $me->uuid)->get();
         }
         $totalCount = $canaries->count();
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Canary;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -21,12 +22,15 @@ class AuthController extends Controller {
 
         $me = JWTAuth::user();
 
+        $canaries = Canary::where('assignee', $me->uuid)->pluck('uuid')->toArray();
+
         return response()->json([
             'token' => $token,
             'token_type' => 'bearer',
             'expires' => config('jwt.refresh_ttl'),
             'uuid' => $me->uuid,
             'permissions' => $me->permissions,
+            'canaries' => $canaries,
         ]);
     }
 
