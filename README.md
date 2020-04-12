@@ -48,7 +48,7 @@ Clone and navigate to the project folder:
 
 Install required packages:
 ```bash
-/path/to/project/$ composer update
+/path/to/project/$ composer install
 ```
 
 Create an environment configuration file and setup connection to a database:
