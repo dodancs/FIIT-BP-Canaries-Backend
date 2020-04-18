@@ -873,7 +873,7 @@
 
 #### <a name="route-canaries-get"></a>/{endpoint}/canaries : GET
 
--   description: Prints all canary nodes available to the user. If uuid or email parameters are specified, then only detail of that canary will be returned.
+-   description: Prints all canary nodes available to the user. Account with `expert` permission will get all canaries that have __testing__ parameter set to true, and account with `admin` permission will get all canaries. If uuid or email parameters are specified, then only detail of that canary will be returned.
 -   request
     -   parameters:
         -   http_headers:

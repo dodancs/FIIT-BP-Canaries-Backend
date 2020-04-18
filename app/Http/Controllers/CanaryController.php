@@ -42,6 +42,8 @@ class CanaryController extends Controller {
 
         if (isset($me->permissions) && in_array("admin", $me->permissions)) {
             $canaries = Canary::all();
+        } else if (isset($me->permissions) && in_array("expert", $me->permissions)) {
+            $canaries = Canary::where('testing', true)->get();
         } else {
             $canaries = Canary::where('assignee', $me->uuid)->get();
         }
