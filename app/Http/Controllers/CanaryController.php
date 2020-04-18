@@ -195,7 +195,7 @@ class CanaryController extends Controller {
             'site' => 'nullable|exists:App\Models\Site,uuid',
             'testing' => 'required|boolean',
             'count' => 'required|integer',
-            'password_strength' => 'in:dictionary,simple,random,strong',
+            'password_strength' => 'in:dictionary,simple,random,strong,trivial',
         ];
 
         try {
@@ -249,6 +249,14 @@ class CanaryController extends Controller {
                 $password .= rand(0, 9);
                 if (rand(0, 100) <= 50) {$password .= rand(0, 9);}
                 if (rand(0, 100) <= 10) {$password .= rand(0, 9);}
+                return $password;
+            };
+            break;
+        case "trivial":
+            $password_generator = function () {
+                $password = config('englishWords')[rand(0, config('numWords') - 1)];
+                $password .= rand(0, 9);
+                if (rand(0, 100) <= 50) {$password .= rand(0, 9);}
                 return $password;
             };
             break;

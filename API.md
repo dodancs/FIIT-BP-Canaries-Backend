@@ -1178,6 +1178,7 @@
             -   `simple` - word + word(p=0.7) + digit + digit(p=0.5) + digit(p=0.1)
             -   `random` - 8 random characters from `[a-zA-Z0-9]`
             -   `strong` - 13 - 18 totally random characters
+            -   `trivial` - word + digit + digit(p=0.5)
         -   body:
             ```json
             {
