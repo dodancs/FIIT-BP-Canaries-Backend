@@ -239,13 +239,16 @@ class CanaryController extends Controller {
         switch ($password_strength) {
         case "dictionary":
             $password_generator = function () {
-                return config('milPasswords')[rand(0, config('numPasswords') - 1)];
+                $topPassWords = file(__DIR__ . '/../../../resources/passwords.txt', FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
+                return $topPassWords[rand(0, count($topPassWords) - 1)];
             };
             break;
         case "simple":
             $password_generator = function () {
-                $password = config('englishWords')[rand(0, config('numWords') - 1)];
-                if (rand(0, 100) <= 70) {$password .= config('englishWords')[rand(0, config('numWords') - 1)];}
+                $words = file(__DIR__ . '/../../../resources/words.txt', FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
+
+                $password = $words[rand(0, count($words) - 1)];
+                if (rand(0, 100) <= 70) {$password .= $words[rand(0, count($words) - 1)];}
                 $password .= rand(0, 9);
                 if (rand(0, 100) <= 50) {$password .= rand(0, 9);}
                 if (rand(0, 100) <= 10) {$password .= rand(0, 9);}
@@ -254,7 +257,9 @@ class CanaryController extends Controller {
             break;
         case "trivial":
             $password_generator = function () {
-                $password = config('englishWords')[rand(0, config('numWords') - 1)];
+                $words = file(__DIR__ . '/../../../resources/words.txt', FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
+
+                $password = $words[rand(0, count($words) - 1)];
                 $password .= rand(0, 9);
                 if (rand(0, 100) <= 50) {$password .= rand(0, 9);}
                 return $password;
