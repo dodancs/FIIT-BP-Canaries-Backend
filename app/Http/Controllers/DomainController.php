@@ -80,6 +80,15 @@ class DomainController extends Controller {
 
     }
 
+    public function getOne(Request $req, $uuid) {
+        $domain = Domain::where('uuid', $uuid)->first();
+        if (!empty($domain)) {
+            return response()->json([$uuid => $domain->domain]);
+        }
+
+        return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Domain does not exist'], 400);
+    }
+
     public function delete(Request $req, $uuid) {
         $domain = Domain::where('uuid', $uuid)->first();
         if (!empty($domain)) {

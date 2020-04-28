@@ -80,6 +80,15 @@ class SiteController extends Controller {
 
     }
 
+    public function getOne(Request $req, $uuid) {
+        $site = Site::where('uuid', $uuid)->first();
+        if (!empty($site)) {
+            return response()->json([$uuid => $site->site]);
+        }
+
+        return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Monitored site does not exist'], 400);
+    }
+
     public function delete(Request $req, $uuid) {
         $site = Site::where('uuid', $uuid)->first();
         if (!empty($site)) {

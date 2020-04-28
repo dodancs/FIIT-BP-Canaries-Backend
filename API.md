@@ -17,10 +17,12 @@
 -   [Domains](#route-domains)
     -   [Get all domains](#route-domains-get)
     -   [Add new domains](#route-domains-add)
+    -   [Get domain by uuid](#route-domains-getOne)
     -   [Delete a particular domain](#route-domains-delete)
 -   [Monitored sites](#route-sites)
     -   [Get all sites](#route-sites-get)
     -   [Add new sites](#route-sites-add)
+    -   [Get monitored site by uuid](#route-sites-getOne)
     -   [Delete a particular site](#route-sites-delete)
 -   [Canary nodes](#route-canaries)
     -   [Get all canary nodes](#route-canaries-get)
@@ -262,13 +264,15 @@
 
 -   decription: Create a new user
 -   request
+
     -   parameters:
+
         -   http_headers:
-            
+
             -   `Authentication: "bearer JWT_ACCESSTOKEN"`
-            
-        - permissions: User permissions - can be: `admin`, `worker` or `expert`
-        
+
+        -   permissions: User permissions - can be: `admin`, `worker` or `expert`
+
         -   body:
             ```json
             {
@@ -344,15 +348,17 @@
 
 -   decription: Update a particular user
 -   request
+
     -   parameters:
+
         -   http_headers:
-            
+
             -   `Authentication: "bearer JWT_ACCESSTOKEN"`
-            
-        - **{uuid}**: Public user identification string
-        
-        - permissions: User permissions - can be: `admin`, `worker` or `expert`
-        
+
+        -   **{uuid}**: Public user identification string
+
+        -   permissions: User permissions - can be: `admin`, `worker` or `expert`
+
         -   body:
             ```json
             {
@@ -491,6 +497,7 @@
 
 -   [Get all domains](#route-domains-get)
 -   [Add new domains](#route-domains-add)
+-   [Get domain by uuid](#route-domains-getOne)
 -   [Delete a particular domain](#route-domains-delete)
 
 #### <a name="route-domains-get"></a>/{endpoint}/domains : GET
@@ -570,10 +577,13 @@
 
 -   description: Add new domain(s)
 -   request:
+
     -   parameters:
+
         -   http_headers:
-            
+
             -   `Authentication: "bearer JWT_ACCESSTOKEN"`
+
         -   body:
             ```json
             {
@@ -635,6 +645,63 @@
 
 ---
 
+#### <a name="route-domains-getOne"></a>/{endpoint}/domains/{uuid} : GET
+
+-   decription: Get domain name by uuid
+-   request
+    -   parameters:
+        -   http_headers:
+            -   `Authentication: "bearer JWT_ACCESSTOKEN"`
+        -   **{uuid}**: Canary domain uuid
+
+*   response:
+    -   http_code: 200
+    -   parameters:
+        -   body:
+            ```json
+            {
+                "uuidstring": "domena.sk"
+            }
+            ```
+
+-   response:
+    -   http_code: 400
+    -   parameters:
+        -   body:
+            ```json
+            {
+                "code": 0,
+                "message": "Token not provided"
+            }
+            ```
+
+*   response:
+
+    -   http_code: 401
+    -   parameters:
+        -   body:
+            ```json
+            {
+                "code": 1,
+                "message": "Unauthorized",
+                "details": "..."
+            }
+            ```
+
+*   response:
+    -   http_code: 400
+    -   parameters:
+        -   body:
+            ```json
+            {
+                "code": 2,
+                "message": "Bad request",
+                "details": "Domain does not exist..."
+            }
+            ```
+
+---
+
 #### <a name="route-domains-delete"></a>/{endpoint}/domains/{uuid} : DELETE
 
 -   decription: Delete a domain
@@ -678,6 +745,7 @@
 
 -   [Get all sites](#route-sites-get)
 -   [Add new sites](#route-sites-add)
+-   [Get monitored site by uuid](#route-sites-getOne)
 -   [Delete a particular site](#route-sites-delete)
 
 #### <a name="route-sites-get"></a>/{endpoint}/sites : GET
@@ -757,10 +825,13 @@
 
 -   description: Add new site(s)
 -   request:
+
     -   parameters:
+
         -   http_headers:
-            
+
             -   `Authentication: "bearer JWT_ACCESSTOKEN"`
+
         -   body:
             ```json
             {
@@ -822,6 +893,63 @@
 
 ---
 
+#### <a name="route-sites-getOne"></a>/{endpoint}/sites/{uuid} : GET
+
+-   decription: Get site name by uuid
+-   request
+    -   parameters:
+        -   http_headers:
+            -   `Authentication: "bearer JWT_ACCESSTOKEN"`
+        -   **{uuid}**: Monitored site uuid
+
+*   response:
+    -   http_code: 200
+    -   parameters:
+        -   body:
+            ```json
+            {
+                "uuidstring": "facebook.com"
+            }
+            ```
+
+-   response:
+    -   http_code: 400
+    -   parameters:
+        -   body:
+            ```json
+            {
+                "code": 0,
+                "message": "Token not provided"
+            }
+            ```
+
+*   response:
+
+    -   http_code: 401
+    -   parameters:
+        -   body:
+            ```json
+            {
+                "code": 1,
+                "message": "Unauthorized",
+                "details": "..."
+            }
+            ```
+
+*   response:
+    -   http_code: 400
+    -   parameters:
+        -   body:
+            ```json
+            {
+                "code": 2,
+                "message": "Bad request",
+                "details": "Site does not exist..."
+            }
+            ```
+
+---
+
 #### <a name="route-sites-delete"></a>/{endpoint}/sites/{uuid} : DELETE
 
 -   decription: Delete a site
@@ -873,7 +1001,7 @@
 
 #### <a name="route-canaries-get"></a>/{endpoint}/canaries : GET
 
--   description: Prints all canary nodes available to the user. Account with `expert` permission will get all canaries that have __testing__ parameter set to true, and account with `admin` permission will get all canaries. If uuid or email parameters are specified, then only detail of that canary will be returned.
+-   description: Prints all canary nodes available to the user. Account with `expert` permission will get all canaries that have **testing** parameter set to true, and account with `admin` permission will get all canaries. If uuid or email parameters are specified, then only detail of that canary will be returned.
 -   request
     -   parameters:
         -   http_headers:
@@ -1169,10 +1297,13 @@
 
 -   description: Create new canary nodes
 -   request:
+
     -   parameters:
+
         -   http_headers:
-            
+
             -   `Authentication: "bearer JWT_ACCESSTOKEN"`
+
         -   password strength (optional - default `random`):
             -   `dictionary` - random password from the top 1 million
             -   `simple` - word + word(p=0.7) + digit + digit(p=0.5) + digit(p=0.1)

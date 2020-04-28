@@ -57,6 +57,17 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
             });
         });
 
+        $router->group(['middleware' => 'perm:admin;expert;worker'], function () use ($router) {
+
+            $router->group(['prefix' => 'domains'], function () use ($router) {
+                $router->get('/{uuid}', 'DomainController@getOne');
+            });
+
+            $router->group(['prefix' => 'sites'], function () use ($router) {
+                $router->get('/{uuid}', 'SiteController@getOne');
+            });
+        });
+
         $router->group(['prefix' => 'canaries'], function () use ($router) {
             $router->get('/', 'CanaryController@listCanaries');
             $router->get('/{uuid}/{parameter}', 'CanaryController@getParameter');
