@@ -17,6 +17,12 @@ $router->get('/', function () {
 
 $router->group(['prefix' => 'v1', 'middleware' => 'cors'], function () use ($router) {
 
+    $router->options('/{any:.*}',
+        function () {
+            return response(['status' => 'success']);
+        }
+    );
+
     $router->group(['prefix' => 'auth'], function () use ($router) {
 
         $router->group(['middleware' => 'throttle:10,1'], function () use ($router) {
