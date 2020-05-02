@@ -15,7 +15,7 @@ $router->get('/', function () {
     return response()->json(getallheaders());
 });
 
-$router->group(['prefix' => 'v1'], function () use ($router) {
+$router->group(['prefix' => 'v1', 'middleware' => 'cors'], function () use ($router) {
 
     $router->group(['prefix' => 'auth'], function () use ($router) {
 

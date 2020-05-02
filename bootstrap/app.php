@@ -65,6 +65,7 @@ $app->routeMiddleware([
     'perm' => App\Http\Middleware\Permissions::class,
     'throttle' => App\Http\Middleware\ThrottleRequests::class,
     'auth' => App\Http\Middleware\Authenticate::class,
+    'cors' => App\Http\Middleware\Cors::class,
     'jwt.auth' => 'Tymon\JWTAuth\Middleware\GetUserFromToken',
     'jwt.refresh' => 'Tymon\JWTAuth\Middleware\RefreshToken',
 ]);
@@ -81,6 +82,7 @@ $app->routeMiddleware([
  */
 
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+$app->register(App\Providers\HttpOptionsProvider::class);
 // $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
