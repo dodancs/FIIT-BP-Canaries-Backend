@@ -27,7 +27,7 @@ class AuthController extends Controller {
         return response()->json([
             'token' => $token,
             'token_type' => 'bearer',
-            'expires' => config('jwt.refresh_ttl'),
+            'expires' => config('jwt.ttl') * 60,
             'uuid' => $me->uuid,
             'permissions' => $me->permissions,
             'canaries' => $canaries,
@@ -44,7 +44,7 @@ class AuthController extends Controller {
         return response()->json([
             'token' => $token,
             'token_type' => 'bearer',
-            'expires' => config('jwt.refresh_ttl'),
+            'expires' => config('jwt.ttl') * 60,
         ]);
     }
 

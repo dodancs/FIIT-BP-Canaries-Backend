@@ -25,7 +25,7 @@ $router->group(['prefix' => 'v1', 'middleware' => 'cors'], function () use ($rou
 
     $router->group(['prefix' => 'auth'], function () use ($router) {
 
-        $router->group(['middleware' => 'throttle:10,1'], function () use ($router) {
+        $router->group(['middleware' => 'throttle:5,1'], function () use ($router) {
             $router->post('/login', 'AuthController@login');
         });
 
@@ -40,7 +40,7 @@ $router->group(['prefix' => 'v1', 'middleware' => 'cors'], function () use ($rou
             });
             $router->get('/users/{uuid}', 'UserController@getUser');
 
-            $router->group(['middleware' => 'throttle:60,1'], function () use ($router) {
+            $router->group(['middleware' => 'throttle:10,1'], function () use ($router) {
                 $router->get('/refresh_token', 'AuthController@refresh');
             });
         });
