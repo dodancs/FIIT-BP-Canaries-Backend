@@ -170,7 +170,7 @@ class CanaryController extends Controller {
     public function add(Request $req) {
         $faker = Faker\Factory::create();
 
-        $password_strenght = 'random';
+        $password_strength = 'random';
 
         if (!$req->has('domain')) {
             return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'No domain supplied'], 400);
