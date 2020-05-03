@@ -197,7 +197,7 @@ class CanaryController extends Controller {
             'site' => 'nullable|exists:App\Models\Site,uuid',
             'testing' => 'required|boolean',
             'count' => 'required|integer',
-            'password_strength' => 'nullable|in:dictionary,simple,random,strong,trivial',
+            'password_strength' => 'in:dictionary,simple,random,strong,trivial,null',
         ];
 
         try {
@@ -224,6 +224,10 @@ class CanaryController extends Controller {
 
         if ($req->has('password_strength') && !empty($req->input('password_strength'))) {
             $password_strength = $req->input('password_strength');
+            if ($password_strength == 'null') {
+                $password_strength = 'random';
+            }
+
         }
 
         $domain = Domain::where('uuid', $req->input('domain'))->first();
