@@ -197,7 +197,7 @@ class CanaryController extends Controller {
             'site' => 'nullable|exists:App\Models\Site,uuid',
             'testing' => 'required|boolean',
             'count' => 'required|integer',
-            'password_strength' => 'in:dictionary,simple,random,strong,trivial',
+            'password_strength' => 'nullable|in:dictionary,simple,random,strong,trivial',
         ];
 
         try {
@@ -222,7 +222,7 @@ class CanaryController extends Controller {
             return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Count must be from 1 to 1024'], 400);
         }
 
-        if ($req->has('password_strength')) {
+        if ($req->has('password_strength') && !empty($req->input('password_strength'))) {
             $password_strength = $req->input('password_strength');
         }
 
