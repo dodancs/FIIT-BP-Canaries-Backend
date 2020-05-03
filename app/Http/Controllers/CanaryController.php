@@ -218,6 +218,10 @@ class CanaryController extends Controller {
             return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => $message], 400);
         }
 
+        if ($req->input('count') < 1 || $req->input('count') > 1024) {
+            return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Count must be from 1 to 1024'], 400);
+        }
+
         if ($req->has('password_strength')) {
             $password_strength = $req->input('password_strength');
         }
