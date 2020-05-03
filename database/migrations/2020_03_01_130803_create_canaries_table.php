@@ -20,8 +20,8 @@ class CreateCanariesTable extends Migration {
             $table->uuid('updated_by')->nullable()->default(null)->index();
             $table->foreign('updated_by')->references('uuid')->on('users');
             $table->foreign('domain')->references('uuid')->on('domains')->onDelete('cascade');
-            $table->foreign('site')->references('uuid')->on('sites');
-            $table->foreign('assignee')->references('uuid')->on('users');
+            $table->foreign('site')->references('uuid')->on('sites')->onDelete('set null');
+            $table->foreign('assignee')->references('uuid')->on('users')->onDelete('set null');
             $table->boolean('testing')->default(false);
             $table->boolean('setup')->default(false);
             $table->string('email')->notNullable();

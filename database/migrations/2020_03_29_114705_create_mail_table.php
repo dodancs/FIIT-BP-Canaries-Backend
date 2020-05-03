@@ -15,7 +15,7 @@ class CreateMailTable extends Migration {
             $table->bigIncrements('id');
             $table->uuid('uuid')->unique()->notNullable()->index();
             $table->uuid('canary')->notNullable()->index();
-            $table->foreign('canary')->references('uuid')->on('canaries');
+            $table->foreign('canary')->references('uuid')->on('canaries')->onDelete('cascade');
             $table->timestamp('received_on', 0);
             $table->string('from')->notNullable();
             $table->string('subject')->notNullable();
