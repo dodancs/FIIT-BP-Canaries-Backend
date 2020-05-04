@@ -53,30 +53,19 @@ class SiteController extends Controller {
     }
 
     public function add(Request $req) {
-        if (!$req->has('sites')) {
-            return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'No sites supplied'], 400);
-        }
-
         $rules = [
             'site' => 'required|unique:sites',
         ];
 
-        foreach ($req->input('sites') as $s) {
-            $validator = Validator::make(['site' => $s], $rules);
-            if ($validator->fails()) {
-                return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Site \'' . $s . '\' already exists'], 400);
-            }
+        $validator = Validator::make($req->all(), $rules, ['unique' => 'The site \':input\' has already been added.']);
+        if ($validator->fails()) {
+            return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => $validator->errors()->first()], 400);
         }
 
-        $response = [];
+        $site = new Site(['site' => $req->input('site')]);
+        $site->save();
 
-        foreach ($req->input('sites') as $s) {
-            $site = new Site(['site' => $s]);
-            $site->save();
-            array_push($response, $site);
-        }
-
-        return response()->json(['sites' => $response]);
+        return response()->json($site);
 
     }
 

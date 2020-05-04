@@ -1,4 +1,4 @@
-# Canaries API
+# Canary back-end API
 
 ## Endpoints
 
@@ -264,26 +264,18 @@
 
 -   decription: Create a new user
 -   request
-
     -   parameters:
-
         -   http_headers:
-
             -   `Authentication: "bearer JWT_ACCESSTOKEN"`
-
-        -   permissions: User permissions - can be: `admin`, `worker` or `expert`
-
+        -   permissions: User permissions - can be: `admin`, `worker` or `expert`. Multiple permissions can be specified.
+        -   canaries: This parameter is optional. Canaries can be later assigned to users.
         -   body:
             ```json
             {
-                "users": [
-                    {
-                        "username": "peter",
-                        "password": "heslo",
-                        "permissions": ["worker"],
-                        "canaries": ["uuidstring1", "uuidstring2"]
-                    }
-                ]
+                "username": "peter",
+                "password": "heslo",
+                "permissions": ["worker"],
+                "canaries": ["uuidstring1", "uuidstring2"]
             }
             ```
 
@@ -293,17 +285,13 @@
         -   body:
             ```json
             {
-                "users": [
-                    {
-                        "username": "peter",
-                        "permissions": ["worker"],
-                        "canaries": ["uuidstring1", "uuidstring2"],
-                        "uuid": "uuidstring",
-                        "created_at": "2020-02-19 08:46:28",
-                        "updated_at": "2020-02-19 08:46:28",
-                        "updated_by": "adminuuidstring"
-                    }
-                ]
+                "username": "peter",
+                "permissions": ["worker"],
+                "canaries": ["uuidstring1", "uuidstring2"],
+                "uuid": "uuidstring",
+                "created_at": "2020-02-19 08:46:28",
+                "updated_at": "2020-02-19 08:46:28",
+                "updated_by": "adminuuidstring"
             }
             ```
 
@@ -587,7 +575,7 @@
         -   body:
             ```json
             {
-                "domains": ["domena.sk"]
+                "domain": "domena.sk"
             }
             ```
 
@@ -597,14 +585,10 @@
         -   body:
             ```json
             {
-                "domains": [
-                    {
-                        "uuid": "uuidstring",
-                        "domain": "domena.sk",
-                        "created_at": "2020-02-19 08:46:28",
-                        "updated_at": "2020-02-19 08:46:28"
-                    }
-                ]
+                "uuid": "uuidstring",
+                "domain": "domena.sk",
+                "created_at": "2020-02-19 08:46:28",
+                "updated_at": "2020-02-19 08:46:28"
             }
             ```
 
@@ -835,7 +819,7 @@
         -   body:
             ```json
             {
-                "sites": ["bazos.sk"]
+                "site": "bazos.sk"
             }
             ```
 
@@ -845,14 +829,10 @@
         -   body:
             ```json
             {
-                "sites": [
-                    {
-                        "uuid": "uuidstring",
-                        "site": "bazos.sk",
-                        "created_at": "2020-02-19 08:46:28",
-                        "updated_at": "2020-02-19 08:46:28"
-                    }
-                ]
+                "uuid": "uuidstring",
+                "site": "bazos.sk",
+                "created_at": "2020-02-19 08:46:28",
+                "updated_at": "2020-02-19 08:46:28"
             }
             ```
 
@@ -1303,6 +1283,8 @@
         -   http_headers:
 
             -   `Authentication: "bearer JWT_ACCESSTOKEN"`
+
+        -   site (optional) - site does not need to be supplied, if the canary does not require matching to the source of the leak
 
         -   password strength (optional - default `random`):
             -   `dictionary` - random password from the top 1 million

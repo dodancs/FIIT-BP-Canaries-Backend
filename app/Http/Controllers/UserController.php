@@ -72,10 +72,10 @@ class UserController extends Controller {
         }
 
         $rules = [
-            'users.*.username' => 'required|unique:users|max:100',
-            'users.*.password' => 'required|min:8',
-            'users.*.permissions.*' => 'required|in:admin,worker,expert',
-            'users.*.canaries.*' => 'nullable|exists:App\Models\Canary,uuid',
+            'username' => 'required|unique:users|max:100',
+            'password' => 'required|min:8',
+            'permissions.*' => 'required|in:admin,worker,expert',
+            'canaries.*' => 'sometimes|nullable|exists:App\Models\Canary,uuid',
         ];
 
         $validator = Validator::make($req->all(), $rules, ['unique' => 'The username \':input\' has already been taken.']);
@@ -85,36 +85,30 @@ class UserController extends Controller {
 
         $me = JWTAuth::user();
 
-        $response = [];
-
-        foreach ($req->input('users') as $u) {
-            foreach ($u['canaries'] as $c) {
-                $can = Canary::where('uuid', $c)->first();
-                if (!empty($can) && ($can->assignee != null && $can->assignee != "")) {
-                    return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Canary \'' . $c . '\' already has assignee'], 400);
-                } else if (empty($can)) {
-                    return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Canary does not exist'], 400);
-                }
+        foreach ($req->input('canaries') as $c) {
+            $can = Canary::where('uuid', $c)->first();
+            if (!empty($can) && ($can->assignee != null && $can->assignee != "")) {
+                return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Canary \'' . $c . '\' already has assignee'], 400);
+            } else if (empty($can)) {
+                return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Canary does not exist'], 400);
             }
-
-            $user = new User(['username' => $u['username']]);
-            $user->password = Hash::make($u['password']);
-            $user->permissions = $u['permissions'];
-            $user->updated_by = $me->uuid;
-            $user->save();
-
-            foreach ($u['canaries'] as $c) {
-                $can = Canary::where('uuid', $c)->first();
-                if (!empty($can)) {
-                    $can->assignee = $user->uuid;
-                    $can->save();
-                }
-            }
-
-            array_push($response, array_merge($user->toArray(), ['canaries' => $u['canaries']]));
         }
 
-        return response()->json(['users' => $response]);
+        $user = new User(['username' => $req->input('username')]);
+        $user->password = Hash::make($req->input('password'));
+        $user->permissions = $req->input('permissions');
+        $user->updated_by = $me->uuid;
+        $user->save();
+
+        foreach ($req->input('canaries') as $c) {
+            $can = Canary::where('uuid', $c)->first();
+            if (!empty($can)) {
+                $can->assignee = $user->uuid;
+                $can->save();
+            }
+        }
+
+        return response()->json(array_merge($user->toArray(), ['canaries' => $req->input('canaries')]));
     }
 
     public function getUser(Request $req, $uuid) {

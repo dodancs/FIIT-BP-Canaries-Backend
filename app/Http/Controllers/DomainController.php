@@ -53,30 +53,19 @@ class DomainController extends Controller {
     }
 
     public function add(Request $req) {
-        if (!$req->has('domains')) {
-            return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'No domains supplied'], 400);
-        }
-
         $rules = [
             'domain' => 'required|unique:domains',
         ];
 
-        foreach ($req->input('domains') as $d) {
-            $validator = Validator::make(['domain' => $d], $rules);
-            if ($validator->fails()) {
-                return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Domain name \'' . $d . '\' already exists'], 400);
-            }
+        $validator = Validator::make($req->all(), $rules, ['unique' => 'The domain \':input\' has already been added.']);
+        if ($validator->fails()) {
+            return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => $validator->errors()->first()], 400);
         }
 
-        $response = [];
+        $domain = new Domain(['domain' => $req->input('domain')]);
+        $domain->save();
 
-        foreach ($req->input('domains') as $d) {
-            $domain = new Domain(['domain' => $d]);
-            $domain->save();
-            array_push($response, $domain);
-        }
-
-        return response()->json(['domains' => $response]);
+        return response()->json($domain);
 
     }
 
