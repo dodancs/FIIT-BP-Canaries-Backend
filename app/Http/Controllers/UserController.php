@@ -73,7 +73,7 @@ class UserController extends Controller {
             'permissions.*' => 'required|in:admin,worker,expert',
         ];
 
-        if (!$req->has('permissions')) {
+        if (!$req->has('permissions') || count($req->input('permissions')) == 0) {
             return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'No permissions supplied!'], 400);
         }
 
@@ -91,12 +91,14 @@ class UserController extends Controller {
 
         $me = JWTAuth::user();
 
-        foreach ($req->input('canaries') as $c) {
-            $can = Canary::where('uuid', $c)->first();
-            if (!empty($can) && ($can->assignee != null && $can->assignee != "")) {
-                return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Canary \'' . $c . '\' already has assignee'], 400);
-            } else if (empty($can)) {
-                return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Canary does not exist'], 400);
+        if ($req->has('canaries')) {
+            foreach ($req->input('canaries') as $c) {
+                $can = Canary::where('uuid', $c)->first();
+                if (!empty($can) && ($can->assignee != null && $can->assignee != "")) {
+                    return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Canary \'' . $c . '\' already has assignee'], 400);
+                } else if (empty($can)) {
+                    return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'Canary does not exist'], 400);
+                }
             }
         }
 
@@ -106,15 +108,17 @@ class UserController extends Controller {
         $user->updated_by = $me->uuid;
         $user->save();
 
-        foreach ($req->input('canaries') as $c) {
-            $can = Canary::where('uuid', $c)->first();
-            if (!empty($can)) {
-                $can->assignee = $user->uuid;
-                $can->save();
+        if ($req->has('canaries')) {
+            foreach ($req->input('canaries') as $c) {
+                $can = Canary::where('uuid', $c)->first();
+                if (!empty($can)) {
+                    $can->assignee = $user->uuid;
+                    $can->save();
+                }
             }
         }
 
-        return response()->json(array_merge($user->toArray(), ['canaries' => $req->input('canaries')]));
+        return response()->json(array_merge($user->toArray(), ['canaries' => $req->input('canaries') == null ? [] : $req->input('canaries')]));
     }
 
     public function getUser(Request $req, $uuid) {
