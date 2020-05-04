@@ -71,12 +71,22 @@ class UserController extends Controller {
             'username' => 'required|unique:users|max:100',
             'password' => 'required|min:8',
             'permissions.*' => 'required|in:admin,worker,expert',
-            'canaries.*' => 'sometimes|nullable|exists:App\Models\Canary,uuid',
         ];
+
+        if (!$req->has('permissions')) {
+            return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'No permissions supplied!'], 400);
+        }
 
         $validator = Validator::make($req->all(), $rules, ['unique' => 'The username \':input\' has already been taken.']);
         if ($validator->fails()) {
             return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => $validator->errors()->first()], 400);
+        }
+
+        if ($req->has('canaries')) {
+            $validator = Validator::make($req->all(), ['canaries.*' => 'nullable|exists:App\Models\Canary,uuid']);
+            if ($validator->fails()) {
+                return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => $validator->errors()->first()], 400);
+            }
         }
 
         $me = JWTAuth::user();
