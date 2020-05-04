@@ -67,10 +67,6 @@ class UserController extends Controller {
     }
 
     public function createUsers(Request $req) {
-        if (!$req->has('users')) {
-            return response()->json(['code' => 2, 'message' => 'Bad request', 'details' => 'No users supplied'], 400);
-        }
-
         $rules = [
             'username' => 'required|unique:users|max:100',
             'password' => 'required|min:8',
